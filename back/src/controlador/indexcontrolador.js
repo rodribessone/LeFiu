@@ -28,6 +28,26 @@ class Productos{
       }
     }
 
+    static async deleteOne(req, res){
+      const { _id } = req.params;
+
+      // Valida que el ID sea válido
+      if (!_id || !mongoose.Types.ObjectId.isValid(_id)) {
+        return res.status(400).json({ error: 'ID no válido' });
+      }
+
+      try {
+        const { data, error, message } = await ProductosModel.deleteOne(_id)
+        if (error) {
+          return res.status(404).json({ error: message || 'No se pudo eliminar el producto' });
+        }
+        return res.status(200).json({ message: 'Producto eliminado correctamente', data });
+      } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Error interno del servidor' });
+    }
+    }
+
     static async modifOne(req, res){
       const body = req.body
       const {_id} = req.params

@@ -1,21 +1,74 @@
 import { Link } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInstagram } from '@fortawesome/free-brands-svg-icons'
+import { useState, useEffect } from "react";
 
 export default function Main() {
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    // Obtén la fecha y hora actuales
+    const now = new Date();
+    const currentDay = now.getDay(); // 0 = Domingo, 1 = Lunes, ..., 6 = Sábado
+    const currentTime = now.getHours() + now.getMinutes() / 60; // Hora en formato decimal
+
+    // Define horarios de apertura
+    const schedule = {
+      3: { open: 20.5, close: 23.5 }, // Miércoles: 20:30 - 23:30
+      4: { open: 20.5, close: 23.5 }, // Jueves: 20:30 - 23:30
+      5: { open: 20.5, close: 23.5 }, // Viernes: 20:30 - 23:30
+      6: { open: 20.5, close: 23.5 }, // Sábado: 20:30 - 23:30
+      0: { open: 20.5, close: 23.5 }, // Domingo: 20:30 - 23:30
+    };
+
+     // Verifica si está abierto
+     if (schedule[currentDay]) {
+      const { open, close } = schedule[currentDay];
+      if (currentTime >= open && currentTime <= close) {
+        setIsOpen(true);
+      } else {
+        setIsOpen(false);
+      }
+    } else {
+      setIsOpen(false); // Cerrado si no está en el horario definido
+    }
+  }, []);
+
   return (
     <div className='relative h-[90vh] flex justify-center items-center'>
         <div className='bg-white rounded w-1/3 h-4/5 flex flex-col justify-center items-center min-w-96'>
             <img src='Logo.jpg' className='rounded-full w-20 h-20 m-2' />
-            <h1 className='text-2xl font-bold'>Le Fiu</h1>
-            <div className="border-2 border-black rounded-lg bg-green-600">Abierto</div>
-            <p className='text-center p-4 '> ⏰ Miercoles a Domingo de 20:30 a 23:30 <br/>
+            <h1 className='text-2xl m-2 font-bold'>Le Fiu</h1>
+            <div
+              className={`border-2 rounded-lg px-4 py-1 ${
+                isOpen ? "bg-green-600 border-black text-white" : "bg-red-600 border-black text-white"
+              }`}
+            >
+              {isOpen ? "Abierto" : "Cerrado"}
+            </div>
+
+            <div className="flex items-center ">
+            <span className="relative inline-flex overflow-hidden rounded-full p-[1px]">
+              <span
+                className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#C7AFFF_0%,#D6B3FF_50%,#AB47BC_100%)]"
+              ></span>
+              <div className="inline-flex items-center justify-center w-full px-3 py-1 text-sm text-purple-800 bg-black-100 rounded-full cursor-pointer dark:bg-gray-300 dark:text-purple/600 backdrop-blur-3xl whitespace-nowrap">
+                <slot />
+              </div>
+            </span>
+            </div>
+
+
+
+            <p className='text-center p-2 '> ⏰ Miercoles a Domingo de 20:30 a 23:30 <br/>
+            </p>
             <div>
               <a href="https://www.instagram.com/lefiu.burgers/"
                   target="_blank"
-                  rel="noopener noreferrer"><FontAwesomeIcon className="text-xl hover:text-red-500" icon={faInstagram} /></a>
+                  rel="noopener noreferrer"><FontAwesomeIcon className="text-2xl hover:text-red-500" icon={faInstagram} /></a>
             </div>
-            </p>
+            
             <Link to="/pedido" className='text-2xl bg-black rounded-lg w-4/5 text-white p-2 m-2 text-center'>Hacer un pedido</Link>
             <Link to="/carta" className="text-2xl bg-black rounded-lg w-4/5 text-white p-2 m-2 text-center">Consulta la carta</Link>
             <button className='text-2xl bg-black rounded-lg w-4/5 text-white p-2 m-2'>Chat por wpp</button>

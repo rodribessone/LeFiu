@@ -1,11 +1,13 @@
 const express = require('express')
 const app = express()
 const rutas = require('./src/rutas/indexrutas')
+const usuarioRutas = require('./src/rutas/usuarioRutas');
 const dotenv = require('dotenv')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const { connectToMongoDB, disconnectToMongoDB } = require('./src/configuracion/indexconfig'); // Importamos la configuración de MongoDB
 dotenv.config()
+
 
 const PORT = process.env.PORT || 3000
 
@@ -30,6 +32,7 @@ app.use(cors())
 app.use(bodyParser.json())
 
 app.use("/", rutas)
+app.use('/', usuarioRutas);
 
 app.listen(PORT, () => {
     console.log(`servidor corriendo en http://localhost:${PORT}`)

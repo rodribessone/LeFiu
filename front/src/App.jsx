@@ -7,6 +7,7 @@ import Pedido from './componentes/HacerPedido/Pedido'
 import Usuario from './componentes/usuario/Usuario'
 import EditarProducto from './componentes/Productos/EditarProducto'
 import CrearProducto from './componentes/Productos/CrearProducto'
+import Footer from './componentes/Footer/Footer'
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/editarProducto/:id" element={<EditarProducto />} />
         <Route path="/crearProducto" element={<CrearProducto />} />
       </Routes>
+      <Footer />
     </div>
     </>
   )

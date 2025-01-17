@@ -39,13 +39,16 @@ export default function EditarProducto() {
     };
 
     const handleSubmit = async (e) => {
+
+        const token = localStorage.getItem('token');
         e.preventDefault();
         try {
             const response = await fetch(`http://localhost:3008/productos/${id}`, {
                 method: 'PUT', // Método HTTP para actualizar
                 headers: {
                     'Content-Type': 'application/json',
-                },
+                    Authorization: `Bearer ${token}`, // Asegúrate de que el token se incluya aquí.
+                  },
                 body: JSON.stringify(formData),
             });
 
