@@ -13,7 +13,7 @@ function App() {
 
   return (
     <>
-    <div className='w-full h-[100vh]'>
+    <div className='w-full flex flex-col h-[100vh]'>
       <img src='/Fondo.jpg' className='absolute z-1 object-cover w-full h-full'/>
       <Nav />
       <Routes>

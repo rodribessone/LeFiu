@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons'
+import { useCart } from "../HacerPedido/CartContext";
 
 export default function Pedido() {
+
+  const { cartItems, addToCart } = useCart();
 
   const [productos, setProductos] = useState([])
 
@@ -36,7 +39,10 @@ export default function Pedido() {
                   <p>{descripcion}</p>
                 </div>
                 <div className="flex justify-center w-1/5">
-                  <button className="flex m-auto p-4 text-white bg-green-500 border-2 rounded border-black hover:bg-green-600"> 
+                  <button 
+                          className="flex m-auto p-4 text-white bg-green-500 border-2 rounded border-black hover:bg-green-600"
+                          onClick={() => addToCart(item)}
+                          > 
                     <FontAwesomeIcon className="p-1" icon={faCirclePlus} /> 
                     <p>AGREGAR</p> 
                   </button>

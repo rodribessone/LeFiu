@@ -1,6 +1,6 @@
 export default function Footer() {
     return (
-    <footer className=" flex justify-center p-4 relative w-full bg-black text-white text-center py-4">
+    <footer className="flex p-4 relative w-full bg-black text-white text-center">
         <div className="container mx-auto px-4">
             Desarrollado por
             <a

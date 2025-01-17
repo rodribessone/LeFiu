@@ -2,6 +2,7 @@ import { Link } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from "@fortawesome/free-solid-svg-icons"
 import UserMenu from "../usuario/UserMenu"
+import Cart from "../HacerPedido/Cart"
 
 export default function Nav() {
   return (
@@ -10,8 +11,10 @@ export default function Nav() {
         
         <h1>Le Fiu</h1>
         
-        <UserMenu/>
-        
+        <div className="flex gap-6">
+          <Cart/>
+          <UserMenu/>
+        </div>
     </div>
   )
 }
