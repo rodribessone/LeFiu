@@ -70,8 +70,8 @@ export default function Usuario() {
             <div className="flex p-4">
                 <div className="m-4 w-1/6">
                   <div>
-                    <img src="Fondo.jpg" className="w-60 h-32 object-cover"/>
-                    {imagen}
+                    <img src={imagen} className="w-60 h-32 object-cover"/>
+                    
                   </div>
                 </div>
                 <div className="w-3/6">

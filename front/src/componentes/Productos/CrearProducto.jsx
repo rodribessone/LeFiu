@@ -20,7 +20,7 @@ export default function CrearProducto() {
       const {name, value} = e.target;
       setFormData({
           ...formData,
-          [name]: name === 'title' ? value.toUpperCase() : value,
+          [name]: name === 'nombre' ? value.toUpperCase() : value,
       })
   }
   const handleFileChange = (e) => {
@@ -45,9 +45,8 @@ export default function CrearProducto() {
     // ajusta el formato de los datos a enviar en numeros porque sino no funcionaba
     const formDataToSend = {
         ...formData,
-        id: Number(formData.id),
-        price: Number(formData.price),
-        image: imageUrl // Incluye la URL en los datos del producto
+        precio: Number(formData.precio),
+        imagen: imageUrl // Incluye la URL en los datos del producto
     }
 
     const token = localStorage.getItem('token');

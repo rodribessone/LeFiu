@@ -22,8 +22,11 @@ class Productos{
       try {
         const producto = ProductSchema.parse(body)
         const {data, error} = await ProductosModel.createOne(producto)
+        console.log(req.body)
         if (data) return res.status(202).json(data)
+          console.log(req.body)
       } catch (error) {
+        console.log(req.body)
         res.status(400).json({error: 'Los datos enviados son incorrectos'})
       }
     }
