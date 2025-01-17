@@ -13,8 +13,9 @@ function App() {
 
   return (
     <>
-    <div className='w-full flex flex-col h-[100vh]'>
+    <div className='w-full h-[90vh]'>
       <img src='/Fondo.jpg' className='absolute z-1 object-cover w-full h-full'/>
+      <div className='flex flex-col h-[100vh]'>
       <Nav />
       <Routes>
         <Route path="/" element={<Main />} />
@@ -25,6 +26,7 @@ function App() {
         <Route path="/crearProducto" element={<CrearProducto />} />
       </Routes>
       <Footer />
+      </div>
     </div>
     </>
   )

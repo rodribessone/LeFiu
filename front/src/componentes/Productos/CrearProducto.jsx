@@ -1,6 +1,6 @@
 import {useState, useRef} from 'react'
-// import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
-// import { storage } from '../../firebaseConfig'
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { storage } from '../../firebaseconfig'
 
 export default function CrearProducto() {
 
@@ -50,11 +50,14 @@ export default function CrearProducto() {
         image: imageUrl // Incluye la URL en los datos del producto
     }
 
+    const token = localStorage.getItem('token');
+    
     try {
         const response = await fetch('http://localhost:3008/productos', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`, // Asegúrate de que el token se incluya aquí.
             },
             body: JSON.stringify(formDataToSend),
         })
@@ -74,14 +77,14 @@ export default function CrearProducto() {
             setIsError(true);
         }
     } catch (error) {
-        setMessage("Error en la solicitud. Inténtalo nuevamente.");
+        setMessage(error);
         setIsError(true);
     }
 };
         
   return (
     <>
-    <div className='relative mt-20 w-3/5 mx-auto p-5 rounded border-2 border-black bg-gray-200'>
+    <div className='relative w-3/5 m-auto p-5 rounded border-2 border-black bg-gray-200'>
         <form onSubmit={handleSubmit} className='justify-items-center'>
             <div className='grid grid-cols-2 gap-y-4 mb-8'>
 

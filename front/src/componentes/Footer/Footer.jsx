@@ -1,24 +1,24 @@
 export default function Footer() {
     return (
     <footer className="flex p-4 relative w-full bg-black text-white text-center">
-        <div className="container mx-auto px-4">
+        <div className="container w-full justify-center flex px-4 gap-2">
             Desarrollado por
             <a
             href="https://juanmd14.netlify.app/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-400 hover:text-blue-600 ml-1"
+            className="text-blue-400 hover:text-blue-600"
             >
-            Rodrigo Bessone
+            Rodri
             </a>
-        <p className="inline-block mx-1">y</p>
+        <p className="inline-block">y</p>
             <a
             href="https://juanmd14.netlify.app/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-400 hover:text-blue-600 ml-1"
+            className="text-blue-400 hover:text-blue-600"
             >
-            Juan Manuel García
+            Juan
             </a>
 
         </div>

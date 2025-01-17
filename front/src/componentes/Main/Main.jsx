@@ -36,8 +36,8 @@ export default function Main() {
   }, []);
 
   return (
-    <div className='relative h-[100vh] flex justify-center items-center'>
-        <div className='bg-white rounded w-1/3 h-4/5 flex flex-col justify-center items-center min-w-96'>
+    <div className='relative m-auto'>
+        <div className='bg-white rounded flex flex-col justify-center items-center min-w-96 min-h-full'>
             <img src='Logo.jpg' className='rounded-full w-20 h-20 m-2' />
             <h1 className='text-2xl m-2 font-bold'>Le Fiu</h1>
             <span className="relative inline-flex overflow-hidden rounded-full p-[1px]">

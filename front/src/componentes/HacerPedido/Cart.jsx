@@ -35,7 +35,7 @@ export default function Cart() {
         {isOpen && (
         <div
           ref={menuRef}
-          className="absolute -right-16 mt-6 w-64 text-black bg-white border rounded shadow-lg z-50"
+          className="absolute p-6 -right-16 mt-6 w-80 text-black bg-white border rounded shadow-lg z-50"
         >
             
             <h2 className="text-xl font-bold mb-4">Tu Carrito</h2>

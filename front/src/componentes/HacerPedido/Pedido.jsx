@@ -20,7 +20,7 @@ export default function Pedido() {
 
 
   return (
-<div className='relative flex flex-col bg-white w-2/3 h-2/3 m-auto p-4 border-2 border-black'>
+<div className='relative flex flex-col bg-white w-2/3 m-auto p-4 border-2 border-black'>
       {productos.map((item) => {
           // Se desestructuran los valores del item}
           const { nombre, precio, imagen, descripcion, _id} = item
