@@ -9,7 +9,7 @@ export default function Nav() {
     <div className='w-full bg-black text-white flex justify-between py-4 px-6 relative z-11'>
         <Link to="/" className="text-2xl"><FontAwesomeIcon icon={faBars} /></Link>
         
-        <h1>Le Fiu</h1>
+        <h1  className="text-2xl font-bold italic font-cursive">Le Fiu</h1>
         
         <div className="flex gap-6">
           <Cart/>

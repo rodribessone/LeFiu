@@ -31,7 +31,18 @@ export default function Pedido() {
   useEffect(() => {
     fetch('http://localhost:3008/productos')
       .then((res) => res.json())
-      .then((data) => setProductos(data))
+      .then((data) => {
+        setProductos(data);
+        // Set default type to "simple" for all products
+        const defaultTipoHamburguesa = {};
+        const defaultPrecioFinal = {};
+        data.forEach((producto) => {
+          defaultTipoHamburguesa[producto._id] = "simple";
+          defaultPrecioFinal[producto._id] = 0;
+        });
+        setTipoHamburguesa(defaultTipoHamburguesa);
+        setPrecioFinal(defaultPrecioFinal);
+      })
       .catch((error) => console.error('Error fetching productos:', error));
   }, []);
 
