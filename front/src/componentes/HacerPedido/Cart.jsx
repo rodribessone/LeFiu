@@ -2,6 +2,7 @@ import { useCart } from "../HacerPedido/CartContext";
 import { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 export default function Cart() {
   const [isOpen, setIsOpen] = useState(false); // Controla la visibilidad del menú
@@ -75,6 +76,9 @@ export default function Cart() {
                 className="w-full bg-red-500 text-white py-2 rounded mt-4 hover:bg-red-600"
               >
                 Vaciar Carrito
+              </button>
+              <button className="w-full bg-green-500 text-white py-2 rounded mt-4 hover:bg-green-600">
+                <Link to="/confirmarCompra">Confirmar Compra</Link>
               </button>
             </div>
           )}

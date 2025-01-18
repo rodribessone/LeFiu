@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCirclePlus } from '@fortawesome/free-solid-svg-icons'
+import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import { useCart } from "../HacerPedido/CartContext";
 
 export default function Pedido() {
@@ -17,43 +17,38 @@ export default function Pedido() {
   }, []);
 
   return (
-    <div className="relative flex flex-col bg-white w-2/3 m-auto p-4 border-2 border-black rounded-xl">
+    <div className="relative flex flex-col bg-white w-11/12 m-auto p-4 border-2 border-black rounded-xl md:w-4/5 lg:w-2/3">
       {productos.map((item) => {
-        const { nombre, precio, imagen, descripcion, _id } = item; // Uso de _id
+        const { nombre, precio, imagen, descripcion, _id } = item;
         return (
           <div
             key={_id}
-            className="flex flex-col w-4/5 mx-auto my-2 border-2 border-black justify-center rounded-xl"
+            className="flex flex-col sm:flex-row w-full mx-auto my-4 p-4 border-2 border-black rounded-xl justify-between"
           >
-            <div className="flex p-4">
-              <div className="m-4 w-1/5">
-                <p>
-                  <img src={imagen} className="w-60 h-32 object-cover" alt={nombre} />
-                  {imagen}
-                </p>
-              </div>
-              <div className="w-3/5">
-                <h1 className="text-xl font-bold">{nombre}</h1>
-                <p className="text-gray-700 font-bold">${precio}</p>
-                <p>{descripcion}</p>
-              </div>
-              <div className="flex justify-center w-1/5">
-                <button
-                  className="flex m-auto p-4 text-white bg-green-500 border-2 rounded border-black hover:bg-green-600"
-                  onClick={() =>
-                    addToCart({
-                      _id, // Identificador único
-                      nombre,
-                      precio,
-                      imagen,
-                      descripcion,
-                    })
-                  }
-                >
-                  <FontAwesomeIcon className="p-1" icon={faCirclePlus} />
-                  <p>AGREGAR</p>
-                </button>
-              </div>
+            <div className="m-4 sm:w-1/4">
+              <img src={imagen} className="w-full h-32 object-cover rounded-lg" alt={nombre} />
+            </div>
+            <div className="flex flex-col justify-between w-full sm:w-2/3">
+              <h1 className="text-black text-xl font-bold">{nombre}</h1>
+              <p className="text-lg text-green-600 font-bold">${precio}</p>
+              <p className="text-black m-4 font-semibold text-sm sm:text-base">{descripcion}</p>
+            </div>
+            <div className="flex items-center justify-center w-full sm:w-1/4 mt-4 sm:mt-0">
+              <button
+                className="flex max-h-16 items-center justify-center p-4 text-white bg-green-500 border-1 rounded border-black hover:bg-green-600 w-full sm:w-auto"
+                onClick={() =>
+                  addToCart({
+                    _id,
+                    nombre,
+                    precio,
+                    imagen,
+                    descripcion,
+                  })
+                }
+              >
+                <FontAwesomeIcon className="p-1" icon={faCirclePlus} />
+                <p className="ml-2">AGREGAR</p>
+              </button>
             </div>
           </div>
         );
@@ -61,6 +56,3 @@ export default function Pedido() {
     </div>
   );
 }
-
-
-

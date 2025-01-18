@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function Carta() {
   return (
     <div className='relative flex flex-col bg-black'>

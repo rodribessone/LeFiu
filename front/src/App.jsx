@@ -8,6 +8,7 @@ import Usuario from './componentes/usuario/Usuario'
 import EditarProducto from './componentes/Productos/EditarProducto'
 import CrearProducto from './componentes/Productos/CrearProducto'
 import Footer from './componentes/Footer/Footer'
+import ConfirmarCompra from './componentes/HacerPedido/ConfirmarCompra'
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
         <Route path="/usuario" element={<Usuario />} />
         <Route path="/editarProducto/:id" element={<EditarProducto />} />
         <Route path="/crearProducto" element={<CrearProducto />} />
+        <Route path="/confirmarCompra" element={<ConfirmarCompra />} />
       </Routes>
       <Footer />
       </div>
