@@ -11,20 +11,32 @@ export const CartProvider = ({ children }) => {
   // Función para agregar un producto al carrito
   const addToCart = (product) => {
     setCartItems((prev) => {
-      const existingItem = prev.find((item) => item.id === product.id);
+      const existingItem = prev.find(
+        (item) => item.id === product.id && item.tipoHamburguesa === product.tipoHamburguesa
+      );
+
       if (existingItem) {
+        // Si el producto ya existe con el mismo tipo, aumenta la cantidad
         return prev.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.id === product.id && item.tipoHamburguesa === product.tipoHamburguesa
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
         );
       } else {
-        return [...prev, { ...product, quantity: 1 }];
+        // Si es un nuevo producto o tiene un tipo diferente, agrégalo
+        return [
+          ...prev,
+          { ...product, quantity: 1 }, // Inicializa con cantidad 1
+        ];
       }
     });
   };
 
   // Función para eliminar un producto del carrito
-  const removeFromCart = (id) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  const removeFromCart = (id, tipoHamburguesa) => {
+    setCartItems((prev) =>
+      prev.filter((item) => !(item.id === id && item.tipoHamburguesa === tipoHamburguesa))
+    );
   };
 
   // Función para vaciar el carrito

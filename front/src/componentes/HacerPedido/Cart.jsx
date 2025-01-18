@@ -36,8 +36,7 @@ export default function Cart() {
       <button onClick={toggleMenu} className="text-2xl text-white">
         <FontAwesomeIcon icon={faCartShopping} />
       </button>
-
-      {isOpen && (
+{isOpen && (
         <div
           ref={menuRef}
           className="absolute p-6 -right-16 mt-6 w-80 text-black bg-white border rounded shadow-lg z-50"
