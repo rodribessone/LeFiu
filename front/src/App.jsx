@@ -2,7 +2,7 @@ import './index.css'
 import { Routes, Route } from "react-router-dom"
 import Nav from './componentes/nav/Nav'
 import Main from './componentes/Main/Main'
-import Carta from './componentes/Carta/Carta'
+import Carta from './componentes/Carta/Carta';
 import Pedido from './componentes/HacerPedido/Pedido'
 import Usuario from './componentes/usuario/Usuario'
 import EditarProducto from './componentes/Productos/EditarProducto'

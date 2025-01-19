@@ -64,7 +64,13 @@ export default function Main() {
             
             <Link to="/pedido" className='text-2xl bg-black rounded-lg w-4/5 text-white p-2 m-2 text-center'>Hacer un pedido</Link>
             <Link to="/carta" className="text-2xl bg-black rounded-lg w-4/5 text-white p-2 m-2 text-center">Consulta la carta</Link>
-            <button className='text-2xl bg-black rounded-lg w-4/5 text-white p-2 m-2'>Chat por wpp</button>
+            <a
+          href="https://wa.me/542214981450?text=Hola,%20quisiera%20hacer%20una%20consulta%20sobre"
+          rel="noopener noreferrer"
+          className='text-2xl bg-black rounded-lg w-4/5 text-white p-2 m-2 text-center'
+        >
+          Chat por wpp
+        </a>
         </div>
     </div>
   )

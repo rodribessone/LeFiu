@@ -32,24 +32,27 @@ export default function Pedido() {
     fetch('http://localhost:3008/productos')
       .then((res) => res.json())
       .then((data) => {
+        console.log(data); // Agrega este log para verificar los datos recibidos
         setProductos(data);
-        // Set default type to "simple" for all products
+        // Set default type to "simple" for all hamburgers
         const defaultTipoHamburguesa = {};
         const defaultPrecioFinal = {};
         data.forEach((producto) => {
-          defaultTipoHamburguesa[producto._id] = "simple";
-          defaultPrecioFinal[producto._id] = 0;
+          if (producto.categoria === "Hamburguesa") {
+            defaultTipoHamburguesa[producto._id] = "simple";
+            defaultPrecioFinal[producto._id] = 0;
+          }
         });
         setTipoHamburguesa(defaultTipoHamburguesa);
         setPrecioFinal(defaultPrecioFinal);
       })
       .catch((error) => console.error('Error fetching productos:', error));
   }, []);
-
+  
   return (
     <div className="relative flex flex-col bg-white w-11/12 m-auto p-4 border-2 border-black rounded-xl md:w-4/5 lg:w-2/3">
       {productos.map((item) => {
-        const { nombre, precio, imagen, descripcion, _id } = item;
+        const { nombre, precio, imagen, descripcion, _id, categoria } = item;
         const precioTotal = precio + (precioFinal[_id] || 0);
 
         return (
@@ -60,33 +63,37 @@ export default function Pedido() {
             <div className="m-4 sm:w-1/4">
               <img src={imagen} className="w-full h-32 object-cover rounded-lg" alt={nombre} />
             </div>
-            <div className="flex flex-col justify-between w-full sm:w-2/3">
+            <div className="flex flex-col w-full sm:w-2/3">
               <h1 className="text-black text-xl font-bold">{nombre}</h1>
               <p className="text-lg text-green-600 font-bold">${precioTotal}</p>
-              <p className="text-black m-4 font-semibold text-sm sm:text-base">{descripcion}</p>
-              <div className="mb-4">
-                <p className="text-gray-700">Tipo de Hamburguesa:</p>
-                <div className="flex gap-4">
-                  <button
-                    className={`p-2 rounded ${tipoHamburguesa[_id] === "simple" ? 'bg-green-500 text-white' : 'bg-gray-200'}`}
-                    onClick={() => handleTipoHamburguesaChange(_id, "simple")}
-                  >
-                    Simple
-                  </button>
-                  <button
-                    className={`p-2 rounded ${tipoHamburguesa[_id] === "doble" ? 'bg-green-500 text-white' : 'bg-gray-200'}`}
-                    onClick={() => handleTipoHamburguesaChange(_id, "doble")}
-                  >
-                    Doble (+$800)
-                  </button>
-                  <button
-                    className={`p-2 rounded ${tipoHamburguesa[_id] === "triple" ? 'bg-green-500 text-white' : 'bg-gray-200'}`}
-                    onClick={() => handleTipoHamburguesaChange(_id, "triple")}
-                  >
-                    Triple (+$1900)
-                  </button>
+              <p className="text-black font-semibold text-sm sm:text-base">{descripcion}</p>
+
+              {/* Solo mostrar opciones de tipo si el producto es una hamburguesa bla bla*/}
+              {categoria === "Hamburguesa" && (
+                <div className="mb-4">
+                  <p className="text-gray-700">Tipo de Hamburguesa:</p>
+                  <div className="flex gap-4">
+                    <button
+                      className={`p-2 rounded mt-2 ${tipoHamburguesa[_id] === "simple" ? 'bg-green-500 text-white' : 'bg-gray-200'}`}
+                      onClick={() => handleTipoHamburguesaChange(_id, "simple")}
+                    >
+                      Simple
+                    </button>
+                    <button
+                      className={`p-2 rounded mt-2 ${tipoHamburguesa[_id] === "doble" ? 'bg-green-500 text-white' : 'bg-gray-200'}`}
+                      onClick={() => handleTipoHamburguesaChange(_id, "doble")}
+                    >
+                      Doble (+$800)
+                    </button>
+                    <button
+                      className={`p-2 rounded mt-2 ${tipoHamburguesa[_id] === "triple" ? 'bg-green-500 text-white' : 'bg-gray-200'}`}
+                      onClick={() => handleTipoHamburguesaChange(_id, "triple")}
+                    >
+                      Triple (+$1900)
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
             <div className="flex items-center justify-center w-full sm:w-1/4 mt-4 sm:mt-0">
               <button
@@ -98,6 +105,7 @@ export default function Pedido() {
                     precio: precioTotal,
                     imagen,
                     descripcion,
+                    categoria,
                     tipoHamburguesa: tipoHamburguesa[_id] || "simple",
                   })
                 }
