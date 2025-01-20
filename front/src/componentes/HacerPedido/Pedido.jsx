@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+import { faCirclePlus, faBurger, faDrumstickBite } from '@fortawesome/free-solid-svg-icons';
 import { useCart } from "../HacerPedido/CartContext";
+
 
 export default function Pedido() {
   const { addToCart } = useCart();
   const [productos, setProductos] = useState([]);
   const [tipoHamburguesa, setTipoHamburguesa] = useState({});
   const [precioFinal, setPrecioFinal] = useState({});
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Hamburguesa");
 
   const handleTipoHamburguesaChange = (productoId, tipo) => {
     setTipoHamburguesa((prev) => ({
@@ -29,12 +31,10 @@ export default function Pedido() {
   };
 
   useEffect(() => {
-    fetch('http://localhost:3008/productos')
+    fetch("http://localhost:3008/productos")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data); // Agrega este log para verificar los datos recibidos
         setProductos(data);
-        // Set default type to "simple" for all hamburgers
         const defaultTipoHamburguesa = {};
         const defaultPrecioFinal = {};
         data.forEach((producto) => {
@@ -46,12 +46,40 @@ export default function Pedido() {
         setTipoHamburguesa(defaultTipoHamburguesa);
         setPrecioFinal(defaultPrecioFinal);
       })
-      .catch((error) => console.error('Error fetching productos:', error));
+      .catch((error) => console.error("Error fetching productos:", error));
   }, []);
-  
+
+  // Filtrar productos según la categoría seleccionada
+  const productosFiltrados = productos.filter(
+    (item) =>
+      item.categoria === categoriaSeleccionada && item.categoria !== "Bebida"
+  );
+
   return (
     <div className="relative flex flex-col bg-white w-11/12 m-auto p-4 border-2 border-black rounded-xl md:w-4/5 lg:w-2/3">
-      {productos.map((item) => {
+      {/* Filtros */}
+      <div className="flex justify-around mb-4">
+        <button
+          className={`p-2 rounded ${categoriaSeleccionada === "Hamburguesa"  ? "bg-yellow-500 text-white" : "bg-gray-200"}`}
+          onClick={() => setCategoriaSeleccionada("Hamburguesa")}
+        >
+          <FontAwesomeIcon icon={faBurger} className="mr-2" />
+          Hamburguesas
+        </button>
+        <button
+          className={`p-2 rounded ${categoriaSeleccionada === "Pollo" ? "bg-yellow-500 text-white" : "bg-gray-200"}`}
+          onClick={() => setCategoriaSeleccionada("Pollo")}
+        >
+          <FontAwesomeIcon icon={faDrumstickBite} className="mr-2" />
+          Pollo
+        </button>
+      </div>
+
+<h3>Todas las porciones incluyen papas fritas <img src="/papas.png" alt="Papas" className="inline-block w-6 h-6" /> </h3>
+
+
+      {/* Productos */}
+      {productosFiltrados.map((item) => {
         const { nombre, precio, imagen, descripcion, _id, categoria } = item;
         const precioTotal = precio + (precioFinal[_id] || 0);
 
@@ -68,25 +96,25 @@ export default function Pedido() {
               <p className="text-lg text-green-600 font-bold">${precioTotal}</p>
               <p className="text-black font-semibold text-sm sm:text-base">{descripcion}</p>
 
-              {/* Solo mostrar opciones de tipo si el producto es una hamburguesa bla bla*/}
+              {/* Opciones de tipo para hamburguesas */}
               {categoria === "Hamburguesa" && (
                 <div className="mb-4">
                   <p className="text-gray-700">Tipo de Hamburguesa:</p>
                   <div className="flex gap-4">
                     <button
-                      className={`p-2 rounded mt-2 ${tipoHamburguesa[_id] === "simple" ? 'bg-green-500 text-white' : 'bg-gray-200'}`}
+                      className={`p-2 rounded mt-2 ${tipoHamburguesa[_id] === "simple" ? "bg-green-500 text-white" : "bg-gray-200"}`}
                       onClick={() => handleTipoHamburguesaChange(_id, "simple")}
                     >
                       Simple
                     </button>
                     <button
-                      className={`p-2 rounded mt-2 ${tipoHamburguesa[_id] === "doble" ? 'bg-green-500 text-white' : 'bg-gray-200'}`}
+                      className={`p-2 rounded mt-2 ${tipoHamburguesa[_id] === "doble" ? "bg-green-500 text-white" : "bg-gray-200"}`}
                       onClick={() => handleTipoHamburguesaChange(_id, "doble")}
                     >
                       Doble (+$800)
                     </button>
                     <button
-                      className={`p-2 rounded mt-2 ${tipoHamburguesa[_id] === "triple" ? 'bg-green-500 text-white' : 'bg-gray-200'}`}
+                      className={`p-2 rounded mt-2 ${tipoHamburguesa[_id] === "triple" ? "bg-green-500 text-white" : "bg-gray-200"}`}
                       onClick={() => handleTipoHamburguesaChange(_id, "triple")}
                     >
                       Triple (+$1900)
