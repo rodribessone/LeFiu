@@ -75,8 +75,12 @@ export default function Pedido() {
         </button>
       </div>
 
-<h3>Todas las porciones incluyen papas fritas <img src="/papas.png" alt="Papas" className="inline-block w-6 h-6" /> </h3>
-
+      <div className="flex justify-center items-center text-xs">
+      <h3>
+  Todas las porciones incluyen papas fritas
+  <img src="/papas.png" alt="Papas" className="inline-block w-6 h-6 block mx-auto" />
+</h3>
+</div>
 
       {/* Productos */}
       {productosFiltrados.map((item) => {
