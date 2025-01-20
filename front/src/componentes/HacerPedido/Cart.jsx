@@ -31,12 +31,23 @@ export default function Cart() {
     0
   );
 
+  // Calcula la cantidad total de productos en el carrito
+  const totalItems = cartItems.reduce(
+    (accumulator, item) => accumulator + item.quantity,
+    0
+  );
+
   return (
     <div className="relative">
-      <button onClick={toggleMenu} className="text-2xl text-white">
+      <button onClick={toggleMenu} className="text-2xl text-white relative">
         <FontAwesomeIcon icon={faCartShopping} />
+        {totalItems > 0 && (
+          <span className="absolute top-0 left-5 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+            {totalItems}
+          </span>
+        )}
       </button>
-{isOpen && (
+      {isOpen && (
         <div
           ref={menuRef}
           className="absolute p-6 -right-16 mt-6 w-80 text-black bg-white border rounded shadow-lg z-50"

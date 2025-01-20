@@ -69,7 +69,7 @@ export default function Main() {
           rel="noopener noreferrer"
           className='text-2xl bg-black rounded-lg w-4/5 text-white p-2 m-2 text-center'
         >
-          Chat por wpp
+          Chat por whatsapp
         </a>
         </div>
     </div>
