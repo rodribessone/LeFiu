@@ -1,5 +1,41 @@
 const dotenv = require('dotenv');
+const mongoose = require('mongoose');
 dotenv.config();
+
+async function connectToMongoDB() {
+    try {
+        if (mongoose.connection.readyState === 1) {
+            console.log("Ya estamos conectados a MongoDB.");
+            return; // Si ya está conectado, no hacer nada
+        }
+
+        if (!process.env.MONGODB_URI) {
+            throw new Error("MONGODB_URI no está definido en el archivo .env.");
+        }
+
+        console.log("Conectando a MongoDB...");
+        await mongoose.connect(process.env.MONGODB_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            serverSelectionTimeoutMS: 10000, // Para aumentar el tiempo de espera
+        });
+        console.log("Conectado a MongoDB.");
+    } catch (error) {
+        console.error("Error al conectar con MongoDB:", error.message);
+        throw error; // Relanzar el error para manejarlo correctamente
+    }
+}
+
+async function disconnectToMongoDB() {
+    try {
+        await mongoose.disconnect();
+        console.log("Desconectado correctamente de MongoDB.");
+    } catch (error) {
+        console.error("Error al desconectar de MongoDB:", error.message);
+    }
+}
+
+module.exports = { connectToMongoDB, disconnectToMongoDB };
 
 const { MongoClient } = require('mongodb');
 

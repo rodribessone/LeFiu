@@ -20,15 +20,15 @@ export default function Usuario() {
       .then((data) => {
         setProductos(data);
       })
-      .catch((error) => console.error('Error fetching productos:', error));
-
+      .catch((error) => console.error('Error fetching productos:', error.message));
+  
     // Obtener precio de delivery
     fetch('http://localhost:3008/delivery')
       .then((res) => res.json())
       .then((data) => {
         setDeliveryPrice(data.deliveryPrice);
       })
-      .catch((error) => console.error('Error fetching delivery price:', error));
+      .catch((error) => console.error('Error fetching delivery price:', error.message));
   }, []);
 
   const eliminarProducto = async () => {
