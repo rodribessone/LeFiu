@@ -96,21 +96,25 @@ export default function UserMenu() {
                 {user.role === 'admin' && (
                     <div className="mb-4">
                     <Link to="/usuario" className="flex justify-center bg-blue-500 text-white py-2 rounded mb-2">Modificar productos</Link>
+                    
+                    {/* lo del button siguiente y el div de abajo es lo de los cupones, por ahora no se agrega */}
                     <button
-                        className="w-full bg-green-500 text-white py-2 rounded"
+                        className="w-full bg-green-500 text-white py-2 rounded hidden"
                     >
                         Generar cupones
                     </button>
                     </div>
                 )}
 
-
+                <div className='hidden'>
                 <h3 className="text-md font-semibold">Tus cupones:</h3>
                 {user.coupons ? (
                     <p className="text-sm font-semibold">{user.coupons}</p>
                 ) : (
                     <p className="text-sm text-gray-500">No tienes cupones disponibles</p>
                 )}
+                </div>
+
                 <button
                   onClick={() => {
                     setUser(null); // Cerrar sesión

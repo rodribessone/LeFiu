@@ -6,18 +6,29 @@ import { Link } from 'react-router-dom';
 export default function Usuario() {
   const [productos, setProductos] = useState([]);
   const [productoAEliminar, setProductoAEliminar] = useState(null);
+  const [deliveryPrice, setDeliveryPrice] = useState(0); // Estado para el precio de delivery
+  const [newDeliveryPrice, setNewDeliveryPrice] = useState(""); // Estado para el nuevo precio de delivery
 
   const handleEliminarClick = (id) => {
     setProductoAEliminar(id);
   };
 
   useEffect(() => {
+    // Obtener productos
     fetch('http://localhost:3008/productos')
       .then((res) => res.json())
       .then((data) => {
         setProductos(data);
       })
       .catch((error) => console.error('Error fetching productos:', error));
+
+    // Obtener precio de delivery
+    fetch('http://localhost:3008/delivery')
+      .then((res) => res.json())
+      .then((data) => {
+        setDeliveryPrice(data.deliveryPrice);
+      })
+      .catch((error) => console.error('Error fetching delivery price:', error));
   }, []);
 
   const eliminarProducto = async () => {
@@ -49,10 +60,63 @@ export default function Usuario() {
     setProductoAEliminar(null);
   };
 
+  const handleUpdateDeliveryPrice = async () => {
+    const token = localStorage.getItem('token');
+
+    if (!newDeliveryPrice || isNaN(newDeliveryPrice) || newDeliveryPrice <= 0) {
+      alert('Por favor, introduce un precio válido.');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:3008/delivery', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ price: parseFloat(newDeliveryPrice) }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setDeliveryPrice(data.deliveryPrice);
+        setNewDeliveryPrice("");
+        alert('Precio de delivery actualizado correctamente');
+      } else {
+        alert('Error al actualizar el precio del delivery');
+      }
+    } catch (error) {
+      console.error('Error al actualizar el precio del delivery:', error);
+    }
+  };
+
   return (
     <div className="relative bg-white w-full md:w-4/5 m-auto p-4">
       <div className="text-center p-4 flex flex-col">
         <p className="m-2">Bienvenido <b>Joaco</b></p>
+
+        {/* Sección para gestionar el precio del delivery */}
+        <div className="w-2/5 mx-auto bg-gray-100 p-4 rounded shadow-md my-6">
+        <h2 className="text-xl font-bold mb-4">Configurar Precio de Delivery</h2>
+        <p className="mb-2">Precio actual: <span className="font-bold">${deliveryPrice}</span></p>
+        <div className="flex items-center gap-4">
+          <input
+            type="number"
+            className="p-2 border rounded w-full"
+            placeholder="Nuevo precio"
+            value={newDeliveryPrice}
+            onChange={(e) => setNewDeliveryPrice(e.target.value)}
+          />
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            onClick={handleUpdateDeliveryPrice}
+          >
+            Actualizar
+          </button>
+        </div>
+      </div>
+
         <Link to='/crearProducto' className="mx-auto p-4 text-white bg-green-500 border-2 rounded border-black hover:bg-green-600">
           Crear nuevo producto
         </Link>

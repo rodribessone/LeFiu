@@ -68,6 +68,7 @@ export default function Main() {
           href="https://wa.me/542392486277?text=Hola,%20quisiera%20hacer%20una%20consulta%20sobre"
           rel="noopener noreferrer"
           className='text-2xl bg-black rounded-lg w-4/5 text-white p-2 m-2 text-center'
+          target="_blank"
         >
           Chat por whatsapp
         </a>

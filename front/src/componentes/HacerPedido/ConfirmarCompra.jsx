@@ -44,7 +44,7 @@ useEffect(() => {
     
     const montoTotal = total + delivery;
 
-    const mensaje = `¡Hola! Soy ${nombre}, te encargo para la dirección ${direccion} los siguientes productos: ${productos}. Voy a pagar con ${medioPago}. El monto total a pagar es $${montoTotal.toFixed(2)}.`; // Mensaje con el precio total
+    const mensaje = `¡Hola! Soy *${nombre}*\n\nTe encargo para la dirección *${direccion}* los siguientes productos:\n${productos}.\n\nVoy a pagar con *${medioPago}*.\n\nEl monto total a pagar es *$${montoTotal.toFixed(2)}*`; // Mensaje con el precio total
 
     // Redirigir a WhatsApp
     window.open(`https://wa.me/${businessNumber}?text=${encodeURIComponent(mensaje)}`, "_blank");
