@@ -8,6 +8,7 @@ export default function Usuario() {
   const [productoAEliminar, setProductoAEliminar] = useState(null);
   const [deliveryPrice, setDeliveryPrice] = useState(0); // Estado para el precio de delivery
   const [newDeliveryPrice, setNewDeliveryPrice] = useState(""); // Estado para el nuevo precio de delivery
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;  // Revisa si ya contiene un slash final
 
   const handleEliminarClick = (id) => {
     setProductoAEliminar(id);
@@ -15,7 +16,7 @@ export default function Usuario() {
 
   useEffect(() => {
     // Obtener productos
-    fetch('http://localhost:3008/productos')
+    fetch(`${backendUrl}/productos`)
       .then((res) => res.json())
       .then((data) => {
         setProductos(data);
@@ -23,7 +24,7 @@ export default function Usuario() {
       .catch((error) => console.error('Error fetching productos:', error.message));
   
     // Obtener precio de delivery
-    fetch('http://localhost:3008/delivery')
+    fetch(`${backendUrl}/delivery`)
       .then((res) => res.json())
       .then((data) => {
         setDeliveryPrice(data.deliveryPrice);
@@ -36,7 +37,7 @@ export default function Usuario() {
     if (!productoAEliminar) return;
 
     try {
-      const response = await fetch(`http://localhost:3008/productos/${productoAEliminar}`, {
+      const response = await fetch(`${backendUrl}/productos/${productoAEliminar}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -69,7 +70,7 @@ export default function Usuario() {
     }
 
     try {
-      const response = await fetch('http://localhost:3008/delivery', {
+      const response = await fetch(`${backendUrl}/delivery`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

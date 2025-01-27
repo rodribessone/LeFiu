@@ -4,7 +4,7 @@ export default function Footer() {
             <div className="container w-full justify-center flex px-2 gap-1 text-xs">
                 Desarrollado por
                 <a
-                    href="https://juanmd14.netlify.app/"
+                    href="https://rodribessone.netlify.app/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-400 hover:text-blue-600"

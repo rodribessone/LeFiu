@@ -5,6 +5,7 @@ export default function EditarProducto() {
     const { id } = useParams();
     const [message, setMessage] = useState('');
     const [isError, setIsError] = useState(false);
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;  // Revisa si ya contiene un slash final
     const [formData, setFormData] = useState({
         nombre: '',
         precio: '',
@@ -13,7 +14,7 @@ export default function EditarProducto() {
     });
 
     useEffect(() => {
-        fetch(`http://localhost:3008/productos/${id}`)
+        fetch(`${backendUrl}/productos/${id}`)
             .then((res) => res.json())
             .then((data) => {
                 setFormData({
@@ -43,7 +44,7 @@ export default function EditarProducto() {
         const token = localStorage.getItem('token');
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:3008/productos/${id}`, {
+            const response = await fetch(`${backendUrl}/productos/${id}`, {
                 method: 'PUT', // Método HTTP para actualizar
                 headers: {
                     'Content-Type': 'application/json',

@@ -7,12 +7,13 @@ export default function ConfirmarCompra() {
   const [direccion, setDireccion] = useState("");
   const [medioPago, setMedioPago] = useState("");
   const [delivery, setDelivery] = useState(0);
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;  // Revisa si ya contiene un slash final
 
   const token = localStorage.getItem('token');
 
 useEffect(() => {
   // Obtener el precio del delivery desde el backend
-  fetch('http://localhost:3008/delivery', {
+  fetch(`${backendUrl}/delivery`, {
     method: 'GET', // Aquí estás utilizando DELETE, asegúrate de que este sea el método correcto
     headers: {
       'Content-Type': 'application/json',

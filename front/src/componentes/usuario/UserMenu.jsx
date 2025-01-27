@@ -10,6 +10,7 @@ export default function UserMenu() {
   const [errorMessage, setErrorMessage] = useState(''); // Mensajes de error
   const [user, setUser] = useState(null); // Almacena los datos del usuario
   const menuRef = useRef(null); // Referencia para el contenedor del menú
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;  // Revisa si ya contiene un slash final
 
   // Alterna la visibilidad del menú
   const toggleMenu = () => setIsOpen((prev) => !prev);
@@ -38,7 +39,7 @@ export default function UserMenu() {
     e.preventDefault();
     setErrorMessage(''); // Limpiar los mensajes de error previos
   
-    const url = view === 'login' ? 'http://localhost:3008/login' : 'http://localhost:3008/register';
+    const url = view === 'login' ? `${backendUrl}/login` : `${backendUrl}/register`;
     const body = JSON.stringify(formData);
   
     try {

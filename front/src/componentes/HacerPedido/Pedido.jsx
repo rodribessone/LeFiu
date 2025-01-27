@@ -10,6 +10,7 @@ export default function Pedido() {
   const [tipoHamburguesa, setTipoHamburguesa] = useState({});
   const [precioFinal, setPrecioFinal] = useState({});
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Hamburguesa");
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;  // Revisa si ya contiene un slash final
 
   const handleTipoHamburguesaChange = (productoId, tipo) => {
     setTipoHamburguesa((prev) => ({
@@ -31,7 +32,7 @@ export default function Pedido() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:3008/productos")
+    fetch(`${backendUrl}/productos`)
       .then((res) => res.json())
       .then((data) => {
         setProductos(data);

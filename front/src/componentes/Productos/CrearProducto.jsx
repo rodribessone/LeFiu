@@ -15,6 +15,7 @@ export default function CrearProducto() {
     const [file, setFile] = useState(null);
     const [fileName, setFileName] = useState("Seleccionar archivo");
     const fileInputRef = useRef(null);
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;  // Revisa si ya contiene un slash final
 
     const handleChange = (e) => {
       const {name, value} = e.target;
@@ -52,7 +53,7 @@ export default function CrearProducto() {
     const token = localStorage.getItem('token');
     
     try {
-        const response = await fetch('http://localhost:3008/productos', {
+        const response = await fetch(`${backendUrl}/productos`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
