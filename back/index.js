@@ -15,19 +15,16 @@ connectToMongoDB();
 
 app.use(express.json());
 
-// Middleware de CORS
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    if (req.method === 'OPTIONS') {
-        return res.sendStatus(200);
-    }
-    next();
-});
+// Configuración del middleware de CORS
+app.use(
+    cors({
+      origin: 'https://le-fiu.vercel.app', // Dominio del frontend permitido
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Métodos permitidos
+      allowedHeaders: ['Content-Type', 'Authorization'], // Encabezados permitidos
+      credentials: true, // Permitir cookies/sesiones si es necesario
+    })
+  );
 
-app.use(cors());
 app.use(bodyParser.json());
 
 app.use("/", rutas);
