@@ -4,23 +4,18 @@ export default function Carta() {
   const [productos, setProductos] = useState([]);
 
   useEffect(() => {
-    const fetchProductos = async () => {
-      try {
-        console.log('Backend URL:', import.meta.env.VITE_BACKEND_URL);  // Verifica el valor
-        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/productos`);
-
+    console.log('Backend URL:', import.meta.env.VITE_BACKEND_URL);  // Verifica el valor
+    fetch(`${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/productos`)
+      .then((res) => {
         if (!res.ok) {
           throw new Error(`Error HTTP: ${res.status}`);
         }
-
-        const data = await res.json();
+        return res.json();
+      })
+      .then((data) => {
         setProductos(data);
-      } catch (error) {
-        console.error("Error al obtener productos:", error);
-      }
-    };
-
-    fetchProductos();
+      })
+      .catch((error) => console.error("Error al obtener productos:", error));
   }, []);
 
   return (
@@ -33,27 +28,29 @@ export default function Carta() {
         </p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {productos.map(({ nombre, precio, imagen, descripcion, _id }) => (
-            <div
-              key={_id}
-              className="p-4 border-2 border-gray-300 rounded-lg flex flex-col items-center text-center shadow-md"
-              style={{ border: "1px solid red" }} // Agregado para depurar el borde del contenedor
-            >
-              {/* Imagen */}
-              <img
-                src={imagen || "https://via.placeholder.com/150"}
-                alt={nombre}
-                className="w-full h-32 object-cover rounded-md mb-4"
-                style={{ background: "gray" }} // Fondo gris en caso de que no se cargue la imagen
-              />
-              {/* Nombre */}
-              <h2 className="font-bold text-lg">{nombre}</h2>
-              {/* Precio */}
-              <p className="text-green-600 font-bold">${precio}</p>
-              {/* Descripción */}
-              <p className="text-gray-600 text-sm">{descripcion}</p>
-            </div>
-          ))}
+          {productos.map(({ nombre, precio, imagen, descripcion, _id }) => {
+            return (
+              <div
+                key={_id}
+                className="p-4 border-2 border-gray-300 rounded-lg flex flex-col items-center text-center shadow-md"
+                style={{ border: "1px solid red" }} // Agregado para depurar el borde del contenedor
+              >
+                {/* Imagen */}
+                <img
+                  src={imagen || "https://via.placeholder.com/150"}
+                  alt={nombre}
+                  className="w-full h-32 object-cover rounded-md mb-4"
+                  style={{ background: "gray" }} // Fondo gris en caso de que no se cargue la imagen
+                />
+                {/* Nombre */}
+                <h2 className="font-bold text-lg">{nombre}</h2>
+                {/* Precio */}
+                <p className="text-green-600 font-bold">${precio}</p>
+                {/* Descripción */}
+                <p className="text-gray-600 text-sm">{descripcion}</p>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
