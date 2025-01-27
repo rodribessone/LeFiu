@@ -5,7 +5,7 @@ export default function Carta() {
 
   useEffect(() => {
     console.log('Backend URL:', import.meta.env.VITE_BACKEND_URL);  // Verifica el valor
-    fetch(`${import.meta.env.VITE_BACKEND_URL}/productos`)
+    fetch(`${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/productos`)
       .then((res) => {
         if (!res.ok) {
           throw new Error(`Error HTTP: ${res.status}`);
