@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 
 export default function Carta() {
   const [productos, setProductos] = useState([]);
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;  // Revisa si ya contiene un slash final
 
   useEffect(() => {
-    console.log('Backend URL:', import.meta.env.VITE_BACKEND_URL);  // Verifica el valor
-    fetch(`${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/productos`)
+    console.log('Backend URL:', backendUrl);  // Verifica el valor
+    fetch(`${backendUrl}/productos`)
       .then((res) => {
         if (!res.ok) {
           throw new Error(`Error HTTP: ${res.status}`);
@@ -16,8 +17,7 @@ export default function Carta() {
         setProductos(data);
       })
       .catch((error) => console.error("Error al obtener productos:", error));
-  }, []);
-
+  }, );
   return (
     <div className="relative flex flex-col bg-white w-11/12 m-auto p-4 border-2 border-black rounded-xl md:w-4/5 lg:w-2/3">
       <h1 className="text-2xl font-bold text-center mb-6">Nuestra Carta</h1>
