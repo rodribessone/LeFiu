@@ -4,7 +4,7 @@ export default function Carta() {
   const [productos, setProductos] = useState([]);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_BACKEND_URL}/productos`)
+    fetch(`${import.meta.env.VITE_BACKEND_URL}productos`)
       .then((res) => {
         if (!res.ok) {
           throw new Error(`Error HTTP: ${res.status}`);
