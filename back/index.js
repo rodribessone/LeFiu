@@ -9,20 +9,25 @@ const cors = require('cors');
 const { connectToMongoDB, disconnectToMongoDB } = require('./src/configuracion/indexconfig'); // Configuración de MongoDB
 dotenv.config();
 
-// Conexión a MongoDB
+// const PORT = process.env.PORT || 3000;
+
 connectToMongoDB();
 
-// Middleware de CORS (configurado correctamente)
-const corsOptions = {
-    origin: 'https://le-fiu.vercel.app', // Permite solicitudes solo desde tu frontend
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true, // Si necesitas permitir cookies o autenticación
-};
+app.use(express.json());
 
-app.use(cors(corsOptions));  // Añadir CORS aquí
+// Middleware de CORS
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(200);
+    }
+    next();
+});
 
-// Configuración de body-parser
+app.use(cors());
 app.use(bodyParser.json());
 
 app.use("/", rutas);
