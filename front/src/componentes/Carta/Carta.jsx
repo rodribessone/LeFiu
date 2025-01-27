@@ -17,8 +17,7 @@ export default function Carta() {
         setProductos(data);
       })
       .catch((error) => console.error("Error al obtener productos:", error));
-  }, []);
-
+  }, );
   return (
     <div className="relative flex flex-col bg-white w-11/12 m-auto p-4 border-2 border-black rounded-xl md:w-4/5 lg:w-2/3">
       <h1 className="text-2xl font-bold text-center mb-6">Nuestra Carta</h1>
