@@ -6,7 +6,7 @@ export default function Carta() {
 
   useEffect(() => {
     console.log('Backend URL:', backendUrl);  // Verifica el valor
-    fetch(`${backendUrl}/productos`)
+    fetch(`${backendUrl}productos`)
       .then((res) => {
         if (!res.ok) {
           throw new Error(`Error HTTP: ${res.status}`);
