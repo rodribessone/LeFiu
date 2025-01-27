@@ -9,7 +9,7 @@ const cors = require('cors');
 const { connectToMongoDB, disconnectToMongoDB } = require('./src/configuracion/indexconfig'); // Configuración de MongoDB
 dotenv.config();
 
-const PORT = process.env.PORT || 3000;
+// const PORT = process.env.PORT || 3000;
 
 connectToMongoDB();
 
@@ -34,8 +34,8 @@ app.use("/", rutas);
 app.use('/', usuarioRutas);
 app.use('/', configRutas); // Ruta agregada para el precio de delivery
 
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+app.listen(process.env.PORT, () => {
+    console.log(`Servidor corriendo en el puerto ${process.env.PORT}`);
 });
 
 process.on('SIGINT', async () => {
