@@ -42,79 +42,75 @@ export default function ConfirmarCompra() {
     ).join(", ");
     
     const montoTotal = total + delivery;
-
-    let mensaje = `¡Hola! Soy *${nombre}*\n\nTe encargo para la dirección *${direccion}* los siguientes productos:\n${productos}.\n\nVoy a pagar con *${medioPago}*.\n\nEl monto total a pagar es *$${montoTotal.toFixed(2)}*`;
-
-    // Si se ha ingresado un monto a pagar, lo añadimos al mensaje
-    if (montoPagar) {
-      mensaje += `\n\nEl monto que quiero pagar es *$${montoPagar}*`;
-    }
+  
+    const mensaje = `¡Hola! Soy *${nombre}*\n\nTe encargo para la dirección *${direccion}* los siguientes productos:\n${productos}.\n\nVoy a pagar con *${medioPago}*.\n\nEl monto total a pagar es *$${montoTotal.toFixed(2)}*`;
   
     // Abre WhatsApp con el mensaje
     window.open(`https://wa.me/${businessNumber}?text=${encodeURIComponent(mensaje)}`, "_blank");
+  
 
     alert("Compra confirmada. ¡Gracias por tu pedido!");
   };
 
   return (
-    <div className="flex flex-col h-[100vh]">
-      <div className="flex-grow">
-        <div className="relative w-full mt-20 p-6 max-w-md mx-auto bg-white border rounded shadow-lg mb-16">
-          <h2 className="text-2xl font-bold mb-4 text-center">Confirmar Compra</h2>
-          <form onSubmit={handleSubmit} className="pt-4"> {/* Espacio para que no se superponga el navbar */}
-            <label className="block mb-2 font-bold">Nombre:</label>
-            <input
-              type="text"
-              className="w-full p-2 mb-4 border rounded"
-              placeholder="Tu nombre"
-              value={nombre}
-              onChange={(e) => setNombre(e.target.value)}
-              required
-            />
+    <div className="min-h-screen flex flex-col">
+            <div className="flex-grow">
+      <div className="relative w-full mt-20 p-6 max-w-md mx-auto bg-white border rounded shadow-lg mb-16">
+        <h2 className="text-2xl font-bold mb-4 text-center">Confirmar Compra</h2>
+        <form onSubmit={handleSubmit} className="pt-4"> {/* Espacio para que no se superponga el navbar */}
+          <label className="block mb-2 font-bold">Nombre:</label>
+          <input
+            type="text"
+            className="w-full p-2 mb-4 border rounded"
+            placeholder="Tu nombre"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+            required
+          />
 
-            <label className="block mb-2 font-bold">Dirección:</label>
-            <input
-              type="text"
-              className="w-full p-2 mb-4 border rounded"
-              placeholder="Tu dirección"
-              value={direccion}
-              onChange={(e) => setDireccion(e.target.value)}
-              required
-            />
+          <label className="block mb-2 font-bold">Dirección:</label>
+          <input
+            type="text"
+            className="w-full p-2 mb-4 border rounded"
+            placeholder="Tu dirección"
+            value={direccion}
+            onChange={(e) => setDireccion(e.target.value)}
+            required
+          />
 
-            <label className="block mb-2 font-bold">Medio de pago:</label>
-            <select
-              className="w-full p-2 mb-4 border"
-              value={medioPago}
-              onChange={(e) => setMedioPago(e.target.value)}
-              required
-            >
-              <option value="Efectivo">Efectivo</option>
-              <option value="MercadoPago">MercadoPago</option>
-            </select>
+          <label className="block mb-2 font-bold">Medio de pago:</label>
+          <select
+            className="w-full p-2 mb-4 border"
+            value={medioPago}
+            onChange={(e) => setMedioPago(e.target.value)}
+            required
+          >
+            <option value="Efectivo">Efectivo</option>
+            <option value="MercadoPago">MercadoPago</option>
+          </select>
 
-            <p className="block mb-2">El monto es: <b>${total.toFixed(2)}</b></p>
-            <p className="block mb-2">+ delivery: <b>${delivery}</b></p>
-            <p className="block mb-2">Monto total: <b>${(total + delivery).toFixed(2)}</b></p>
+          <p className="block mb-2">El monto es: <b>${total.toFixed(2)}</b></p>
+          <p className="block mb-2">+ delivery: <b>${delivery}</b></p>
+          <p className="block mb-2">Monto total: <b>${(total + delivery).toFixed(2)}</b></p>
 
-            <input
-              type="number"
-              className="w-full p-2 mb-4 border rounded"
-              placeholder="Voy a pagar con... "
-              value={montoPagar}
-              onChange={(e) => setMontoPagar(e.target.value)}
-              required
-            />
+          <input
+            type="number"
+            className="w-full p-2 mb-4 border rounded"
+            placeholder="Voy a pagar con... "
+            value={montoPagar}
+            onChange={(e) => setMontoPagar(e.target.value)}
+            required
+          />
 
-            <button
-              type="submit"
-              className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600"
-            >
-              Confirmar Pedido
-            </button>
-          </form>
-        </div>
+          <button
+            type="submit"
+            className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600"
+          >
+            Confirmar Pedido
+          </button>
+        </form>
       </div>
+   </div>
     </div>
   );
 }
