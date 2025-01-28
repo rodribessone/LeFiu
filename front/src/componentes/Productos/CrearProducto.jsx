@@ -101,6 +101,7 @@ export default function CrearProducto() {
                                       <option value="Pollo">Pollo</option>
                                       <option value="Papas">Papas</option>
                                       <option value="Bebidas">Bebidas</option>
+                                      <option value="Salsas">Salsas</option>
                                       </select>
             <label className='font-bold'>Imagen: </label><input ref={fileInputRef} className='border rounded p-2 hidden' type='file' name='imagen' value={formData.imagen} onChange={handleFileChange} placeholder='Imagen del producto' />
             <button 

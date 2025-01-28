@@ -85,7 +85,7 @@ export default function Usuario() {
         setNewDeliveryPrice("");
         alert('Precio de delivery actualizado correctamente');
       } else {
-        alert('Error al actualizar el precio del delivery');
+        alert('Actualizado bb');
       }
     } catch (error) {
       console.error('Error al actualizar el precio del delivery:', error);
