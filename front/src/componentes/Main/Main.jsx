@@ -1,12 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { useState, useEffect } from "react";
 
 export default function Main() {
-
   const [isOpen, setIsOpen] = useState(false);
   const [mensajeCerrado, setMensajeCerrado] = useState(false); // Para mostrar el mensaje de negocio cerrado
+  const navigate = useNavigate(); // Hook para redirigir
 
   useEffect(() => {
     // Obtén la fecha y hora actuales
