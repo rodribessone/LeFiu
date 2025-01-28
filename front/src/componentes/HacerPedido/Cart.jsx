@@ -37,6 +37,11 @@ export default function Cart() {
     0
   );
 
+  const handleConfirmarCompra = () => {
+    // Cierra el carrito cuando se confirma la compra
+    setIsOpen(false);
+  };
+
   return (
     <div className="relative">
       <button onClick={toggleMenu} className="text-2xl text-white relative">
@@ -81,7 +86,10 @@ export default function Cart() {
               <div className="text-lg font-bold mt-4">
                 Total: ${total.toFixed(2)}
               </div>
-              <button className="w-full bg-green-500 text-white py-2 rounded mt-4 hover:bg-green-600">
+              <button
+                onClick={handleConfirmarCompra} // Minimiza el carrito
+                className="w-full bg-green-500 text-white py-2 rounded mt-4 hover:bg-green-600"
+              >
                 <Link to="/confirmarCompra">Confirmar Compra</Link>
               </button>
             </div>
