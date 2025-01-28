@@ -7,7 +7,6 @@ export default function ConfirmarCompra() {
   const [direccion, setDireccion] = useState("");
   const [medioPago, setMedioPago] = useState("");
   const [delivery, setDelivery] = useState(0);
-  const [montoPagar, setMontoPagar] = useState("");
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const token = localStorage.getItem("token");
 
@@ -51,14 +50,10 @@ export default function ConfirmarCompra() {
   const montoTotal = calculateMontoTotal();
 
   const businessNumber = "542392486277";
+  const aliasMercadoPago = "lefiu.burguers!! cambiar !!!"; // Aquí defines el alias.
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    if (parseFloat(montoPagar) < montoTotal) {
-      alert("El monto a pagar debe ser igual o mayor al monto total.");
-      return;
-    }
 
     const productos = cartItems
       .map(
@@ -109,23 +104,29 @@ export default function ConfirmarCompra() {
               onChange={(e) => setMedioPago(e.target.value)}
               required
             >
-              <option value="">Selecciona una opción</option>
+              <option value="">Selecciona un medio de pago</option>
               <option value="Efectivo">Efectivo</option>
               <option value="MercadoPago">MercadoPago</option>
             </select>
 
+            {medioPago === "Efectivo" && (
+              <input
+                type="number"
+                className="w-full p-2 mb-4 border rounded"
+                placeholder="Monto con el que pagarás..."
+                required
+              />
+            )}
+
+            {medioPago === "MercadoPago" && (
+              <p className="text-sm mb-4">
+                Alias MercadoPago: <b>{aliasMercadoPago}</b>
+              </p>
+            )}
+
             <p className="block mb-2">El monto es: <b>${total.toFixed(2)}</b></p>
             <p className="block mb-2">+ delivery: <b>${delivery}</b></p>
             <p className="block mb-2">Monto total: <b>${montoTotal.toFixed(2)}</b></p>
-
-            <input
-              type="number"
-              className="w-full p-2 mb-4 border rounded"
-              placeholder="Voy a pagar con... "
-              value={montoPagar}
-              onChange={(e) => setMontoPagar(e.target.value)}
-              required
-            />
 
             <button
               type="submit"
