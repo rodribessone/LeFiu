@@ -133,7 +133,7 @@ export default function ConfirmarCompra() {
             {/* Si el medio de pago es MercadoPago, mostrar alias y comprobante */}
             {medioPago === "MercadoPago" && (
               <div className="mb-4">
-                <p className="text-sm mb-2 font-bold">Alias MercadoPago: <b>Acomodar este es de prueba!!!!!! : ej lefiu.burgers</b></p>
+                <p className="text-sm mb-2">Alias MercadoPago: <b>Acomodar este es de prueba!!!!!! bg : ej lefiu.burgers</b></p>
                 <label className="block mb-2 font-bold">Subir comprobante:</label>
                 <input
                   type="file"
