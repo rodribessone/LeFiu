@@ -112,16 +112,15 @@ export default function ConfirmarCompra() {
 
             {/* Cargar monto a pagar si es necesario */}
             {medioPago !== "MercadoPago" && (
-              <input
-                type="number"
-                className="w-full p-2 mb-4 border rounded"
-                placeholder="Monto a pagar..."
-                value={montoPagar}
-                onChange={(e) => setMontoPagar(e.target.value)}
-                required
-              />
+            <input
+              type="number"
+              className="w-full p-2 mb-4 border rounded"
+              placeholder="Voy a pagar con... "
+              value={montoPagar}
+              onChange={(e) => setMontoPagar(e.target.value)}
+              required
+            />
             )}
-
             {/* Si el medio de pago es MercadoPago, mostrar alias y comprobante */}
             {medioPago === "MercadoPago" && (
               <div className="mb-4">
