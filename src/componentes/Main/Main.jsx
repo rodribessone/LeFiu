@@ -17,7 +17,7 @@ export default function Main() {
     // Define horarios de apertura
     const schedule = {
       1: { open: 20.5, close: 23.5 }, // Lunes: 20:30 - 23:30
-      2: { open: 11.5, close: 23.5 }, // Martes: 20:30 - 23:30
+      2: { open: 11.5, close: 23 }, // Martes: 20:30 - 23:30
       3: { open: 20.5, close: 23.5 }, // Miércoles: 20:30 - 23:30
       4: { open: 20.5, close: 23.5 }, // Jueves: 20:30 - 23:30
       5: { open: 20.5, close: 23.5 }, // Viernes: 20:30 - 23:30
