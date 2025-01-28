@@ -53,7 +53,7 @@ export default function ConfirmarCompra() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex flex-col h-[100vh]">
             <div className="flex-grow">
       <div className="relative w-full mt-20 p-6 max-w-md mx-auto bg-white border rounded shadow-lg mb-16">
         <h2 className="text-2xl font-bold mb-4 text-center">Confirmar Compra</h2>
