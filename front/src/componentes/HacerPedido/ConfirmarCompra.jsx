@@ -49,15 +49,6 @@ export default function ConfirmarCompra() {
       return;
     }
 
-    // Si el medio de pago es Efectivo, usar el monto ingresado
-    const montoTotal = medioPago === "Efectivo" ? parseFloat(montoPagar) : total + delivery;
-
-    // Validación del monto a pagar cuando es Efectivo
-    if (medioPago === "Efectivo" && !montoPagar) {
-      alert("Por favor, ingresa el monto a pagar.");
-      return;
-    }
-
     // Aquí solo mostramos si el archivo fue adjuntado, sin enviar datos al backend
     if (comprobante) {
       alert(`Se ha adjuntado el archivo: ${comprobante.name}`);
@@ -71,6 +62,7 @@ export default function ConfirmarCompra() {
         (item) => `${item.nombre} (Cantidad: ${item.quantity}, Precio: $${item.precio})`
       )
       .join(", ");
+    const montoTotal = total + delivery;
 
     const mensaje = `¡Hola! Soy *${nombre}*\n\nTe encargo para la dirección *${direccion}* los siguientes productos:\n${productos}.\n\nVoy a pagar con *${medioPago}*.\n\nEl monto total a pagar es *$${montoTotal.toFixed(2)}*`;
 
@@ -119,7 +111,7 @@ export default function ConfirmarCompra() {
             <p className="block mb-2">Monto total: <b>${(total + delivery).toFixed(2)}</b></p>
 
             {/* Cargar monto a pagar si es necesario */}
-            {medioPago === "Efectivo" && (
+            {medioPago !== "MercadoPago" && (
               <input
                 type="number"
                 className="w-full p-2 mb-4 border rounded"
@@ -133,7 +125,7 @@ export default function ConfirmarCompra() {
             {/* Si el medio de pago es MercadoPago, mostrar alias y comprobante */}
             {medioPago === "MercadoPago" && (
               <div className="mb-4">
-                <p className="text-sm mb-2">Alias MercadoPago: <b>Acomodar este es de prueba!!!!!! bg : ej lefiu.burgers</b></p>
+                <p className="text-sm mb-2">Alias MercadoPago: <b>lefiu.burgers</b></p>
                 <label className="block mb-2 font-bold">Subir comprobante:</label>
                 <input
                   type="file"
