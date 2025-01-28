@@ -38,7 +38,9 @@ export default function Main() {
   }, []);
 
   const handleHacerPedidoClick = () => {
-    if (!isOpen) {
+    if (isOpen) {
+      navigate("/pedido"); // Redirige a la página de pedidos si está abierto
+    } else {
       setMensajeCerrado(true); // Muestra el mensaje si el negocio está cerrado
     }
   };
