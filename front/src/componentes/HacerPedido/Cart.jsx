@@ -2,28 +2,13 @@ import { useCart } from "../HacerPedido/CartContext";
 import { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom"; // Cambié esto
+import { Link } from "react-router-dom";
 
 export default function Cart() {
   const [isOpen, setIsOpen] = useState(false); // Controla la visibilidad del menú
   const menuRef = useRef(null); // Referencia para el contenedor del menú
 
-  const { cartItems, removeFromCart, clearCart } = useCart();
-
-  // Calcula el total del carrito
-  const total = cartItems.reduce(
-    (accumulator, item) => accumulator + item.precio * item.quantity,
-    0
-  );
-
-  // Calcula la cantidad total de productos en el carrito
-  const totalItems = cartItems.reduce(
-    (accumulator, item) => accumulator + item.quantity,
-    0
-  );
-
-  const navigate = useNavigate(); // Usamos useNavigate en lugar de useHistory
-
+  // Alterna la visibilidad del menú
   const toggleMenu = () => setIsOpen((prev) => !prev);
 
   // Detecta clics fuera del menú para cerrarlo
@@ -38,10 +23,19 @@ export default function Cart() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleConfirmarCompra = () => {
-    clearCart(); // Vaciar el carrito
-    navigate("/confirmarCompra"); // Redirigir a la página de confirmación
-  };
+  const { cartItems, removeFromCart } = useCart();
+
+  // Calcula el total del carrito
+  const total = cartItems.reduce(
+    (accumulator, item) => accumulator + item.precio * item.quantity,
+    0
+  );
+
+  // Calcula la cantidad total de productos en el carrito
+  const totalItems = cartItems.reduce(
+    (accumulator, item) => accumulator + item.quantity,
+    0
+  );
 
   return (
     <div className="relative">
@@ -87,17 +81,8 @@ export default function Cart() {
               <div className="text-lg font-bold mt-4">
                 Total: ${total.toFixed(2)}
               </div>
-              <button
-                onClick={clearCart}
-                className="w-full bg-red-500 text-white py-2 rounded mt-4 hover:bg-red-600"
-              >
-                Vaciar Carrito
-              </button>
-              <button
-                onClick={handleConfirmarCompra}
-                className="w-full bg-green-500 text-white py-2 rounded mt-4 hover:bg-green-600"
-              >
-                Confirmar Compra
+              <button className="w-full bg-green-500 text-white py-2 rounded mt-4 hover:bg-green-600">
+                <Link to="/confirmarCompra">Confirmar Compra</Link>
               </button>
             </div>
           )}
