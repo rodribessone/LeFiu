@@ -62,9 +62,17 @@ export default function ConfirmarCompra() {
       )
       .join(", ");
 
-    const mensaje = `¡Hola! Soy *${nombre}*.\n\nTe encargo los siguientes productos para la dirección *${direccion}*:\n${productos}.\n\nVoy a pagar con *${medioPago}*.\n\nEl monto total a pagar es *$${montoTotal.toFixed(
+    // Mensaje base
+    let mensaje = `¡Hola! Soy *${nombre}*.\n\nTe encargo los siguientes productos para la dirección *${direccion}*:\n${productos}.\n\nVoy a pagar con *${medioPago}*.\n\nEl monto total a pagar es *$${montoTotal.toFixed(
       2
-    )}*.\n\n*Por favor, recuerda enviar el comprobante de pago en esta conversación.*\n\n¡Gracias!`;
+    )}*.`;
+
+    // Agregar el mensaje de comprobante solo si no es pago en efectivo
+    if (medioPago !== "Efectivo") {
+      mensaje += `\n\n*Por favor, recuerda enviar el comprobante de pago en esta conversación.*`;
+    }
+
+    mensaje += `\n\n¡Gracias!`;
 
     window.open(`https://wa.me/${businessNumber}?text=${encodeURIComponent(mensaje)}`, "_blank");
   };
