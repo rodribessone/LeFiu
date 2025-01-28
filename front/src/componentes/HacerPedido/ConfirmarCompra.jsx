@@ -54,9 +54,9 @@ export default function ConfirmarCompra() {
 
   return (
     <div className="min-h-screen flex flex-col justify-between">
-      <div className="relative w-full mt-16 p-6 max-w-md mx-auto bg-white border rounded shadow-lg mb-16">
+      <div className="relative w-full mt-20 p-6 max-w-md mx-auto bg-white border rounded shadow-lg mb-16">
         <h2 className="text-2xl font-bold mb-4 text-center">Confirmar Compra</h2>
-        <form onSubmit={handleSubmit} className="pt-20"> {/* Espacio para que no se superponga el navbar */}
+        <form onSubmit={handleSubmit} className="pt-4"> {/* Espacio para que no se superponga el navbar */}
           <label className="block mb-2 font-bold">Nombre:</label>
           <input
             type="text"
