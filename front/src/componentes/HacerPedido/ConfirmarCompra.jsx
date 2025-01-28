@@ -36,20 +36,21 @@ export default function ConfirmarCompra() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+  
     const productos = cartItems.map(
       (item) => `${item.nombre} (Cantidad: ${item.quantity}, Precio: $${item.precio})`
     ).join(", ");
     
     const montoTotal = total + delivery;
-
+  
     const mensaje = `¡Hola! Soy *${nombre}*\n\nTe encargo para la dirección *${direccion}* los siguientes productos:\n${productos}.\n\nVoy a pagar con *${medioPago}*.\n\nEl monto total a pagar es *$${montoTotal.toFixed(2)}*`;
-
+  
+    // Abre WhatsApp con el mensaje
     window.open(`https://wa.me/${businessNumber}?text=${encodeURIComponent(mensaje)}`, "_blank");
-
+  
     // Vaciar el carrito después de la compra
-    clearCart(); // Esto asume que tienes una función clearCart en el contexto de carrito
-
+    clearCart(); // Esto vacía el carrito tras completar el pedido
+  
     alert("Compra confirmada. ¡Gracias por tu pedido!");
   };
 
@@ -92,15 +93,14 @@ export default function ConfirmarCompra() {
         <p className="block mb-2">+ delivery: <b>${delivery}</b></p>
         <p className="block mb-2">Monto total: <b>${(total + delivery).toFixed(2)}</b></p>
 
-        <label className="block mb-2 font-bold">Monto a pagar:</label>
         <input
-          type="number"
-          className="w-full p-2 mb-4 border rounded"
-          placeholder="Voy a pagar con"
-          value={montoPagar}
-          onChange={(e) => setMontoPagar(e.target.value)}
-          required
-        />
+  type="number"
+  className="w-full p-2 mb-4 border rounded"
+  placeholder="Voy a pagar con... "
+  value={montoPagar}
+  onChange={(e) => setMontoPagar(e.target.value)}
+  required
+/>
 
         <button
           type="submit"
