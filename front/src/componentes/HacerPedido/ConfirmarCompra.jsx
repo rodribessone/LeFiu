@@ -2,32 +2,30 @@ import { useCart } from "../HacerPedido/CartContext";
 import { useState, useEffect } from "react";
 
 export default function ConfirmarCompra() {
-  const { cartItems } = useCart(); // Obtener los productos del carrito
+  const { cartItems, clearCart } = useCart(); // Obtener los productos del carrito y la función para vaciarlo
   const [nombre, setNombre] = useState("");
   const [direccion, setDireccion] = useState("");
   const [medioPago, setMedioPago] = useState("");
   const [delivery, setDelivery] = useState(0);
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;  // Revisa si ya contiene un slash final
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const token = localStorage.getItem('token');
 
-useEffect(() => {
-  // Obtener el precio del delivery desde el backend
-  fetch(`${backendUrl}/delivery`, {
-    method: 'GET', // Aquí estás utilizando DELETE, asegúrate de que este sea el método correcto
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`, // Asegúrate de que el token se incluya aquí
-    },
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      setDelivery(data.deliveryPrice); // Actualizar el precio de delivery
+  useEffect(() => {
+    fetch(`${backendUrl}/delivery`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
     })
-    .catch((error) => console.error('Error al obtener el precio del delivery:', error));
-}, []);
+      .then((res) => res.json())
+      .then((data) => {
+        setDelivery(data.deliveryPrice);
+      })
+      .catch((error) => console.error('Error al obtener el precio del delivery:', error));
+  }, []);
 
-  // Cálculo del total a pagar
   const total = cartItems.reduce(
     (accumulator, item) => accumulator + item.precio * item.quantity,
     0
@@ -38,17 +36,18 @@ useEffect(() => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // Generar el mensaje para WhatsApp
     const productos = cartItems.map(
       (item) => `${item.nombre} (Cantidad: ${item.quantity}, Precio: $${item.precio})`
     ).join(", ");
     
     const montoTotal = total + delivery;
 
-    const mensaje = `¡Hola! Soy *${nombre}*\n\nTe encargo para la dirección *${direccion}* los siguientes productos:\n${productos}.\n\nVoy a pagar con *${medioPago}*.\n\nEl monto total a pagar es *$${montoTotal.toFixed(2)}*`; // Mensaje con el precio total
+    const mensaje = `¡Hola! Soy *${nombre}*\n\nTe encargo para la dirección *${direccion}* los siguientes productos:\n${productos}.\n\nVoy a pagar con *${medioPago}*.\n\nEl monto total a pagar es *$${montoTotal.toFixed(2)}*`;
 
-    // Redirigir a WhatsApp
     window.open(`https://wa.me/${businessNumber}?text=${encodeURIComponent(mensaje)}`, "_blank");
+
+    // Vaciar el carrito después de la compra
+    clearCart(); // Esto asume que tienes una función clearCart en el contexto de carrito
 
     alert("Compra confirmada. ¡Gracias por tu pedido!");
   };
@@ -91,15 +90,6 @@ useEffect(() => {
         <p className="block mb-2">El monto es: <b>${total.toFixed(2)}</b></p>
         <p className="block mb-2">+ delivery: <b>${delivery}</b></p>
         <p className="block mb-2">Monto total: <b>${(total + delivery).toFixed(2)}</b></p>
-
-	<input
-          type="text"
-          className="w-full p-2 mb-4 border rounded"
-          placeholder="Monto"
-          value={medioPago}
-          onChange={(e) => setMedioPago(e.target.value)}
-          required
-        />
 
         <button
           type="submit"
