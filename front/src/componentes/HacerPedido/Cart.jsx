@@ -2,11 +2,12 @@ import { useCart } from "../HacerPedido/CartContext";
 import { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom"; // Correcto: usar useHistory si estás utilizando react-router-dom v5
 
 export default function Cart() {
   const [isOpen, setIsOpen] = useState(false); // Controla la visibilidad del menú
   const menuRef = useRef(null); // Referencia para el contenedor del menú
+  const history = useHistory(); // Usamos el hook useHistory para navegación
 
   // Alterna la visibilidad del menú
   const toggleMenu = () => setIsOpen((prev) => !prev);
@@ -36,6 +37,12 @@ export default function Cart() {
     (accumulator, item) => accumulator + item.quantity,
     0
   );
+
+  const handleConfirmPurchase = () => {
+    // Aquí vaciar el carrito y redirigir a la página de confirmar compra
+    clearCart();
+    history.push("/confirmarCompra");
+  };
 
   return (
     <div className="relative">
@@ -87,8 +94,11 @@ export default function Cart() {
               >
                 Vaciar Carrito
               </button>
-              <button className="w-full bg-green-500 text-white py-2 rounded mt-4 hover:bg-green-600">
-                <Link to="/confirmarCompra">Confirmar Compra</Link>
+              <button
+                onClick={handleConfirmPurchase} // Usamos handleConfirmPurchase para vaciar el carrito y redirigir
+                className="w-full bg-green-500 text-white py-2 rounded mt-4 hover:bg-green-600"
+              >
+                Confirmar Compra
               </button>
             </div>
           )}

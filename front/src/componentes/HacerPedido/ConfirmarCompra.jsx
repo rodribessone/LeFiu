@@ -2,7 +2,7 @@ import { useCart } from "../HacerPedido/CartContext";
 import { useState, useEffect } from "react";
 
 export default function ConfirmarCompra() {
-  const { cartItems, clearCart } = useCart(); // Obtener los productos del carrito y la función para vaciarlo
+  const { cartItems } = useCart(); // Obtener los productos del carrito
   const [nombre, setNombre] = useState("");
   const [direccion, setDireccion] = useState("");
   const [medioPago, setMedioPago] = useState("");
@@ -48,9 +48,7 @@ export default function ConfirmarCompra() {
     // Abre WhatsApp con el mensaje
     window.open(`https://wa.me/${businessNumber}?text=${encodeURIComponent(mensaje)}`, "_blank");
   
-    // Vaciar el carrito después de la compra
-    clearCart(); // Esto vacía el carrito tras completar el pedido
-  
+
     alert("Compra confirmada. ¡Gracias por tu pedido!");
   };
 
@@ -94,13 +92,13 @@ export default function ConfirmarCompra() {
         <p className="block mb-2">Monto total: <b>${(total + delivery).toFixed(2)}</b></p>
 
         <input
-  type="number"
-  className="w-full p-2 mb-4 border rounded"
-  placeholder="Voy a pagar con... "
-  value={montoPagar}
-  onChange={(e) => setMontoPagar(e.target.value)}
-  required
-/>
+          type="number"
+          className="w-full p-2 mb-4 border rounded"
+          placeholder="Voy a pagar con... "
+          value={montoPagar}
+          onChange={(e) => setMontoPagar(e.target.value)}
+          required
+        />
 
         <button
           type="submit"
