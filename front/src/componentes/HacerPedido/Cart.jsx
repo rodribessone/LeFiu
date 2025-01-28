@@ -2,27 +2,11 @@ import { useCart } from "../HacerPedido/CartContext";
 import { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
-import { useHistory } from "react-router-dom"; // Correcto: usar useHistory si estás utilizando react-router-dom v5
+import { useNavigate } from "react-router-dom"; // Cambié esto
 
 export default function Cart() {
   const [isOpen, setIsOpen] = useState(false); // Controla la visibilidad del menú
   const menuRef = useRef(null); // Referencia para el contenedor del menú
-  const history = useHistory(); // Usamos el hook useHistory para navegación
-
-  // Alterna la visibilidad del menú
-  const toggleMenu = () => setIsOpen((prev) => !prev);
-
-  // Detecta clics fuera del menú para cerrarlo
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   const { cartItems, removeFromCart, clearCart } = useCart();
 
@@ -38,10 +22,25 @@ export default function Cart() {
     0
   );
 
-  const handleConfirmPurchase = () => {
-    // Aquí vaciar el carrito y redirigir a la página de confirmar compra
-    clearCart();
-    history.push("/confirmarCompra");
+  const navigate = useNavigate(); // Usamos useNavigate en lugar de useHistory
+
+  const toggleMenu = () => setIsOpen((prev) => !prev);
+
+  // Detecta clics fuera del menú para cerrarlo
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleConfirmarCompra = () => {
+    clearCart(); // Vaciar el carrito
+    navigate("/confirmarCompra"); // Redirigir a la página de confirmación
   };
 
   return (
@@ -95,7 +94,7 @@ export default function Cart() {
                 Vaciar Carrito
               </button>
               <button
-                onClick={handleConfirmPurchase} // Usamos handleConfirmPurchase para vaciar el carrito y redirigir
+                onClick={handleConfirmarCompra}
                 className="w-full bg-green-500 text-white py-2 rounded mt-4 hover:bg-green-600"
               >
                 Confirmar Compra
