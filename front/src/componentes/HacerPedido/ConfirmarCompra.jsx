@@ -111,6 +111,7 @@ export default function ConfirmarCompra() {
             <p className="block mb-2">Monto total: <b>${(total + delivery).toFixed(2)}</b></p>
 
             {/* Cargar monto a pagar si es necesario */}
+            {medioPago !== "MercadoPago" && (
             <input
               type="number"
               className="w-full p-2 mb-4 border rounded"
@@ -118,8 +119,8 @@ export default function ConfirmarCompra() {
               value={montoPagar}
               onChange={(e) => setMontoPagar(e.target.value)}
               required
-            />
-
+              />
+            )}
             {/* Si el medio de pago es MercadoPago, mostrar alias y comprobante */}
             {medioPago === "MercadoPago" && (
               <div className="mb-4">
