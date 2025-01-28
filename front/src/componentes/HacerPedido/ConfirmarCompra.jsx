@@ -7,6 +7,7 @@ export default function ConfirmarCompra() {
   const [direccion, setDireccion] = useState("");
   const [medioPago, setMedioPago] = useState("");
   const [delivery, setDelivery] = useState(0);
+  const [montoPagar, setMontoPagar] = useState(""); // Añadir el estado para el monto a pagar
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const token = localStorage.getItem('token');
@@ -90,6 +91,16 @@ export default function ConfirmarCompra() {
         <p className="block mb-2">El monto es: <b>${total.toFixed(2)}</b></p>
         <p className="block mb-2">+ delivery: <b>${delivery}</b></p>
         <p className="block mb-2">Monto total: <b>${(total + delivery).toFixed(2)}</b></p>
+
+        <label className="block mb-2 font-bold">Monto a pagar:</label>
+        <input
+          type="number"
+          className="w-full p-2 mb-4 border rounded"
+          placeholder="Voy a pagar con"
+          value={montoPagar}
+          onChange={(e) => setMontoPagar(e.target.value)}
+          required
+        />
 
         <button
           type="submit"
