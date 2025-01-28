@@ -57,7 +57,7 @@ export default function Pedido() {
   );
 
   return (
-    <div className="relative flex flex-col bg-white w-11/12 m-auto p-6 border-2 border-black rounded-xl md:w-4/5 lg:w-2/3">
+    <div className="relative mt-16 flex flex-col bg-white w-11/12 m-auto p-6 border-2 border-black rounded-xl md:w-4/5 lg:w-2/3">
       {/* Filtros */}
       <div className="flex justify-around mb-4">
         <button
