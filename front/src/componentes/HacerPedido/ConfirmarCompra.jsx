@@ -121,7 +121,7 @@ export default function ConfirmarCompra() {
             <input
               type="number"
               className="w-full p-2 mb-4 border rounded"
-              placeholder="Voy a pagar con... "
+              placeholder="Que salsas queres?... "
               value={montoPagar}
               onChange={(e) => setMontoPagar(e.target.value)}
               required
