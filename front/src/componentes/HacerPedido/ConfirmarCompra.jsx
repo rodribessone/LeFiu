@@ -6,6 +6,7 @@ export default function ConfirmarCompra() {
   const [nombre, setNombre] = useState("");
   const [direccion, setDireccion] = useState("");
   const [medioPago, setMedioPago] = useState("");
+  const [montoEfectivo, setMontoEfectivo] = useState(0); // Nuevo estado para el monto en efectivo
   const [delivery, setDelivery] = useState(0);
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const token = localStorage.getItem("token");
@@ -67,6 +68,11 @@ export default function ConfirmarCompra() {
       2
     )}*.`;
 
+    // Agregar el monto con el que pagará en efectivo si es el caso
+    if (medioPago === "Efectivo") {
+      mensaje += `\n\nVoy a pagar con *$${montoEfectivo}* en efectivo.`;
+    }
+
     // Agregar el mensaje de comprobante solo si no es pago en efectivo
     if (medioPago !== "Efectivo") {
       mensaje += `\n\n*Por favor, recuerda enviar el comprobante de pago en esta conversación.*`;
@@ -122,6 +128,8 @@ export default function ConfirmarCompra() {
                 type="number"
                 className="w-full p-2 mb-4 border rounded"
                 placeholder="Monto con el que pagarás..."
+                value={montoEfectivo}
+                onChange={(e) => setMontoEfectivo(e.target.value)}
                 required
               />
             )}
@@ -145,7 +153,7 @@ export default function ConfirmarCompra() {
             >
               Confirmar Pedido
             </button>
-          </form>
+          </form> 
         </div>
       </div>
     </div>
