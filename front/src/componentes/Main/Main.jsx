@@ -21,6 +21,7 @@ export default function Main() {
       5: { open: 20.5, close: 23.5 }, // Viernes: 20:30 - 23:30
       6: { open: 20.5, close: 23.5 }, // Sábado: 20:30 - 23:30
       0: { open: 20.5, close: 23.5 }, // Domingo: 20:30 - 23:30
+      1: { open: 20.5, close: 23.5 }, // Domingo: 20:30 - 23:30
     };
 
     // Verifica si está abierto
