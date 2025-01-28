@@ -53,7 +53,8 @@ export default function ConfirmarCompra() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between">
+    <div className="min-h-screen flex flex-col">
+            <div className="flex-grow">
       <div className="relative w-full mt-20 p-6 max-w-md mx-auto bg-white border rounded shadow-lg mb-16">
         <h2 className="text-2xl font-bold mb-4 text-center">Confirmar Compra</h2>
         <form onSubmit={handleSubmit} className="pt-4"> {/* Espacio para que no se superponga el navbar */}
@@ -109,6 +110,7 @@ export default function ConfirmarCompra() {
           </button>
         </form>
       </div>
+   </div>
 
       {/* Aquí podrías agregar tu footer si lo tienes */}
       <footer className="bg-gray-800 text-white py-4 mt-4 text-center">
