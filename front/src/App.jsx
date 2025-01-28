@@ -11,29 +11,26 @@ import Footer from './componentes/Footer/Footer'
 import ConfirmarCompra from './componentes/HacerPedido/ConfirmarCompra'
 
 function App() {
-  return (
+    return (
       <>
-          <div className="min-h-screen flex flex-col">
-              <img
-                  src="/Fondo.jpg"
-                  className="fixed z-1 object-cover w-full h-full"
-              />
-              {/* Contenedor principal */}
-              <div className="flex-grow flex flex-col relative z-10">
-                  <Nav />
-                  <Routes>
-                      <Route path="/" element={<Main />} />
-                      <Route path="/carta" element={<Carta />} />
-                      <Route path="/pedido" element={<Pedido />} />
-                      <Route path="/usuario" element={<Usuario />} />
-                      <Route path="/editarProducto/:id" element={<EditarProducto />} />
-                      <Route path="/crearProducto" element={<CrearProducto />} />
-                      <Route path="/confirmarCompra" element={<ConfirmarCompra />} />
-                  </Routes>
-              </div>
-              <Footer />
-          </div>
+      <div className='w-full h-[90vh]'>
+        <img src='/Fondo.jpg' className='fixed z-1 object-cover w-full h-full'/>
+        <div className='flex flex-col h-[100vh]'>
+        <Nav />
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="/carta" element={<Carta />} />
+          <Route path="/pedido" element={<Pedido />} />
+          <Route path="/usuario" element={<Usuario />} />
+          <Route path="/editarProducto/:id" element={<EditarProducto />} />
+          <Route path="/crearProducto" element={<CrearProducto />} />
+          <Route path="/confirmarCompra" element={<ConfirmarCompra />} />
+        </Routes>
+        <Footer />
+        </div>
+      </div>
       </>
-  );
+    )
 }
-export default App
+
+    export default App
