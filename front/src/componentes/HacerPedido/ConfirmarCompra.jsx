@@ -111,11 +111,6 @@ export default function ConfirmarCompra() {
         </form>
       </div>
    </div>
-
-      {/* Aquí podrías agregar tu footer si lo tienes */}
-      <footer className="bg-gray-800 text-white py-4 mt-4 text-center">
-        <p>Footer content goes here</p>
-      </footer>
     </div>
   );
 }
