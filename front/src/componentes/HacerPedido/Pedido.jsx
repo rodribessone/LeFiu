@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCirclePlus, faBurger, faDrumstickBite } from '@fortawesome/free-solid-svg-icons';
+import { faCirclePlus, faBurger, faDrumstickBite, faUtensils } from '@fortawesome/free-solid-svg-icons';
 import { useCart } from "../HacerPedido/CartContext";
-
 
 export default function Pedido() {
   const { addToCart } = useCart();
@@ -73,6 +72,13 @@ export default function Pedido() {
         >
           <FontAwesomeIcon icon={faDrumstickBite} className="mr-2" />
           Pollo
+        </button>
+        <button
+          className={`p-2 rounded ${categoriaSeleccionada === "Salsas" ? "bg-yellow-500 text-white" : "bg-gray-200"}`}
+          onClick={() => setCategoriaSeleccionada("Salsas")}
+        >
+          <FontAwesomeIcon icon={faUtensils} className="mr-2" />
+          Salsas
         </button>
       </div>
 
