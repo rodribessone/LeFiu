@@ -76,7 +76,7 @@ export default function Main() {
 
         {/* Si el negocio está cerrado, mostrar el mensaje */}
         {mensajeCerrado && (
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-500 text-white p-4 rounded-lg shadow-lg">
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-500 text-white p-4 rounded-lg shadow-lg text-center">
             <p>Lo sentimos, el negocio está cerrado en este momento.</p>
             <button
               className="mt-2 px-4 py-2 bg-white text-red-500 rounded-lg shadow hover:bg-gray-200"
