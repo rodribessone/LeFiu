@@ -55,7 +55,7 @@ export default function ConfirmarCompra() {
   return (
     <div className="relative w-full mt-16 p-6 max-w-md mx-auto bg-white border rounded shadow-lg">
       <h2 className="text-2xl font-bold mb-4 text-center">Confirmar Compra</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="pt-20"> {/* Espacio para que no se superponga el navbar */}
         <label className="block mb-2 font-bold">Nombre:</label>
         <input
           type="text"
