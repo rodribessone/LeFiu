@@ -1,7 +1,7 @@
 export default function Footer() {
     return (
         <footer className="w-full bg-black text-white h-6 fixed bottom-0 left-0 z-20">
-            <div className="container mx-auto h-full flex items-center justify-center text-sm">
+            <div className="container mx-auto h-full flex items-center justify-center text-sm"> { /* asdasd*/}
                 Desarrollado por
                 <a
                     href="https://rodribessone.netlify.app/"
@@ -18,7 +18,7 @@ export default function Footer() {
                     rel="noopener noreferrer"
                     className="text-blue-400 hover:text-blue-600 mx-1"
                 >
-                    Juan
+                    Juan 
                 </a>
             </div>
         </footer>

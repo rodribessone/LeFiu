@@ -1,36 +1,55 @@
-import './index.css'
 import { Routes, Route } from "react-router-dom"
+import { lazy, Suspense } from 'react';
 import Nav from './componentes/nav/Nav'
 import Main from './componentes/Main/Main'
-import Carta from './componentes/Carta/Carta';
-import Pedido from './componentes/HacerPedido/Pedido'
-import Usuario from './componentes/usuario/Usuario'
-import EditarProducto from './componentes/Productos/EditarProducto'
-import CrearProducto from './componentes/Productos/CrearProducto'
 import Footer from './componentes/Footer/Footer'
-import ConfirmarCompra from './componentes/HacerPedido/ConfirmarCompra'
+import './index.css'
+
+// Lazy load de todos los componentes de ruta
+const Carta = lazy(() => import('./componentes/Carta/Carta'));
+const Pedido = lazy(() => import('./componentes/HacerPedido/Pedido'));
+const Usuario = lazy(() => import('./componentes/usuario/Usuario'));
+const EditarProducto = lazy(() => import('./componentes/Productos/EditarProducto'));
+const CrearProducto = lazy(() => import('./componentes/Productos/CrearProducto'));
+const ConfirmarCompra = lazy(() => import('./componentes/HacerPedido/ConfirmarCompra'));
 
 function App() {
-    return (
-      <>
-      <div className='w-full h-[90vh]'>
-        <img src='/Fondo.jpg' className='fixed z-1 object-cover w-full h-full'/>
-        <div className='flex flex-col h-[100vh]'>
-        <Nav />
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/carta" element={<Carta />} />
-          <Route path="/pedido" element={<Pedido />} />
-          <Route path="/usuario" element={<Usuario />} />
-          <Route path="/editarProducto/:id" element={<EditarProducto />} />
-          <Route path="/crearProducto" element={<CrearProducto />} />
-          <Route path="/confirmarCompra" element={<ConfirmarCompra />} />
-        </Routes>
-        <Footer />
-        </div>
+  return (
+    <div className="flex flex-col min-h-screen relative">
+      {/* Fondo optimizado */}
+      <div className="fixed inset-0 -z-10">
+        <img 
+          src='/Fondo.webp' 
+          loading="lazy"
+          decoding="async"
+          className="object-cover w-full h-full"
+          alt="Fondo decorativo"
+        />
       </div>
-      </>
-    )
+      
+      <Nav />
+      
+      <main className="flex-1 pb-20"> {/* Añadido padding-bottom para el footer */}
+        <Suspense fallback={
+          <div className="text-center py-20">
+            <span className="loading loading-infinity loading-lg text-primary"></span>
+          </div>
+        }>
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/carta" element={<Carta />} />
+            <Route path="/pedido" element={<Pedido />} />
+            <Route path="/usuario" element={<Usuario />} />
+            <Route path="/editarProducto/:id" element={<EditarProducto />} />
+            <Route path="/crearProducto" element={<CrearProducto />} />
+            <Route path="/confirmarCompra" element={<ConfirmarCompra />} />
+          </Routes>
+        </Suspense>
+      </main>
+
+      <Footer className="mt-auto" /> {/* Añadido mt-auto2 */}
+    </div>
+  )
 }
 
-    export default App
+export default App
