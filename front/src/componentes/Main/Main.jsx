@@ -5,102 +5,96 @@ import { useState, useEffect } from "react";
 
 export default function Main() {
   const [isOpen, setIsOpen] = useState(false);
-  const [mensajeCerrado, setMensajeCerrado] = useState(false); // Para mostrar el mensaje de negocio cerrado
-  const navigate = useNavigate(); // Hook para redirigir
+  const [mensajeCerrado, setMensajeCerrado] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Obtén la fecha y hora actuales
     const now = new Date();
-    const currentDay = now.getDay(); // 0 = Domingo, 1 = Lunes, ..., 6 = Sábado
-    const currentTime = now.getHours() + now.getMinutes() / 60; // Hora en formato decimal
+    const currentDay = now.getDay();
+    const currentTime = now.getHours() + now.getMinutes() / 60;
 
-    // Define horarios de apertura
     const schedule = {
-      1: { open: 20.5, close: 24 }, // Lunes: 20:30 - 23:30
-      2: { open: 0, close: 24 }, // Martes: 20:30 - 23:30
-      3: { open: 20.5, close: 23.5 }, // Miércoles: 20:30 - 23:30
-      4: { open: 20.5, close: 23.5 }, // Jueves: 20:30 - 23:30
-      5: { open: 20.5, close: 23.5 }, // Viernes: 20:30 - 23:30
-      6: { open: 20.5, close: 23.5 }, // Sábado: 20:30 - 23:30
-      0: { open: 20.5, close: 23.5 }, // Domingo: 20:30 - 23:30
+      1: { open: 20.5, close: 24 },  2: { open: 0, close: 24 },
+      3: { open: 20.5, close: 23.5 }, 4: { open: 20.5, close: 23.5 },
+      5: { open: 20.5, close: 23.5 }, 6: { open: 20.5, close: 23.5 },
+      0: { open: 20.5, close: 23.5 },
     };
 
-    // Verifica si está abierto
-    if (schedule[currentDay]) {
-      const { open, close } = schedule[currentDay];
-      if (currentTime >= open && currentTime <= close) {
-        setIsOpen(true);
-      } else {
-        setIsOpen(false);
-      }
-    } else {
-      setIsOpen(false); // Cerrado si no está en el horario definido
-    }
+    setIsOpen(schedule[currentDay]?.open <= currentTime && currentTime <= schedule[currentDay]?.close);
   }, []);
 
   const handleHacerPedidoClick = () => {
-    if (isOpen) {
-      navigate("/pedido"); // Redirige a la página de pedidos si está abierto
-    } else {
-      setMensajeCerrado(true); // Muestra el mensaje si el negocio está cerrado
-    }
+    isOpen ? navigate("/pedido") : setMensajeCerrado(true);
   };
 
   return (
-    <div className='relative m-auto'>
-      <div className='bg-white rounded flex flex-col justify-center items-center min-w-96 min-h-full'>
-        <img src='Logo.jpg' className='rounded-full w-20 h-20 m-2' />
-        <h1 className='text-2xl m-2 font-bold'>Le Fiu</h1>
-        <span className="relative inline-flex overflow-hidden rounded-full p-[1px]">
-          <span
-            className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#FFD580_0%,#FFA500_50%,#FF4500_100%)]"
-          ></span>
-          <div
-            className={`px-4 py-1 ${isOpen ? "text-white rounded-full bg-green-500 backdrop-blur-3xl" : "bg-red-600 text-white rounded-full backdrop-blur-3xl"}`}
-          >
-            {isOpen ? "Abierto" : "Cerrado"}
-          </div>
-        </span>
-
-        <p className='text-center p-2 '> ⏰ Miércoles a Domingo de 20:30 a 23:30 <br /></p>
-
-        <div>
-          <a href="https://www.instagram.com/lefiu.burgers/"
-            target="_blank"
-            rel="noopener noreferrer"><FontAwesomeIcon className="text-2xl hover:text-red-500" icon={faInstagram} /></a>
+    <div className="flex justify-center items-center h-full pt-16 pb-20"> {/* Altura ajustada */}
+      <div className="bg-white rounded-lg flex flex-col items-center p-6 w-full max-w-xs space-y-3 shadow-xl mx-4">
+        {/* Encabezado */}
+        <img src='Logo.jpg' className='rounded-full w-20 h-20 mb-3' alt="Logo Le Fiu" />
+        <h1 className='text-2xl font-bold mb-2'>Le Fiu</h1>
+        
+        {/* Estado */}
+        <div className="mb-4">
+          <span className="relative inline-flex overflow-hidden rounded-full p-[1px]">
+            <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#FFD580_0%,#FFA500_50%,#FF4500_100%)]"></span>
+            <div className={`px-4 py-1 ${isOpen ? "bg-green-500" : "bg-red-600"} text-white rounded-full backdrop-blur-3xl`}>
+              {isOpen ? "Abierto" : "Cerrado"}
+            </div>
+          </span>
         </div>
 
-        {/* Botón de "Hacer un pedido" */}
-        <button 
-          className='text-2xl bg-black rounded-lg w-4/5 text-white p-2 m-2 text-center'
-          onClick={handleHacerPedidoClick}
-        >
-          Hacer un pedido
-        </button>
+        {/* Horario */}
+        <p className='text-center text-sm mb-4'>⏰ Miércoles a Domingo<br/>20:30 - 23:30</p>
 
-        {/* Si el negocio está cerrado, mostrar el mensaje */}
+        {/* Redes Sociales */}
+        <div className="mb-6">
+          <a href="https://www.instagram.com/lefiu.burgers/" 
+             target="_blank" 
+             rel="noopener noreferrer"
+             className="hover:scale-110 transition-transform">
+            <FontAwesomeIcon className="text-2xl text-pink-600 hover:text-pink-700" icon={faInstagram} />
+          </a>
+        </div>
+
+        {/* Botones compactos */}
+        <div className="w-full grid grid-cols-1 gap-2">
+          <button 
+            className='bg-black text-white rounded-lg py-2 hover:bg-gray-800 transition-colors text-lg text-center h-12 flex items-center justify-center'
+            onClick={handleHacerPedidoClick}
+          >
+            Hacer Pedido
+          </button>
+
+          <Link 
+            to="/carta" 
+            className='bg-black text-white rounded-lg py-2 hover:bg-gray-800 transition-colors text-lg text-center h-12 flex items-center justify-center'
+          >
+            Ver Carta
+          </Link>
+
+          <a
+            href="https://wa.me/542392486277?text=Hola,%20quisiera%20hacer%20una%20consulta%20sobre"
+            className='bg-black text-white rounded-lg py-2 hover:bg-gray-800 transition-colors text-lg text-center h-12 flex items-center justify-center'
+          >
+            WhatsApp
+          </a>
+        </div>
+
+        {/* Mensaje de cerrado */}
         {mensajeCerrado && (
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-500 text-white p-4 rounded-lg shadow-lg text-center">
-            <p>Lo sentimos, el negocio está cerrado en este momento.</p>
-            <button
-              className="mt-2 px-4 py-2 bg-white text-red-500 rounded-lg shadow hover:bg-gray-200"
-              onClick={() => setMensajeCerrado(false)} // Cierra el mensaje
-            >
-              Cerrar
-            </button>
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div className="bg-white p-6 rounded-lg text-center max-w-xs animate-pop-in">
+              <p className="text-red-600 mb-4 font-medium">Lo sentimos, estamos cerrados</p>
+              <button
+                className="bg-black text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+                onClick={() => setMensajeCerrado(false)}
+              >
+                Cerrar
+              </button>
+            </div>
           </div>
         )}
-
-        {/* Otros botones */}
-        <Link to="/carta" className="text-2xl bg-black rounded-lg w-4/5 text-white p-2 m-2 text-center">Consulta la carta</Link>
-        <a
-          href="https://wa.me/542392486277?text=Hola,%20quisiera%20hacer%20una%20consulta%20sobre"
-          rel="noopener noreferrer"
-          className='text-2xl bg-black rounded-lg w-4/5 text-white p-2 m-2 text-center'
-          target="_blank"
-        >
-          Chat por whatsapp
-        </a>
       </div>
     </div>
   );

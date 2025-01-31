@@ -8,6 +8,6 @@ createRoot(document.getElementById('root')).render(
   <CartProvider>
     <BrowserRouter>
       <App />
-    </BrowserRouter>,
+    </BrowserRouter>
   </CartProvider>
 )
