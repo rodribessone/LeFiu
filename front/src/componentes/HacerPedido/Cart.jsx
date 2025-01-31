@@ -23,7 +23,7 @@ export default function Cart() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const { cartItems, removeFromCart, clearCart } = useCart();
+  const { cartItems, removeFromCart, clearCart } = useCart(); // Asegúrate de que `clearCart` esté disponible
 
   // Calcula el total del carrito
   const total = cartItems.reduce(
@@ -36,6 +36,11 @@ export default function Cart() {
     (accumulator, item) => accumulator + item.quantity,
     0
   );
+
+  const handleConfirmarCompra = () => {
+    // Cierra el carrito cuando se confirma la compra
+    setIsOpen(false);
+  };
 
   return (
     <div className="relative">
@@ -82,13 +87,18 @@ export default function Cart() {
                 Total: ${total.toFixed(2)}
               </div>
               <button
+                onClick={handleConfirmarCompra} // Minimiza el carrito
+                className="w-full bg-green-500 text-white py-2 rounded mt-4 hover:bg-green-600"
+              >
+                <Link to="/confirmarCompra">Confirmar Compra</Link>
+              </button>
+
+              {/* Agregado del botón para vaciar el carrito */}
+              <button
                 onClick={clearCart}
                 className="w-full bg-red-500 text-white py-2 rounded mt-4 hover:bg-red-600"
               >
                 Vaciar Carrito
-              </button>
-              <button className="w-full bg-green-500 text-white py-2 rounded mt-4 hover:bg-green-600">
-                <Link to="/confirmarCompra">Confirmar Compra</Link>
               </button>
             </div>
           )}

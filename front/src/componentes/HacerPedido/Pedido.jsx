@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCirclePlus, faBurger, faDrumstickBite } from '@fortawesome/free-solid-svg-icons';
+import { faCirclePlus, faBurger, faDrumstickBite, faPepperHot } from '@fortawesome/free-solid-svg-icons';
 import { useCart } from "../HacerPedido/CartContext";
-
 
 export default function Pedido() {
   const { addToCart } = useCart();
@@ -61,18 +60,25 @@ export default function Pedido() {
       {/* Filtros */}
       <div className="flex justify-around mb-4">
         <button
-          className={`p-2 rounded ${categoriaSeleccionada === "Hamburguesa"  ? "bg-yellow-500 text-white" : "bg-gray-200"}`}
+          className={`p-1 text-sm rounded ${categoriaSeleccionada === "Hamburguesa"  ? "bg-yellow-500 text-white" : "bg-gray-200"}`}
           onClick={() => setCategoriaSeleccionada("Hamburguesa")}
         >
           <FontAwesomeIcon icon={faBurger} className="mr-2" />
           Hamburguesas
         </button>
         <button
-          className={`p-2 rounded ${categoriaSeleccionada === "Pollo" ? "bg-yellow-500 text-white" : "bg-gray-200"}`}
+          className={`p-1 text-sm rounded ${categoriaSeleccionada === "Pollo" ? "bg-yellow-500 text-white" : "bg-gray-200"}`}
           onClick={() => setCategoriaSeleccionada("Pollo")}
         >
           <FontAwesomeIcon icon={faDrumstickBite} className="mr-2" />
           Pollo
+        </button>
+        <button
+          className={`p-1 text-smrounded ${categoriaSeleccionada === "Salsas" ? "bg-red-500 text-white" : "bg-gray-200"}`}
+          onClick={() => setCategoriaSeleccionada("Salsas")}
+        >
+          <FontAwesomeIcon icon={faPepperHot} className="mr-2" />
+          Salsas
         </button>
       </div>
 
