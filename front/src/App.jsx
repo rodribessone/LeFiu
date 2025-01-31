@@ -5,7 +5,7 @@ import Main from './componentes/Main/Main'
 import Footer from './componentes/Footer/Footer'
 import './index.css'
 
-// Lazy load de todos los componentes de ruta
+// Lazy load de todos los componentes de rut
 const Carta = lazy(() => import('./componentes/Carta/Carta'));
 const Pedido = lazy(() => import('./componentes/HacerPedido/Pedido'));
 const Usuario = lazy(() => import('./componentes/usuario/Usuario'));
