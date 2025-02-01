@@ -69,13 +69,13 @@ export default function Pedido() {
   }, []);
 
   // Filtrar productos según la categoría seleccionada
-  const productosFiltrados = productos.filter(
+  const productosFiltrados = (productos || []).filter(
     (item) =>
       item.categoria === categoriaSeleccionada && item.categoria !== "Bebida"
   );
 
 
-  const salsas = productos.filter(item => item.categoria === "Salsas");
+  const salsas = (productos || []).filter(item => item.categoria === "Salsas");
 
   return (
     <div className="relative mt-16 flex flex-col bg-white w-11/12 m-auto p-6 border-2 border-black rounded-xl md:w-4/5 lg:w-2/3">
@@ -115,15 +115,15 @@ export default function Pedido() {
       {productosFiltrados.map((item) => {
         const { nombre, precio, imagen, descripcion, _id, categoria } = item;
         const isPolloConSalsas = nombre === "Pollito Frito con Salsas";
-        const precioBase = precio; // Precio original del producto
-        const precioTotal = precioBase + (precioFinal[_id] || 0) + extraSalsasCost;
-
         
-
         // Calcular precio total con salsas adicionales
         const selectedSalsasCount = selectedSalsas[_id]?.length || 0;
         const extraSalsasCost = isPolloConSalsas ? Math.max(selectedSalsasCount - 2, 0) * 800 : 0;
 
+        const precioBase = precio; // Precio original del producto
+        const precioTotal = precioBase + (precioFinal[_id] || 0) + extraSalsasCost;
+
+        
         return (
           <div
             key={_id}
