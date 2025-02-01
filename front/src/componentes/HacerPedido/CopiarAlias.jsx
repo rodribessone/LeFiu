@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy } from "@fortawesome/free-regular-svg-icons";
 
 const CopiarAlias = () => {
-  const alias = "alias.lefiu";
+  const alias = "Lefiu.feu";
 
   const copiarAlPortapapeles = () => {
     navigator.clipboard.writeText(alias).then(() => {
@@ -29,7 +29,7 @@ const CopiarAlias = () => {
         className="absolute bottom-full mb-2 px-2 py-1 text-sm text-white bg-gray-700 rounded opacity-0 transition-opacity duration-200"
         style={{ whiteSpace: "nowrap" }}
       >
-        Copiar email
+        Copiar alias
       </div>
     </div>
   );

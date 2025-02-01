@@ -97,26 +97,26 @@ export default function Usuario() {
       <div className="text-center p-4 flex flex-col">
         <p className="m-2">Bienvenido <b>Joaco</b></p>
 
-        {/* Sección para gestionar el precio del delivery */}
-        <div className="w-2/5 mx-auto bg-gray-100 p-4 rounded shadow-md my-6">
-        <h2 className="text-xl font-bold mb-4">Configurar Precio de Delivery</h2>
-        <p className="mb-2">Precio actual: <span className="font-bold">${deliveryPrice}</span></p>
-        <div className="flex items-center gap-4">
-          <input
-            type="number"
-            className="p-2 border rounded w-full"
-            placeholder="Nuevo precio"
-            value={newDeliveryPrice}
-            onChange={(e) => setNewDeliveryPrice(e.target.value)}
-          />
-          <button
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-            onClick={handleUpdateDeliveryPrice}
-          >
-            Actualizar
-          </button>
-        </div>
-      </div>
+       {/* Sección para gestionar el precio del delivery */}
+<div className="w-full md:w-3/4 lg:w-2/5 mx-auto bg-gray-100 p-4 rounded-lg shadow-md my-6">
+  <h2 className="text-xl font-bold mb-4 text-gray-800">Configurar Precio de Delivery</h2>
+  <p className="mb-4 text-gray-600">Precio actual: <span className="font-bold text-gray-800">${deliveryPrice}</span></p>
+  <div className="flex flex-col md:flex-row items-center gap-4">
+    <input
+      type="number"
+      className="p-2 border rounded-lg w-full md:w-3/4 lg:w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+      placeholder="Nuevo precio"
+      value={newDeliveryPrice}
+      onChange={(e) => setNewDeliveryPrice(e.target.value)}
+    />
+    <button
+      className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 w-full md:w-auto"
+      onClick={handleUpdateDeliveryPrice}
+    >
+      Actualizar
+    </button>
+  </div>
+</div>
 
         <Link to='/crearProducto' className="mx-auto p-4 text-white bg-green-500 border-2 rounded border-black hover:bg-green-600">
           Crear nuevo producto

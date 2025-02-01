@@ -135,9 +135,11 @@ export default function ConfirmarCompra() {
             )}
 
             {medioPago === "MercadoPago" && (
-              <p className="text-sm mb-4">
-                Alias MercadoPago: <CopiarAlias />
-              </p>
+              <div className="text-sm mb-4">
+                Alias MercadoPago: 
+                <p className='rounded border-2 border-[#899388] text-center w-3/5 text-xl'>Lefiu.feu</p>
+                <CopiarAlias />
+              </div>
             )}
 
             <p className="block mb-2">El monto es: <b>${total.toFixed(2)}</b></p>
