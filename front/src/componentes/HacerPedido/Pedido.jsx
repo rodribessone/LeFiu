@@ -12,7 +12,6 @@ export default function Pedido() {
   const [selectedSalsas, setSelectedSalsas] = useState({}); // Nuevo estado para salsas seleccionadas
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-  const salsas = productos.filter(item => item.categoria === "Salsas");
 
   const handleTipoHamburguesaChange = (productoId, tipo) => {
     setTipoHamburguesa((prev) => ({
@@ -74,6 +73,9 @@ export default function Pedido() {
     (item) =>
       item.categoria === categoriaSeleccionada && item.categoria !== "Bebida"
   );
+
+
+  const salsas = productos.filter(item => item.categoria === "Salsas");
 
   return (
     <div className="relative mt-16 flex flex-col bg-white w-11/12 m-auto p-6 border-2 border-black rounded-xl md:w-4/5 lg:w-2/3">
