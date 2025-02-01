@@ -44,7 +44,7 @@ function App() {
             <Route path="/editarProducto/:id" element={<EditarProducto />} />
             <Route path="/crearProducto" element={<CrearProducto />} />
             <Route path="/confirmarCompra" element={<ConfirmarCompra />} />
-            <Route path="" element={<NotFound />} /> {/ ✅ Ahora funcionará con la importación */}
+            <Route path="" element={<NotFound />} /> {/* ✅ Ahora funcionará con la importación */}
           </Routes>
         </Suspense>
       </main>
