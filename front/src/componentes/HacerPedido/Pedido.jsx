@@ -113,7 +113,10 @@ export default function Pedido() {
       {productosFiltrados.map((item) => {
         const { nombre, precio, imagen, descripcion, _id, categoria } = item;
         const isPolloConSalsas = nombre === "Pollito Frito con Salsas";
-        const precioTotal = precio + (precioFinal[_id] || 0);
+        const precioBase = precio; // Precio original del producto
+        const precioTotal = precioBase + (precioFinal[_id] || 0) + extraSalsasCost;
+
+        
 
         // Calcular precio total con salsas adicionales
         const selectedSalsasCount = selectedSalsas[_id]?.length || 0;
@@ -194,13 +197,16 @@ export default function Pedido() {
                   addToCart({
                     id: _id,
                     nombre,
-                    precio: precioTotal,
+                    precio: precioTotal, // Enviar precio con extras
+                    precioBase: precio, // Guardar precio base separado
                     imagen,
                     descripcion,
                     categoria,
                     tipoHamburguesa: tipoHamburguesa[_id] || "simple",
-                    salsasSeleccionadas: selectedSalsas[_id] || [], // Agregar salsas al carrito
-                    costoExtraSalsas: extraSalsasCost // Agregar costo adicional
+                    salsasSeleccionadas: salsas
+                      .filter(salsa => selectedSalsas[_id]?.includes(salsa._id))
+                      .map(salsa => salsa.nombre), // Guardar nombres de salsas
+                    costoExtraSalsas: extraSalsasCost
                   })
                 }
               >

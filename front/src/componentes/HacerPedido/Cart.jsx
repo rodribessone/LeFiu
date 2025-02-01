@@ -64,16 +64,43 @@ export default function Cart() {
           ) : (
             <div>
               {cartItems.map((item) => (
-                <div
-                  key={item._id} // Usa _id como clave única
-                  className="flex items-center justify-between mb-4"
-                >
-                  <div>
-                    <h3 className="font-bold">{item.nombre}</h3>
-                    <p className="text-sm text-gray-600">Cantidad: {item.quantity}</p>
-                    <p className="text-sm text-gray-600">Precio unitario: ${item.precio}</p>
-                    <p className="text-sm text-gray-600">Subtotal: ${item.precio * item.quantity}</p>
-                  </div>
+  <div key={item.id} className="mb-4">
+    <div className="flex justify-between">
+      <div>
+        <h3 className="font-bold">{item.nombre}</h3>
+        <p className="text-sm text-gray-600">
+          Precio base: ${item.precioBase?.toFixed(2) || item.precio.toFixed(2)}
+        </p>
+        
+        {/* Mostrar salsas seleccionadas */}
+        {item.salsasSeleccionadas?.length > 0 && (
+          <div className="mt-2">
+            <p className="text-sm font-semibold">Salsas incluidas:</p>
+            <ul className="list-disc pl-4">
+              {item.salsasSeleccionadas.map((salsa, index) => (
+                <li key={index} className="text-sm text-gray-600">
+                  {salsa} {index < 2 ? "(Gratis)" : `(+$800)`}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        
+        {/* Mostrar extras */}
+        {item.costoExtraSalsas > 0 && (
+          <p className="text-sm text-red-500 mt-1">
+            Salsas adicionales: +${item.costoExtraSalsas.toFixed(2)}
+          </p>
+        )}
+      </div>
+      
+      <div className="text-right">
+        <p className="text-sm text-gray-600">Cantidad: {item.quantity}</p>
+        <p className="text-sm text-gray-600">
+          Total: ${(item.precio * item.quantity).toFixed(2)}
+        </p>
+      </div>
+    </div>
                   <button
                     onClick={() => removeFromCart(item._id)}
                     className="text-red-600 hover:text-red-800"

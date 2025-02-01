@@ -11,14 +11,19 @@ export const CartProvider = ({ children }) => {
   // Función para agregar un producto al carrito
   const addToCart = (product) => {
     setCartItems((prev) => {
+      const precioBase = product.precio - (product.costoExtraSalsas || 0); // Restar el costo extra
       const existingItem = prev.find(
-        (item) => item.id === product.id && item.tipoHamburguesa === product.tipoHamburguesa
+        (item) => 
+          item.id === product.id && 
+          item.tipoHamburguesa === product.tipoHamburguesa &&
+          JSON.stringify(item.salsasSeleccionadas) === JSON.stringify(product.salsasSeleccionadas)
       );
 
       if (existingItem) {
-        // Si el producto ya existe con el mismo tipo, aumenta la cantidad
         return prev.map((item) =>
-          item.id === product.id && item.tipoHamburguesa === product.tipoHamburguesa
+          item.id === product.id &&
+          item.tipoHamburguesa === product.tipoHamburguesa &&
+          JSON.stringify(item.salsasSeleccionadas) === JSON.stringify(product.salsasSeleccionadas)
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
@@ -26,7 +31,11 @@ export const CartProvider = ({ children }) => {
         // Si es un nuevo producto o tiene un tipo diferente, agrégalo
         return [
           ...prev,
-          { ...product, quantity: 1 }, // Inicializa con cantidad 1
+          { 
+            ...product, 
+            quantity: 1,
+            precio: precioBase // Usar el precio base sin extras
+          },
         ];
       }
     });
