@@ -223,7 +223,12 @@ export default function Pedido() {
                     costoExtraSalsas: extraSalsasCost
                   });
                 
-                  addToCart({ [_id]: newCartItems }); // Guardamos en el carrito
+                  addToCart({
+                    [_id]: newCartItems.map(item => ({
+                      ...item,
+                      precioBase: item.precio // Aquí le asignas un valor a `precioBase` si no estaba presente
+                    }))
+                  });
                 }}
               >
                 <FontAwesomeIcon className="p-1" icon={faCirclePlus} />
