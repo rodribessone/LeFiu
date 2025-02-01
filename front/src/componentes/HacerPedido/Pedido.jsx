@@ -4,7 +4,7 @@ import { faCirclePlus, faBurger, faDrumstickBite, faPepperHot } from '@fortaweso
 import { useCart } from "../HacerPedido/CartContext";
 
 export default function Pedido() {
-  const { addToCart } = useCart();
+  const { addToCart, cartItems } = useCart();
   const [productos, setProductos] = useState([]);
   const [tipoHamburguesa, setTipoHamburguesa] = useState({});
   const [precioFinal, setPrecioFinal] = useState({});
@@ -33,18 +33,27 @@ export default function Pedido() {
   };
 
    // Manejar selección de salsas
-   const handleSalsaSelection = (productId, salsaId) => {
+   const handleSalsaSelection = (productId, index, salsaId) => {
     setSelectedSalsas(prev => {
-      const currentSalsas = prev[productId] || [];
-      if (currentSalsas.includes(salsaId)) {
+      const currentSelections = prev[productId] || [];
+      const currentUnitSalsas = currentSelections[index] || [];
+  
+      // Si la salsa ya está seleccionada, la quitamos
+      if (currentUnitSalsas.includes(salsaId)) {
         return {
           ...prev,
-          [productId]: currentSalsas.filter(id => id !== salsaId)
+          [productId]: currentSelections.map((salsas, i) =>
+            i === index ? salsas.filter(id => id !== salsaId) : salsas
+          ),
         };
       }
+  
+      // Si no está seleccionada, la agregamos
       return {
         ...prev,
-        [productId]: [...currentSalsas, salsaId]
+        [productId]: currentSelections.map((salsas, i) =>
+          i === index ? [...salsas, salsaId] : salsas
+        ),
       };
     });
   };
@@ -138,31 +147,36 @@ export default function Pedido() {
               <p className="text-black font-semibold text-sm sm:text-base">{descripcion}</p>
 
                             {/* Sección de selección de salsas para pollito */}
-              {isPolloConSalsas && (
-                <div className="mb-4">
-                  <p className="text-gray-700">Selecciona 2 salsas gratis:</p>
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {salsas.map(salsa => (
-                      <button
-                        key={salsa._id}
-                        className={`p-2 rounded ${
-                          selectedSalsas[_id]?.includes(salsa._id)
-                            ? "bg-blue-500 text-white"
-                            : "bg-gray-200"
-                        }`}
-                        onClick={() => handleSalsaSelection(_id, salsa._id)}
-                      >
-                        {salsa.nombre}
-                      </button>
-                    ))}
-                  </div>
-                  {selectedSalsasCount > 2 && (
-                    <p className="text-red-500 text-sm mt-2">
-                      Salsas adicionales: +${(selectedSalsasCount - 2) * 800}
-                    </p>
-                  )}
-                </div>
-              )}
+                            {isPolloConSalsas &&
+  [...Array(cartItems[_id] || 1)].map((_, index) => {
+    const currentSalsas = selectedSalsas[_id]?.[index] || [];
+    const selectedSalsasCount = currentSalsas.length;
+    const extraSalsasCost = Math.max(selectedSalsasCount - 2, 0) * 800;
+
+    return (
+      <div key={`${_id}-${index}`} className="mb-4">
+        <p className="text-gray-700">Selecciona 2 salsas gratis para unidad {index + 1}:</p>
+        <div className="flex flex-wrap gap-2 mt-2">
+          {salsas.map(salsa => (
+            <button
+              key={salsa._id}
+              className={`p-2 rounded ${
+                currentSalsas.includes(salsa._id) ? "bg-blue-500 text-white" : "bg-gray-200"
+              }`}
+              onClick={() => handleSalsaSelection(_id, index, salsa._id)}
+            >
+              {salsa.nombre}
+            </button>
+          ))}
+        </div>
+        {selectedSalsasCount > 2 && (
+          <p className="text-red-500 text-sm mt-2">
+            Salsas adicionales: +${extraSalsasCost}
+          </p>
+        )}
+      </div>
+    );
+  })}
 
 
               {/* Opciones de tipo para hamburguesas */}
@@ -195,22 +209,22 @@ export default function Pedido() {
             <div className="flex items-center justify-center w-full sm:w-1/4 mt-4 sm:mt-0">
             <button
                 className="flex max-h-16 items-center justify-center p-4 text-white bg-green-500 border-1 rounded border-black hover:bg-green-600 w-full sm:w-auto"
-                onClick={() =>
-                  addToCart({
+                onClick={() => {
+                  const newCartItems = [...(cartItems[_id] || [])]; // Copiamos las unidades en el carrito
+                  newCartItems.push({
                     id: _id,
                     nombre,
-                    precio: precioTotal, // Enviar precio con extras
-                    precioBase: precio, // Guardar precio base separado
+                    precio: precioTotal, 
+                    precioBase: precio,
                     imagen,
                     descripcion,
                     categoria,
-                    tipoHamburguesa: tipoHamburguesa[_id] || "simple",
-                    salsasSeleccionadas: salsas
-                      .filter(salsa => selectedSalsas[_id]?.includes(salsa._id))
-                      .map(salsa => salsa.nombre), // Guardar nombres de salsas
+                    salsasSeleccionadas: selectedSalsas[_id]?.[newCartItems.length] || [], 
                     costoExtraSalsas: extraSalsasCost
-                  })
-                }
+                  });
+                
+                  addToCart({ [_id]: newCartItems }); // Guardamos en el carrito
+                }}
               >
                 <FontAwesomeIcon className="p-1" icon={faCirclePlus} />
                 <p className="ml-2">AGREGAR</p>
