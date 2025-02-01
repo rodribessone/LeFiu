@@ -4,14 +4,12 @@ import { faCirclePlus, faBurger, faDrumstickBite, faPepperHot } from '@fortaweso
 import { useCart } from "../HacerPedido/CartContext";
 
 export default function Pedido() {
-  const { addToCart, cartItems } = useCart();
+  const { addToCart } = useCart();
   const [productos, setProductos] = useState([]);
   const [tipoHamburguesa, setTipoHamburguesa] = useState({});
   const [precioFinal, setPrecioFinal] = useState({});
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Hamburguesa");
-  const [selectedSalsas, setSelectedSalsas] = useState({}); // Nuevo estado para salsas seleccionadas
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;  // Revisa si ya contiene un slash final
 
   const handleTipoHamburguesaChange = (productoId, tipo) => {
     setTipoHamburguesa((prev) => ({
@@ -30,32 +28,6 @@ export default function Pedido() {
       ...prev,
       [productoId]: precioAdicional,
     }));
-  };
-
-   // Manejar selección de salsas
-   const handleSalsaSelection = (productId, index, salsaId) => {
-    setSelectedSalsas(prev => {
-      const currentSelections = prev[productId] || [];
-      const currentUnitSalsas = currentSelections[index] || [];
-  
-      // Si la salsa ya está seleccionada, la quitamos
-      if (currentUnitSalsas.includes(salsaId)) {
-        return {
-          ...prev,
-          [productId]: currentSelections.map((salsas, i) =>
-            i === index ? salsas.filter(id => id !== salsaId) : salsas
-          ),
-        };
-      }
-  
-      // Si no está seleccionada, la agregamos
-      return {
-        ...prev,
-        [productId]: currentSelections.map((salsas, i) =>
-          i === index ? [...salsas, salsaId] : salsas
-        ),
-      };
-    });
   };
 
   useEffect(() => {
@@ -78,13 +50,10 @@ export default function Pedido() {
   }, []);
 
   // Filtrar productos según la categoría seleccionada
-  const productosFiltrados = (productos || []).filter(
+  const productosFiltrados = productos.filter(
     (item) =>
       item.categoria === categoriaSeleccionada && item.categoria !== "Bebida"
   );
-
-
-  const salsas = (productos || []).filter(item => item.categoria === "Salsas");
 
   return (
     <div className="relative mt-16 flex flex-col bg-white w-11/12 m-auto p-6 border-2 border-black rounded-xl md:w-4/5 lg:w-2/3">
@@ -123,16 +92,8 @@ export default function Pedido() {
       {/* Productos */}
       {productosFiltrados.map((item) => {
         const { nombre, precio, imagen, descripcion, _id, categoria } = item;
-        const isPolloConSalsas = nombre === "Pollito Frito con Salsas";
-        
-        // Calcular precio total con salsas adicionales
-        const selectedSalsasCount = selectedSalsas[_id]?.length || 0;
-        const extraSalsasCost = isPolloConSalsas ? Math.max(selectedSalsasCount - 2, 0) * 800 : 0;
+        const precioTotal = precio + (precioFinal[_id] || 0);
 
-        const precioBase = precio; // Precio original del producto
-        const precioTotal = precioBase + (precioFinal[_id] || 0) + extraSalsasCost;
-
-        
         return (
           <div
             key={_id}
@@ -145,39 +106,6 @@ export default function Pedido() {
               <h1 className="text-black text-xl font-bold">{nombre}</h1>
               <p className="text-lg text-green-600 font-bold">${precioTotal}</p>
               <p className="text-black font-semibold text-sm sm:text-base">{descripcion}</p>
-
-                            {/* Sección de selección de salsas para pollito */}
-                            {isPolloConSalsas &&
-  [...Array(cartItems[_id] || 1)].map((_, index) => {
-    const currentSalsas = selectedSalsas[_id]?.[index] || [];
-    const selectedSalsasCount = currentSalsas.length;
-    const extraSalsasCost = Math.max(selectedSalsasCount - 2, 0) * 800;
-
-    return (
-      <div key={`${_id}-${index}`} className="mb-4">
-        <p className="text-gray-700">Selecciona 2 salsas gratis para unidad {index + 1}:</p>
-        <div className="flex flex-wrap gap-2 mt-2">
-          {salsas.map(salsa => (
-            <button
-              key={salsa._id}
-              className={`p-2 rounded ${
-                currentSalsas.includes(salsa._id) ? "bg-blue-500 text-white" : "bg-gray-200"
-              }`}
-              onClick={() => handleSalsaSelection(_id, index, salsa._id)}
-            >
-              {salsa.nombre}
-            </button>
-          ))}
-        </div>
-        {selectedSalsasCount > 2 && (
-          <p className="text-red-500 text-sm mt-2">
-            Salsas adicionales: +${extraSalsasCost}
-          </p>
-        )}
-      </div>
-    );
-  })}
-
 
               {/* Opciones de tipo para hamburguesas */}
               {categoria === "Hamburguesa" && (
@@ -207,29 +135,19 @@ export default function Pedido() {
               )}
             </div>
             <div className="flex items-center justify-center w-full sm:w-1/4 mt-4 sm:mt-0">
-            <button
+              <button
                 className="flex max-h-16 items-center justify-center p-4 text-white bg-green-500 border-1 rounded border-black hover:bg-green-600 w-full sm:w-auto"
-                onClick={() => {
-                  const newCartItems = [...(cartItems[_id] || [])]; // Copiamos las unidades en el carrito
-                  newCartItems.push({
+                onClick={() =>
+                  addToCart({
                     id: _id,
                     nombre,
-                    precio: precioTotal, 
-                    precioBase: precio,
+                    precio: precioTotal,
                     imagen,
                     descripcion,
                     categoria,
-                    salsasSeleccionadas: selectedSalsas[_id]?.[newCartItems.length] || [], 
-                    costoExtraSalsas: extraSalsasCost
-                  });
-                
-                  addToCart({
-                    [_id]: newCartItems.map(item => ({
-                      ...item,
-                      precioBase: item.precio // Aquí le asignas un valor a `precioBase` si no estaba presente
-                    }))
-                  });
-                }}
+                    tipoHamburguesa: tipoHamburguesa[_id] || "simple",
+                  })
+                }
               >
                 <FontAwesomeIcon className="p-1" icon={faCirclePlus} />
                 <p className="ml-2">AGREGAR</p>
