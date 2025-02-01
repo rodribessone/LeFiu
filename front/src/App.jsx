@@ -1,12 +1,12 @@
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { lazy, Suspense } from 'react';
-import Nav from './componentes/nav/Nav'
-import Main from './componentes/Main/Main'
-import Footer from './componentes/Footer/Footer'
-import NotFound from './componentes/NotFound/NotFound' // ✅ Añade esta importación
-import './index.css'
+import Nav from './componentes/nav/Nav';
+import Main from './componentes/Main/Main';
+import Footer from './componentes/Footer/Footer';
+import NotFound from './componentes/NotFound/NotFound';
+import './index.css';
 
-// Lazy load de todos los componentes de rut
+// Lazy load de todos los componentes de rutas
 const Carta = lazy(() => import('./componentes/Carta/Carta'));
 const Pedido = lazy(() => import('./componentes/HacerPedido/Pedido'));
 const Usuario = lazy(() => import('./componentes/usuario/Usuario'));
@@ -16,42 +16,47 @@ const ConfirmarCompra = lazy(() => import('./componentes/HacerPedido/ConfirmarCo
 
 function App() {
   return (
-    <div className="flex flex-col min-h-screen relative">
-      {/* Fondo optimizado */}
-      <div className="fixed inset-0 -z-10">
-        <img 
-          src='/Fondo.webp' 
-          loading="lazy"
-          decoding="async"
-          className="object-cover w-full h-full"
-          alt="Fondo decorativo"
-        />
-      </div>
-      
-      <Nav />
-      
-      <main className="flex-1 pb-20"> {/* Añadido padding-bottom para el footer */}
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
+      <div className="flex flex-col min-h-screen relative">
+        {/* Fondo optimizado con ruta absoluta */}
+        <div className="fixed inset-0 -z-10">
+          <img 
+            src={`${import.meta.env.BASE_URL}/Fondo.webp`}
+            loading="lazy"
+            decoding="async"
+            className="object-cover w-full h-full"
+            alt="Fondo decorativo"
+          />
+        </div>
+        
+        <Nav />
+        
+        <main className="flex-1 pb-20">
         <Suspense fallback={
-          <div className="text-center py-20">
-            <span className="loading loading-infinity loading-lg text-primary"></span>
+          <div className="min-h-screen flex items-center justify-center">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
+              <p className="mt-4 text-gray-600">Cargando experiencia culinaria...</p>
+            </div>
           </div>
         }>
-          <Routes>
-            <Route path="/" element={<Main />} />
-            <Route path="/carta" element={<Carta />} />
-            <Route path="/pedido" element={<Pedido />} />
-            <Route path="/usuario" element={<Usuario />} />
-            <Route path="/editarProducto/:id" element={<EditarProducto />} />
-            <Route path="/crearProducto" element={<CrearProducto />} />
-            <Route path="/confirmarCompra" element={<ConfirmarCompra />} />
-            <Route path="" element={<NotFound />} /> {/* ✅ Ahora funcionará con la importación */}
-          </Routes>
-        </Suspense>
-      </main>
+            <Routes>
+              <Route path="/" element={<Main />} />
+              <Route path="/carta" element={<Carta />} />
+              <Route path="/pedido" element={<Pedido />} />
+              <Route path="/usuario" element={<Usuario />} />
+              <Route path="/editarProducto/:id" element={<EditarProducto />} />
+              <Route path="/crearProducto" element={<CrearProducto />} />
+              <Route path="/confirmarCompra" element={<ConfirmarCompra />} />
+              <Route path="*" element={<NotFound />} /> {/* Ruta 404 corregida */}
+            </Routes>
+          </Suspense>
+        </main>
 
-      <Footer className="mt-auto" /> {/* Añadido mt-auto2 */}
-    </div>
-  )
+        <Footer className="mt-auto" />
+      </div>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

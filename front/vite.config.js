@@ -3,10 +3,13 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-  base: "./",  // ⚠️ IMPORTANTE: Usa "./" en lugar de "/"
+  base: "/",
   build: {
-    outDir: "dist"
+    outDir: "../dist",  // 👈 Apunta a la raíz del proyecto
+    emptyOutDir: true,
+    assetsDir: "assets"
   },
+  publicDir: "public",
   server: {
     historyApiFallback: true
   }
