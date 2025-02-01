@@ -1,5 +1,6 @@
 import { useCart } from "../HacerPedido/CartContext";
 import { useState, useEffect } from "react";
+import CopiarAlias from "./CopiarAlias";
 
 export default function ConfirmarCompra() {
   const { cartItems } = useCart();
@@ -51,7 +52,6 @@ export default function ConfirmarCompra() {
   const montoTotal = calculateMontoTotal();
 
   const businessNumber = "542392486277";
-  const aliasMercadoPago = "lefiu.burguers!! cambiar !!!"; // Aquí defines el alias.
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -136,7 +136,7 @@ export default function ConfirmarCompra() {
 
             {medioPago === "MercadoPago" && (
               <p className="text-sm mb-4">
-                Alias MercadoPago: <b>{aliasMercadoPago}</b>
+                Alias MercadoPago: <CopiarAlias />
               </p>
             )}
 
