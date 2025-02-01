@@ -137,8 +137,10 @@ export default function ConfirmarCompra() {
             {medioPago === "MercadoPago" && (
               <div className="text-sm mb-4">
                 Alias MercadoPago: 
+              <div className="flex gap-2">
                 <p className='rounded border-2 border-[#899388] text-center w-3/5 text-xl'>Lefiu.feu</p>
                 <CopiarAlias />
+              </div>
               </div>
             )}
 
