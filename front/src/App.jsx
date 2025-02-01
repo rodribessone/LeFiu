@@ -3,6 +3,7 @@ import { lazy, Suspense } from 'react';
 import Nav from './componentes/nav/Nav'
 import Main from './componentes/Main/Main'
 import Footer from './componentes/Footer/Footer'
+import NotFound from './componentes/NotFound/NotFound' // ✅ Añade esta importación
 import './index.css'
 
 // Lazy load de todos los componentes de rut
@@ -43,6 +44,7 @@ function App() {
             <Route path="/editarProducto/:id" element={<EditarProducto />} />
             <Route path="/crearProducto" element={<CrearProducto />} />
             <Route path="/confirmarCompra" element={<ConfirmarCompra />} />
+            <Route path="" element={<NotFound />} /> {/ ✅ Ahora funcionará con la importación */}
           </Routes>
         </Suspense>
       </main>
