@@ -1,27 +1,5 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "front/vite.config.js",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "front/dist"
-      }
-    },
-    {
-      "src": "back/src/index.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.)",
-      "dest": "back/src/index.js"
-    },
-    {
-      "src": "/(.)",
-      "dest": "front/dist/index.html",
-      "status": 200
-    }
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
   ]
 }
