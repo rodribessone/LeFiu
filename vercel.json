@@ -16,11 +16,11 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "back/$1"
+      "dest": "front/$1"
     },
     {
-      "src": "/(.*)",
-      "dest": "front/$1"
+      "src": "/api/(.*)",
+      "dest": "back/$1"
     }
   ]
 }
