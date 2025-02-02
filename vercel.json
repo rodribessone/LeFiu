@@ -1,12 +1,26 @@
 {
-  "rewrites": [
+  "version": 2,
+  "builds": [
     {
-      "source": "/api/(.)", 
-      "destination": "https://le-fiu-gy9h.vercel.app/" 
+      "src": "front/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
     },
     {
-      "source": "/(.)", 
-      "destination": "/"
+      "src": "back/package.json",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "back/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "front/$1"
     }
   ]
 }
