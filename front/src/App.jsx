@@ -6,7 +6,7 @@ import Footer from './componentes/Footer/Footer';
 import NotFound from './componentes/NotFound/NotFound';
 import './index.css';
 
-// Lazy load de todos los componentes de rutas
+// Lazy load de componentes
 const Carta = lazy(() => import('./componentes/Carta/Carta'));
 const Pedido = lazy(() => import('./componentes/HacerPedido/Pedido'));
 const Usuario = lazy(() => import('./componentes/usuario/Usuario'));
@@ -16,30 +16,30 @@ const ConfirmarCompra = lazy(() => import('./componentes/HacerPedido/ConfirmarCo
 
 function App() {
   return (
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
-      <div className="flex flex-col min-h-screen relative">
-        {/* Fondo optimizado con ruta absoluta */}
-        <div className="fixed inset-0 -z-10">
-          <img 
-            src={`${import.meta.env.BASE_URL}/Fondo.webp`}
-            loading="lazy"
-            decoding="async"
-            className="object-cover w-full h-full"
-            alt="Fondo decorativo"
-          />
-        </div>
-        
-        <Nav />
-        
-        <main className="flex-1 pb-20">
-        <Suspense fallback={
-          <div className="min-h-screen flex items-center justify-center">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
-              <p className="mt-4 text-gray-600">Cargando experiencia culinaria...</p>
+    <div className="flex flex-col min-h-screen relative">
+      {/* Fondo optimizado */}
+      <div className="fixed inset-0 -z-10">
+        <img 
+          src="/Fondo.webp"
+          loading="lazy"
+          decoding="async"
+          className="object-cover w-full h-full"
+          alt="Fondo decorativo"
+        />
+      </div>
+      
+      <Nav />
+      
+      <main className="flex-1 pb-20">
+        <BrowserRouter basename={import.meta.env.BASE_URL}>
+          <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
+                <p className="mt-4 text-gray-600">Cargando experiencia culinaria...</p>
+              </div>
             </div>
-          </div>
-        }>
+          }>
             <Routes>
               <Route path="/" element={<Main />} />
               <Route path="/carta" element={<Carta />} />
@@ -48,14 +48,14 @@ function App() {
               <Route path="/editarProducto/:id" element={<EditarProducto />} />
               <Route path="/crearProducto" element={<CrearProducto />} />
               <Route path="/confirmarCompra" element={<ConfirmarCompra />} />
-              <Route path="*" element={<NotFound />} /> {/* Ruta 404 corregida */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
-        </main>
+        </BrowserRouter>
+      </main>
 
-        <Footer className="mt-auto" />
-      </div>
-    </BrowserRouter>
+      <Footer className="mt-auto" />
+    </div>
   );
 }
 
