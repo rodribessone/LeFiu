@@ -1,5 +1,12 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
+    {
+      "source": "/api/(.)", 
+      "destination": "https://le-fiu-gy9h.vercel.app/" 
+    },
+    {
+      "source": "/(.)", 
+      "destination": "/"
+    }
   ]
 }
