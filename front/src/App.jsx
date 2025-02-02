@@ -7,7 +7,8 @@ import NotFound from './componentes/NotFound/NotFound';
 import './index.css';
 
 // Lazy load de componentes
-const Carta = lazy(() => import('./componentes/Carta/Carta'));
+const Carta = lazy(() => import('./componentes/Carta/Carta')
+  .then(module => ({ default: module.Carta })));
 const Pedido = lazy(() => import('./componentes/HacerPedido/Pedido'));
 const Usuario = lazy(() => import('./componentes/usuario/Usuario'));
 const EditarProducto = lazy(() => import('./componentes/Productos/EditarProducto'));
@@ -17,14 +18,15 @@ const ConfirmarCompra = lazy(() => import('./componentes/HacerPedido/ConfirmarCo
 function App() {
   return (
     <div className="flex flex-col min-h-screen relative">
-      {/* Fondo optimizado */}
+      {/* Imagen optimizada con preload */}
+      <link rel="preload" href="/Fondo.webp" as="image" />
       <div className="fixed inset-0 -z-10">
         <img 
           src="/Fondo.webp"
-          loading="lazy"
-          decoding="async"
+          loading="eager"  // Cambiado a eager para carga prioritaria
+          decoding="sync"
           className="object-cover w-full h-full"
-          alt="Fondo decorativo"
+          alt="Fondo decorativo de Le Fiu Burgers"
         />
       </div>
       
