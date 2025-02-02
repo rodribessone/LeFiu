@@ -22,7 +22,7 @@ function App() {
       <div className="fixed inset-0 -z-10">
         <img 
           src="/Fondo.webp"
-          loading="eager"  // Cambiado a eager para carga prioritaria
+          loading="eager"  // Cambiado a eager para cargas prioritaria
           decoding="sync"
           className="object-cover w-full h-full"
           alt="Fondo decorativo de Le Fiu Burgers"
