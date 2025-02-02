@@ -7,8 +7,7 @@ import NotFound from './componentes/NotFound/NotFound';
 import './index.css';
 
 // Lazy load de componentes
-const Carta = lazy(() => import('./componentes/Carta/Carta')
-  .then(module => ({ default: module.Carta })));
+const Carta = lazy(() => import('./componentes/Carta/Carta'));
 const Pedido = lazy(() => import('./componentes/HacerPedido/Pedido'));
 const Usuario = lazy(() => import('./componentes/usuario/Usuario'));
 const EditarProducto = lazy(() => import('./componentes/Productos/EditarProducto'));
