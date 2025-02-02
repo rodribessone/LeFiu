@@ -84,7 +84,7 @@ export default function CrearProducto() {
         
   return (
     <>
-    <div className='relative w-3/5 m-auto p-5 rounded border-2 border-black bg-gray-200'>
+    <div className='relative w-3/5 m-auto mt-20 p-5 rounded border-2 border-black bg-gray-200'>
         <form onSubmit={handleSubmit} className='justify-items-center'>
             <div className='grid grid-cols-2 gap-y-4 mb-8'>
 
