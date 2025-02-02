@@ -1,4 +1,4 @@
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route} from "react-router-dom";
 import { lazy, Suspense } from 'react';
 import Nav from './componentes/nav/Nav';
 import Main from './componentes/Main/Main';
@@ -31,7 +31,6 @@ function App() {
       <Nav />
       
       <main className="flex-1 pb-20">
-        <BrowserRouter basename={import.meta.env.BASE_URL}>
           <Suspense fallback={
             <div className="min-h-screen flex items-center justify-center">
               <div className="text-center">
@@ -51,7 +50,6 @@ function App() {
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
-        </BrowserRouter>
       </main>
 
       <Footer className="mt-auto" />
