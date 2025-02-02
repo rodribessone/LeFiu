@@ -31,7 +31,7 @@ export default function Main() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-[calc(100dvh-4rem)] pt-12 pb-20 z-20 sm:pt-16">
+    <div className="flex justify-center items-center min-h-[calc(100dvh-4rem)] pt-12 pb-20 z-20 sm:pt-16 overflow-hidden">
       <div className="bg-white rounded-lg flex flex-col items-center p-6 w-full max-w-xs space-y-3 shadow-xl mx-4">
         {/* Encabezado */}
         <img src='Logo.jpg' className='rounded-full w-20 h-20 mb-3' alt="Logo Le Fiu" />
