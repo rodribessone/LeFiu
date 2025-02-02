@@ -47,7 +47,7 @@ export default function Pedido() {
         setPrecioFinal(defaultPrecioFinal);
       })
       .catch((error) => console.error("Error fetching productos:", error));
-  }, []);
+  }, [backendUrl]);
 
   // Filtrar productos según la categoría seleccionada
   const productosFiltrados = productos.filter(
@@ -85,7 +85,7 @@ export default function Pedido() {
       <div className="flex justify-center items-center text-xs">
       <h3>
   Todas las porciones incluyen papas fritas
-  <img src="/papas.png" alt="Papas" className="inline-block w-6 h-6 block mx-auto" />
+  <img src="/papas.png" alt="Papas" className="inline-block w-6 h-6 mx-auto" />
 </h3>
 </div>
 
