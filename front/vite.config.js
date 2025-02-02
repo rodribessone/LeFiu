@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   base: "/",
   build: {
-    outDir: "../dist",  // 👈 Apunta a la raíz del proyecto
+    outDir: "dist", // ✅ Directorio dentro del proyecto front/
     emptyOutDir: true,
     assetsDir: "assets"
   },
