@@ -137,17 +137,23 @@ export default function Pedido() {
             <div className="flex items-center justify-center w-full sm:w-1/4 mt-4 sm:mt-0">
               <button
                 className="flex max-h-16 items-center justify-center p-4 text-white bg-green-500 border-1 rounded border-black hover:bg-green-600 w-full sm:w-auto"
-                onClick={() =>
+                onClick={() => {
+                  // Obtén el tipo de hamburguesa seleccionado (por defecto "simple")
+                  const tipo = tipoHamburguesa[_id] || "simple";
+                  // Modifica el nombre solo si el tipo es "doble" o "triple"
+                  const nombreModificado = tipo !== "simple" ? `${nombre} (${tipo})` : nombre;
+            
+                  // Llama a addToCart con el nombre modificado
                   addToCart({
                     id: _id,
-                    nombre,
+                    nombre: nombreModificado,
                     precio: precioTotal,
                     imagen,
                     descripcion,
                     categoria,
-                    tipoHamburguesa: tipoHamburguesa[_id] || "simple",
-                  })
-                }
+                    tipoHamburguesa: tipo,
+                  });
+                }}
               >
                 <FontAwesomeIcon className="p-1" icon={faCirclePlus} />
                 <p className="ml-2">AGREGAR</p>
