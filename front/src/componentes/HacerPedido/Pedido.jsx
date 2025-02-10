@@ -119,14 +119,14 @@ export default function Pedido() {
                       Simple
                     </button>
                     <button
-                      className={`p-2 rounded mt-2 ${tipoHamburguesa[_id] === "DOBLE" ? "bg-green-500 text-white" : "bg-gray-200"}`}
-                      onClick={() => handleTipoHamburguesaChange(_id, "DOBLE")}
+                      className={`p-2 rounded mt-2 ${tipoHamburguesa[_id] === "doble" ? "bg-green-500 text-white" : "bg-gray-200"}`}
+                      onClick={() => handleTipoHamburguesaChange(_id, "doble")}
                     >
                       Doble (+$800)
                     </button>
                     <button
-                      className={`p-2 rounded mt-2 ${tipoHamburguesa[_id] === "TRIPLE" ? "bg-green-500 text-white" : "bg-gray-200"}`}
-                      onClick={() => handleTipoHamburguesaChange(_id, "TRIPLE")}
+                      className={`p-2 rounded mt-2 ${tipoHamburguesa[_id] === "triple" ? "bg-green-500 text-white" : "bg-gray-200"}`}
+                      onClick={() => handleTipoHamburguesaChange(_id, "triple")}
                     >
                       Triple (+$1900)
                     </button>
@@ -141,7 +141,7 @@ export default function Pedido() {
                   // Obtén el tipo de hamburguesa seleccionado (por defecto "simple")
                   const tipo = tipoHamburguesa[_id] || "simple";
                   // Modifica el nombre solo si el tipo es "doble" o "triple"
-                  const nombreModificado = tipo !== "simple" ? `${nombre} (${tipo})` : nombre;
+                  const nombreModificado = tipo !== "simple" ? `${nombre} (${tipo.toUpperCase()})` : nombre;
             
                   // Llama a addToCart con el nombre modificado
                   addToCart({
