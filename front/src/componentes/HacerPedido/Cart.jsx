@@ -5,13 +5,11 @@ import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 export default function Cart() {
-  const [isOpen, setIsOpen] = useState(false); // Controla la visibilidad del menú
-  const menuRef = useRef(null); // Referencia para el contenedor del menú
+  const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef(null);
 
-  // Alterna la visibilidad del menú
   const toggleMenu = () => setIsOpen((prev) => !prev);
 
-  // Detecta clics fuera del menú para cerrarlo
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -23,22 +21,19 @@ export default function Cart() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const { cartItems, removeFromCart, clearCart } = useCart(); // Asegúrate de que `clearCart` esté disponible
+  const { cartItems, removeFromCart, clearCart } = useCart();
 
-  // Calcula el total del carrito
   const total = cartItems.reduce(
     (accumulator, item) => accumulator + item.precio * item.quantity,
     0
   );
 
-  // Calcula la cantidad total de productos en el carrito
   const totalItems = cartItems.reduce(
     (accumulator, item) => accumulator + item.quantity,
     0
   );
 
   const handleConfirmarCompra = () => {
-    // Cierra el carrito cuando se confirma la compra
     setIsOpen(false);
   };
 
@@ -65,7 +60,7 @@ export default function Cart() {
             <div>
               {cartItems.map((item) => (
                 <div
-                  key={item._id} // Usa _id como clave única
+                  key={item.id}
                   className="flex items-center justify-between mb-4"
                 >
                   <div>
@@ -75,7 +70,7 @@ export default function Cart() {
                     <p className="text-sm text-gray-600">Subtotal: ${item.precio * item.quantity}</p>
                   </div>
                   <button
-                    onClick={() => removeFromCart(item._id)}
+                    onClick={() => removeFromCart(item.id)}
                     className="text-red-600 hover:text-red-800"
                   >
                     Eliminar
@@ -86,14 +81,17 @@ export default function Cart() {
               <div className="text-lg font-bold mt-4">
                 Total: ${total.toFixed(2)}
               </div>
-              <button
-                onClick={handleConfirmarCompra} // Minimiza el carrito
-                className="w-full bg-green-500 text-white py-2 rounded mt-4 hover:bg-green-600"
-              >
-                <Link to="/confirmarCompra">Confirmar Compra</Link>
-              </button>
 
-              {/* Agregado del botón para vaciar el carrito */}
+              <Link to="/confirmarCompra">
+                <button
+                  onClick={handleConfirmarCompra}
+                  className="w-full bg-green-500 text-white py-2 rounded mt-4 hover:bg-green-600"
+                  >
+                  Confirmar Compra
+                </button>
+              </Link>
+    
+
               <button
                 onClick={clearCart}
                 className="w-full bg-red-500 text-white py-2 rounded mt-4 hover:bg-red-600"

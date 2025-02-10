@@ -9,12 +9,9 @@ export default function Pedido() {
   const [tipoHamburguesa, setTipoHamburguesa] = useState({});
   const [precioFinal, setPrecioFinal] = useState({});
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Hamburguesa");
-  // Estado para las salsas gratuitas de "Pollito Frito con Salsas"
-  // Guardamos un array de dos posiciones para cada producto, usando el _id como clave
   const [freeSauces, setFreeSauces] = useState({});
-  const backendUrl = import.meta.env.VITE_BACKEND_URL; // Asegúrate de que tenga la ruta correcta
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-  // Función para cambiar el tipo de hamburguesa y asignar precio extra
   const handleTipoHamburguesaChange = (productoId, tipo) => {
     setTipoHamburguesa((prev) => ({
       ...prev,
@@ -22,11 +19,8 @@ export default function Pedido() {
     }));
 
     let precioAdicional = 0;
-    if (tipo === "doble") {
-      precioAdicional = 800;
-    } else if (tipo === "triple") {
-      precioAdicional = 1900;
-    }
+    if (tipo === "doble") precioAdicional = 800;
+    if (tipo === "triple") precioAdicional = 1900;
 
     setPrecioFinal((prev) => ({
       ...prev,
@@ -34,17 +28,11 @@ export default function Pedido() {
     }));
   };
 
-  // Función para actualizar la selección de las 2 salsas gratuitas para "Pollito Frito con Salsas"
-  // index: 1 para el primer select, 2 para el segundo.
   const handleFreeSauceChange = (productId, index, sauceName) => {
     setFreeSauces(prev => {
-      // Si ya existen selecciones para este producto, clonamos el array; si no, iniciamos con ["", ""]
       const current = prev[productId] ? [...prev[productId]] : ["", ""];
       current[index - 1] = sauceName;
-      return {
-        ...prev,
-        [productId]: current,
-      };
+      return { ...prev, [productId]: current };
     });
   };
 
@@ -53,54 +41,49 @@ export default function Pedido() {
       .then((res) => res.json())
       .then((data) => {
         setProductos(data);
-        const defaultTipoHamburguesa = {};
-        const defaultPrecioFinal = {};
-        data.forEach((producto) => {
+        const defaults = data.reduce((acc, producto) => {
           if (producto.categoria === "Hamburguesa") {
-            defaultTipoHamburguesa[producto._id] = "simple";
-            defaultPrecioFinal[producto._id] = 0;
+            acc.tipo[producto._id] = "simple";
+            acc.precio[producto._id] = 0;
           }
-        });
-        setTipoHamburguesa(defaultTipoHamburguesa);
-        setPrecioFinal(defaultPrecioFinal);
+          return acc;
+        }, { tipo: {}, precio: {} });
+        setTipoHamburguesa(defaults.tipo);
+        setPrecioFinal(defaults.precio);
       })
       .catch((error) => console.error("Error fetching productos:", error));
   }, [backendUrl]);
 
-  // Filtrar productos según la categoría seleccionada
   const productosFiltrados = productos.filter(
-    (item) =>
-      item.categoria === categoriaSeleccionada && item.categoria !== "Bebida"
+    (item) => item.categoria === categoriaSeleccionada && item.categoria !== "Bebida"
   );
 
-  // Asumimos que tienes un array de salsas (productos con categoría "Salsas")
   const salsas = productos.filter(item => item.categoria === "Salsas");
 
   return (
     <div className="relative mt-16 flex flex-col bg-white w-11/12 m-auto p-6 border-2 border-black rounded-xl md:w-4/5 lg:w-2/3">
       {/* Filtros */}
       <div className="flex justify-around mb-4">
-        <button
-          className={`p-1 text-sm rounded ${categoriaSeleccionada === "Hamburguesa" ? "bg-yellow-500 text-white" : "bg-gray-200"}`}
-          onClick={() => setCategoriaSeleccionada("Hamburguesa")}
-        >
-          <FontAwesomeIcon icon={faBurger} className="mr-2" />
-          Hamburguesas
-        </button>
-        <button
-          className={`p-1 text-sm rounded ${categoriaSeleccionada === "Pollo" ? "bg-yellow-500 text-white" : "bg-gray-200"}`}
-          onClick={() => setCategoriaSeleccionada("Pollo")}
-        >
-          <FontAwesomeIcon icon={faDrumstickBite} className="mr-2" />
-          Pollo
-        </button>
-        <button
-          className={`p-1 text-sm rounded ${categoriaSeleccionada === "Salsas" ? "bg-red-500 text-white" : "bg-gray-200"}`}
-          onClick={() => setCategoriaSeleccionada("Salsas")}
-        >
-          <FontAwesomeIcon icon={faPepperHot} className="mr-2" />
-          Salsas
-        </button>
+        {["Hamburguesa", "Pollo", "Salsas"].map((categoria) => (
+          <button
+            key={categoria}
+            className={`p-1 text-sm rounded ${
+              categoriaSeleccionada === categoria 
+                ? categoria === "Salsas" ? "bg-red-500" : "bg-yellow-500"
+                : "bg-gray-200"
+            } text-white`}
+            onClick={() => setCategoriaSeleccionada(categoria)}
+          >
+            <FontAwesomeIcon 
+              icon={
+                categoria === "Hamburguesa" ? faBurger :
+                categoria === "Pollo" ? faDrumstickBite : faPepperHot
+              } 
+              className="mr-2"
+            />
+            {categoria}
+          </button>
+        ))}
       </div>
 
       <div className="flex justify-center items-center text-xs">
@@ -115,6 +98,7 @@ export default function Pedido() {
         const { nombre, precio, imagen, descripcion, _id, categoria } = item;
         const precioTotal = precio + (precioFinal[_id] || 0);
         const tipo = tipoHamburguesa[_id] || "simple";
+        const esPollito = nombre === "POLLITO FRITO CON SALSAS";
 
         return (
           <div
@@ -124,113 +108,94 @@ export default function Pedido() {
             <div className="m-4 sm:w-1/4">
               <img src={imagen} className="w-full h-32 object-cover rounded-lg" alt={nombre} />
             </div>
+            
             <div className="flex flex-col w-full sm:w-2/3">
-              {/* Para productos que no sean "Pollito Frito con Salsas", el nombre se modifica según el tipo */}
               <h1 className="text-black text-xl font-bold">
-                {nombre === "POLLITO FRITO CON SALSAS"
+                {esPollito 
                   ? nombre
-                  : tipo !== "simple"
-                  ? `${nombre} (${tipo.toUpperCase()})`
-                  : nombre}
+                  : `${nombre}${tipo !== "simple" ? ` (${tipo.toUpperCase()})` : ""}`
+                }
               </h1>
               <p className="text-lg text-green-600 font-bold">${precioTotal}</p>
               <p className="text-black font-semibold text-sm sm:text-base">{descripcion}</p>
 
-              {/* Opciones de tipo para hamburguesas (solo para categoría "Hamburguesa") */}
               {categoria === "Hamburguesa" && (
                 <div className="mb-4">
                   <p className="text-gray-700">Tipo de Hamburguesa:</p>
                   <div className="flex gap-4">
-                    <button
-                      className={`p-2 rounded mt-2 ${tipoHamburguesa[_id] === "simple" ? "bg-green-500 text-white" : "bg-gray-200"}`}
-                      onClick={() => handleTipoHamburguesaChange(_id, "simple")}
-                    >
-                      Simple
-                    </button>
-                    <button
-                      className={`p-2 rounded mt-2 ${tipoHamburguesa[_id] === "doble" ? "bg-green-500 text-white" : "bg-gray-200"}`}
-                      onClick={() => handleTipoHamburguesaChange(_id, "doble")}
-                    >
-                      Doble (+$800)
-                    </button>
-                    <button
-                      className={`p-2 rounded mt-2 ${tipoHamburguesa[_id] === "triple" ? "bg-green-500 text-white" : "bg-gray-200"}`}
-                      onClick={() => handleTipoHamburguesaChange(_id, "triple")}
-                    >
-                      Triple (+$1900)
-                    </button>
+                    {["simple", "doble", "triple"].map((tipoBtn) => (
+                      <button
+                        key={tipoBtn}
+                        className={`p-2 rounded mt-2 ${
+                          tipo === tipoBtn ? "bg-green-500 text-white" : "bg-gray-200"
+                        }`}
+                        onClick={() => handleTipoHamburguesaChange(_id, tipoBtn)}
+                      >
+                        {tipoBtn.charAt(0).toUpperCase() + tipoBtn.slice(1)}
+                        {tipoBtn !== "simple" && ` (+$${
+                          tipoBtn === "doble" ? "800" : "1900"
+                        })`}
+                      </button>
+                    ))}
                   </div>
                 </div>
               )}
 
-              {/* Si el producto es "Pollito Frito con Salsas", mostrar dos selects para elegir 2 salsas gratis */}
-              {nombre === "POLLITO FRITO CON SALSAS" && (
+              {esPollito && (
                 <div className="mb-4">
                   <p className="text-gray-700">Selecciona 2 salsas gratis:</p>
                   <div className="flex flex-col gap-2">
-                    {/* Primer select */}
-                    <select
-                      className="p-2 border rounded"
-                      value={freeSauces[_id] ? freeSauces[_id][0] : ""}
-                      onChange={(e) => handleFreeSauceChange(_id, 1, e.target.value)}
-                    >
-                      <option value="">Selecciona la primera salsa</option>
-                      {salsas.map((salsa) => (
-                        <option key={salsa._id} value={salsa.nombre}>
-                          {salsa.nombre}
-                        </option>
-                      ))}
-                    </select>
-                    {/* Segundo select */}
-                    <select
-                      className="p-2 border rounded"
-                      value={freeSauces[_id] ? freeSauces[_id][1] : ""}
-                      onChange={(e) => handleFreeSauceChange(_id, 2, e.target.value)}
-                    >
-                      <option value="">Selecciona la segunda salsa</option>
-                      {salsas.map((salsa) => (
-                        <option key={salsa._id} value={salsa.nombre}>
-                          {salsa.nombre}
-                        </option>
-                      ))}
-                    </select>
+                    {[1, 2].map((index) => (
+                      <select
+                        key={index}
+                        className="p-2 border rounded"
+                        value={freeSauces[_id]?.[index - 1] || ""}
+                        onChange={(e) => handleFreeSauceChange(_id, index, e.target.value)}
+                      >
+                        <option value="">Selecciona la {index === 1 ? "primera" : "segunda"} salsa</option>
+                        {salsas.map((salsa) => (
+                          <option key={salsa._id} value={salsa.nombre}>
+                            {salsa.nombre}
+                          </option>
+                        ))}
+                      </select>
+                    ))}
                   </div>
                 </div>
               )}
             </div>
+
             <div className="flex items-center justify-center w-full sm:w-1/4 mt-4 sm:mt-0">
-            <button
+              <button
                 className="flex max-h-16 items-center justify-center p-4 text-white bg-green-500 border-1 rounded border-black hover:bg-green-600 w-full sm:w-auto"
                 onClick={() => {
                   const tipoSeleccionado = tipoHamburguesa[_id] || "simple";
-                  let nombreModificado = "";
-                  if (nombre === "POLLITO FRITO CON SALSAS") {
-                    // Obtenemos la selección actual de salsas
-                    const sauceSelection = freeSauces[_id] ? [...freeSauces[_id]] : [];
-                    const saucesStr = sauceSelection.filter(Boolean).join(", ");
-                    nombreModificado = saucesStr ? `${nombre} (${saucesStr.toUpperCase()})` : nombre;
-                  } else {
-                    nombreModificado = tipoSeleccionado !== "simple"
+                  const salsasSeleccionadas = esPollito ? freeSauces[_id] || [] : [];
+                  
+                  const nombreModificado = esPollito
+                    ? salsasSeleccionadas.filter(Boolean).length > 0
+                      ? `${nombre} (${salsasSeleccionadas.filter(Boolean).join(", ").toUpperCase()})`
+                      : nombre
+                    : tipoSeleccionado !== "simple"
                       ? `${nombre} (${tipoSeleccionado.toUpperCase()})`
                       : nombre;
-                  }
-
-                  const salsasSeleccionadas = nombre === "POLLITO FRITO CON SALSAS" ? freeSauces[_id] || [] : [];
 
                   addToCart({
-                    // Genera un id único basado en el producto y las salsas seleccionadas
-                    id: `${_id}-${salsasSeleccionadas.join('-')}`,
+                    id: esPollito
+                      ? `${_id}-${salsasSeleccionadas.join('-')}`
+                      : `${_id}-${tipoSeleccionado}`,
+                    _id,
                     nombre: nombreModificado,
                     precio: precioTotal,
                     imagen,
                     descripcion,
                     categoria,
-                    tipoHamburguesa: nombre === "POLLITO FRITO CON SALSAS" ? "simple" : tipoSeleccionado,
-                    salsasSeleccionadas,
+                    tipoHamburguesa: esPollito ? "simple" : tipoSeleccionado,
+                    salsasSeleccionadas: esPollito ? salsasSeleccionadas : [],
                   });
 
-                  if (nombre === "POLLITO FRITO CON SALSAS") {
-                    setFreeSauces((prev) => ({ ...prev, [_id]: ["", ""] }));
+                  if (esPollito) {
+                    setFreeSauces(prev => ({ ...prev, [_id]: ["", ""] }));
                   }
                 }}
               >
