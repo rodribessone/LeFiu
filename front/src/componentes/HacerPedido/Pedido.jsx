@@ -230,7 +230,7 @@ export default function Pedido() {
                     // Para "POLLITO FRITO CON SALSAS", dejamos el tipo como "simple" (la variación se refleja en las salsas)
                     // para los demás, usamos el tipo seleccionado.
                     tipoHamburguesa: nombre === "POLLITO FRITO CON SALSAS" ? "simple" : tipoSeleccionado,
-                    salsasSeleccionadas: nombre === "POLLITO FRITO CON SALSas" ? sauceSelection : []
+                    salsasSeleccionadas: nombre === "POLLITO FRITO CON SALSAS" ? sauceSelection : []
                   });
                   
                   // Reiniciamos la selección de salsas para este producto
