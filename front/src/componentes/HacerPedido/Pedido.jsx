@@ -9,10 +9,10 @@ export default function Pedido() {
   const [tipoHamburguesa, setTipoHamburguesa] = useState({});
   const [precioFinal, setPrecioFinal] = useState({});
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Hamburguesa");
-  // Estado para guardar las salsas gratuitas para "Pollito Frito con Salsas"
-  // Se usará un objeto donde la clave es el _id del producto y el valor es un array de 2 posiciones
+  // Estado para las salsas gratuitas de "Pollito Frito con Salsas"
+  // Guardamos un array de dos posiciones para cada producto, usando el _id como clave
   const [freeSauces, setFreeSauces] = useState({});
-  const backendUrl = import.meta.env.VITE_BACKEND_URL; // Revisa si ya contiene un slash final
+  const backendUrl = import.meta.env.VITE_BACKEND_URL; // Asegúrate de que tenga la ruta correcta
 
   // Función para cambiar el tipo de hamburguesa y asignar precio extra
   const handleTipoHamburguesaChange = (productoId, tipo) => {
@@ -34,11 +34,11 @@ export default function Pedido() {
     }));
   };
 
-  // Función para manejar la selección de las salsas gratuitas para "Pollito Frito con Salsas"
+  // Función para actualizar la selección de las 2 salsas gratuitas para "Pollito Frito con Salsas"
   // index: 1 para el primer select, 2 para el segundo.
   const handleFreeSauceChange = (productId, index, sauceName) => {
     setFreeSauces(prev => {
-      // Si ya existen selecciones para este producto, clonamos el array; de lo contrario, iniciamos un array de 2 elementos vacíos
+      // Si ya existen selecciones para este producto, clonamos el array; si no, iniciamos con ["", ""]
       const current = prev[productId] ? [...prev[productId]] : ["", ""];
       current[index - 1] = sauceName;
       return {
@@ -73,7 +73,7 @@ export default function Pedido() {
       item.categoria === categoriaSeleccionada && item.categoria !== "Bebida"
   );
 
-  // Suponemos que ya tienes un array de salsas en tus productos filtrados para salsas
+  // Asumimos que tienes un array de salsas (productos con categoría "Salsas")
   const salsas = productos.filter(item => item.categoria === "Salsas");
 
   return (
@@ -125,14 +125,18 @@ export default function Pedido() {
               <img src={imagen} className="w-full h-32 object-cover rounded-lg" alt={nombre} />
             </div>
             <div className="flex flex-col w-full sm:w-2/3">
-              {/* Modificar el nombre para hamburguesas: si no es simple, añade la variación en mayúsculas */}
+              {/* Para productos que no sean "Pollito Frito con Salsas", el nombre se modifica según el tipo */}
               <h1 className="text-black text-xl font-bold">
-                {tipo !== "simple" ? `${nombre} (${tipo.toUpperCase()})` : nombre}
+                {nombre === "POLLITO FRITO CON SALSAS"
+                  ? nombre
+                  : tipo !== "simple"
+                  ? `${nombre} (${tipo.toUpperCase()})`
+                  : nombre}
               </h1>
               <p className="text-lg text-green-600 font-bold">${precioTotal}</p>
               <p className="text-black font-semibold text-sm sm:text-base">{descripcion}</p>
 
-              {/* Opciones de tipo para hamburguesas */}
+              {/* Opciones de tipo para hamburguesas (solo para categoría "Hamburguesa") */}
               {categoria === "Hamburguesa" && (
                 <div className="mb-4">
                   <p className="text-gray-700">Tipo de Hamburguesa:</p>
@@ -198,19 +202,24 @@ export default function Pedido() {
               <button
                 className="flex max-h-16 items-center justify-center p-4 text-white bg-green-500 border-1 rounded border-black hover:bg-green-600 w-full sm:w-auto"
                 onClick={() => {
-                  // Obtén el tipo seleccionado (por defecto "simple")
-                  const tipoSeleccionado = tipoHamburguesa[_id] || "simple";
-                  // Modifica el nombre para incluir la variación (en mayúsculas) si es diferente a "simple"
-                  const nombreModificado =
-                    tipoSeleccionado !== "simple"
+                  let nombreModificado = "";
+                  // Si el producto es "Pollito Frito con Salsas", incluimos las salsas seleccionadas en el nombre
+                  if (nombre === "POLLITO FRITO CON SALSAS") {
+                    const sauces = freeSauces[_id] || [];
+                    // Filtrar valores vacíos y unir en mayúsculas
+                    const saucesStr = sauces.filter(Boolean).join(", ");
+                    nombreModificado = saucesStr ? `${nombre} (${saucesStr.toUpperCase()})` : nombre;
+                  } else {
+                    // Para otros productos, si el tipo es distinto de "simple", se añade la variación
+                    const tipoSeleccionado = tipoHamburguesa[_id] || "simple";
+                    nombreModificado = tipoSeleccionado !== "simple"
                       ? `${nombre} (${tipoSeleccionado.toUpperCase()})`
                       : nombre;
-                  // Si el producto es "Pollito Frito con Salsas", incluir las salsas gratis seleccionadas
-                  const salsasSeleccionadas =
-                    nombre === "POLLITO FRITO CON SALSAS"
-                      ? freeSauces[_id] || []
-                      : [];
-
+                  }
+                  
+                  // Para "Pollito Frito con Salsas", incluimos la selección de salsas
+                  const salsasSeleccionadas = nombre === "POLLITO FRITO CON SALSAS" ? freeSauces[_id] || [] : [];
+                  
                   addToCart({
                     id: _id,
                     nombre: nombreModificado,
@@ -218,7 +227,7 @@ export default function Pedido() {
                     imagen,
                     descripcion,
                     categoria,
-                    tipoHamburguesa: tipoSeleccionado,
+                    tipoHamburguesa: nombre === "POLLITO FRITO CON SALSAS" ? "simple" : (tipoHamburguesa[_id] || "simple"),
                     salsasSeleccionadas,
                   });
                 }}
