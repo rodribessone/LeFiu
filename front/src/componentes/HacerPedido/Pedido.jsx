@@ -120,13 +120,13 @@ export default function Pedido() {
                     </button>
                     <button
                       className={`p-2 rounded mt-2 ${tipoHamburguesa[_id] === "doble" ? "bg-green-500 text-white" : "bg-gray-200"}`}
-                      onClick={() => handleTipoHamburguesaChange(_id, "doble")}
+                      onClick={() => handleTipoHamburguesaChange(_id, "DOBLE")}
                     >
                       Doble (+$800)
                     </button>
                     <button
                       className={`p-2 rounded mt-2 ${tipoHamburguesa[_id] === "triple" ? "bg-green-500 text-white" : "bg-gray-200"}`}
-                      onClick={() => handleTipoHamburguesaChange(_id, "triple")}
+                      onClick={() => handleTipoHamburguesaChange(_id, "TRIPLE")}
                     >
                       Triple (+$1900)
                     </button>
