@@ -203,23 +203,20 @@ export default function Pedido() {
                 className="flex max-h-16 items-center justify-center p-4 text-white bg-green-500 border-1 rounded border-black hover:bg-green-600 w-full sm:w-auto"
                 onClick={() => {
                   let nombreModificado = "";
-                  // Si el producto es "Pollito Frito con Salsas", incluimos las salsas seleccionadas en el nombre
                   if (nombre === "POLLITO FRITO CON SALSAS") {
+                    // Suponiendo que "POLLITO FRITO CON SALSAS" se guarda en mayúsculas en tu base de datos
                     const sauces = freeSauces[_id] || [];
-                    // Filtrar valores vacíos y unir en mayúsculas
                     const saucesStr = sauces.filter(Boolean).join(", ");
                     nombreModificado = saucesStr ? `${nombre} (${saucesStr.toUpperCase()})` : nombre;
                   } else {
-                    // Para otros productos, si el tipo es distinto de "simple", se añade la variación
                     const tipoSeleccionado = tipoHamburguesa[_id] || "simple";
                     nombreModificado = tipoSeleccionado !== "simple"
                       ? `${nombre} (${tipoSeleccionado.toUpperCase()})`
                       : nombre;
                   }
                   
-                  // Para "Pollito Frito con Salsas", incluimos la selección de salsas
                   const salsasSeleccionadas = nombre === "POLLITO FRITO CON SALSAS" ? freeSauces[_id] || [] : [];
-                  
+                
                   addToCart({
                     id: _id,
                     nombre: nombreModificado,
