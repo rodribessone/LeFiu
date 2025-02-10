@@ -11,39 +11,23 @@ export const CartProvider = ({ children }) => {
   // Función para agregar un producto al carrito
   const addToCart = (product) => {
     setCartItems((prev) => {
-      const existingItem = prev.find((item) => {
-        // Si el producto es "POLLITO FRITO CON SALSAS", comparar también las salsas seleccionadas
-        if (product.categoria === "POLLITO FRITO CON SALSAS") {
-          return (
-            item.id === product.id &&
-            item.tipoHamburguesa === product.tipoHamburguesa &&
-            JSON.stringify(item.salsasSeleccionadas) === JSON.stringify(product.salsasSeleccionadas)
-          );
-        } else {
-          // Para los demás productos, comparar solo id y tipo
-          return item.id === product.id && item.tipoHamburguesa === product.tipoHamburguesa;
-        }
-      });
-  
-      if (existingItem) {
-        // Si ya existe el producto (con las mismas características), aumentamos la cantidad
-        return prev.map((item) =>
-          product.categoria === "POLLITO FRITO CON SALSAS"
-            ? item.id === product.id &&
-              item.tipoHamburguesa === product.tipoHamburguesa &&
-              JSON.stringify(item.salsasSeleccionadas) === JSON.stringify(product.salsasSeleccionadas)
+      // Para "POLLITO FRITO CON SALSAS", siempre agregamos un nuevo ítem
+      if (product.categoria === "POLLITO FRITO CON SALSAS") {
+        return [...prev, { ...product, quantity: 1 }];
+      } else {
+        // Para los demás productos, buscamos combinar si ya existe el mismo producto con el mismo tipo
+        const existingItem = prev.find(
+          (item) => item.id === product.id && item.tipoHamburguesa === product.tipoHamburguesa
+        );
+        if (existingItem) {
+          return prev.map((item) =>
+            item.id === product.id && item.tipoHamburguesa === product.tipoHamburguesa
               ? { ...item, quantity: item.quantity + 1 }
               : item
-            : item.id === product.id && item.tipoHamburguesa === product.tipoHamburguesa
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      } else {
-        // Si es un nuevo producto o tiene diferencias (por ejemplo, salsas distintas), lo agregamos
-        return [
-          ...prev,
-          { ...product, quantity: 1 }, // Inicializa con cantidad 1
-        ];
+          );
+        } else {
+          return [...prev, { ...product, quantity: 1 }];
+        }
       }
     });
   };
@@ -65,7 +49,6 @@ export const CartProvider = ({ children }) => {
   );
 };
 
-// Validación de tipos de prop
 CartProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };

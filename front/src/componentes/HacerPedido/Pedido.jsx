@@ -205,13 +205,11 @@ export default function Pedido() {
                   // Obtén el tipo seleccionado (por defecto "simple")
                   const tipoSeleccionado = tipoHamburguesa[_id] || "simple";
                   
-                  // Captura la selección actual de salsas para este producto (para "POLLITO FRITO CON SALSAS")
-                  // Se hace una copia del array para que no se modifique si el estado freeSauces cambia luego.
+                  // Capturamos la selección de salsas (clonamos el array para "POLLITO FRITO CON SALSAS")
                   const sauceSelection = nombre === "POLLITO FRITO CON SALSAS" ? (freeSauces[_id] ? [...freeSauces[_id]] : []) : [];
                   
                   // Construir el nombre modificado:
-                  // - Para "POLLITO FRITO CON SALSAS": se muestra el nombre original (que ya viene en mayúsculas) y se agregan las salsas seleccionadas en mayúsculas.
-                  // - Para los demás productos: si el tipo es distinto de "simple", se agrega la variación.
+                  // Si es "POLLITO FRITO CON SALSAS", se incluyen las salsas seleccionadas; de lo contrario, se usa el tipo
                   let nombreModificado = "";
                   if (nombre === "POLLITO FRITO CON SALSAS") {
                     const saucesStr = sauceSelection.filter(Boolean).join(", ");
@@ -222,7 +220,6 @@ export default function Pedido() {
                       : nombre;
                   }
                   
-                  // Llama a addToCart con el objeto del producto, usando la selección capturada
                   addToCart({
                     id: _id,
                     nombre: nombreModificado,
@@ -230,14 +227,13 @@ export default function Pedido() {
                     imagen,
                     descripcion,
                     categoria,
-                    // Para "POLLITO FRITO CON SALSAS" dejamos el tipo como "simple" (ya que la variación se refleja en las salsas)
-                    // para otros productos se usa el tipo seleccionado.
+                    // Para "POLLITO FRITO CON SALSAS", dejamos el tipo como "simple" (la variación se refleja en las salsas)
+                    // para los demás, usamos el tipo seleccionado.
                     tipoHamburguesa: nombre === "POLLITO FRITO CON SALSAS" ? "simple" : tipoSeleccionado,
-                    salsasSeleccionadas: nombre === "POLLITO FRITO CON SALSAS" ? sauceSelection : []
+                    salsasSeleccionadas: nombre === "POLLITO FRITO CON SALSas" ? sauceSelection : []
                   });
                   
-                  // Opcional: Reiniciar la selección de salsas para este producto,
-                  // de modo que la próxima vez el usuario pueda elegir nuevamente sin que se afecte el ítem ya agregado.
+                  // Reiniciamos la selección de salsas para este producto
                   if (nombre === "POLLITO FRITO CON SALSAS") {
                     setFreeSauces((prev) => ({ ...prev, [_id]: ["", ""] }));
                   }
