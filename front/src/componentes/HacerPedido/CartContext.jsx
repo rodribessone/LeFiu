@@ -4,18 +4,42 @@ import PropTypes from 'prop-types';
 // Crea el contexto
 const CartContext = createContext();
 
-// Proveedor del contexto
+// Función para "normalizar" las salsas: quita espacios y filtra cadenas vacías.
+const normalizeSauces = (sauces) => {
+  if (!sauces) return [];
+  return sauces.map(s => s.trim()).filter(s => s !== "");
+};
+
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
 
   // Función para agregar un producto al carrito
   const addToCart = (product) => {
     setCartItems((prev) => {
-      // Para "POLLITO FRITO CON SALSAS", siempre agregamos un nuevo ítem
       if (product.categoria === "POLLITO FRITO CON SALSAS") {
-        return [...prev, { ...product, quantity: 1 }];
+        // Normalizamos el array de salsas del producto nuevo
+        const saucesNew = normalizeSauces(product.salsasSeleccionadas);
+        // Buscamos un item existente con el mismo id, mismo tipo y mismas salsas
+        const existingItem = prev.find(item => {
+          if (item.id === product.id && item.tipoHamburguesa === product.tipoHamburguesa) {
+            const saucesExisting = normalizeSauces(item.salsasSeleccionadas);
+            return JSON.stringify(saucesNew) === JSON.stringify(saucesExisting);
+          }
+          return false;
+        });
+        if (existingItem) {
+          return prev.map(item =>
+            item.id === product.id &&
+            item.tipoHamburguesa === product.tipoHamburguesa &&
+            JSON.stringify(normalizeSauces(item.salsasSeleccionadas)) === JSON.stringify(saucesNew)
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+          );
+        } else {
+          return [...prev, { ...product, quantity: 1 }];
+        }
       } else {
-        // Para los demás productos, buscamos combinar si ya existe el mismo producto con el mismo tipo
+        // Para otros productos se combinan si id y tipo coinciden
         const existingItem = prev.find(
           (item) => item.id === product.id && item.tipoHamburguesa === product.tipoHamburguesa
         );
@@ -53,5 +77,4 @@ CartProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-// Hook para usar el contexto
 export const useCart = () => useContext(CartContext);
