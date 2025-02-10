@@ -160,7 +160,7 @@ export default function Pedido() {
               )}
 
               {/* Si el producto es "Pollito Frito con Salsas", mostrar dos selects para elegir 2 salsas gratis */}
-              {nombre === "Pollito Frito con Salsas" && (
+              {nombre === "POLLITO FRITO CON SALSAS" && (
                 <div className="mb-4">
                   <p className="text-gray-700">Selecciona 2 salsas gratis:</p>
                   <div className="flex flex-col gap-2">
@@ -207,7 +207,7 @@ export default function Pedido() {
                       : nombre;
                   // Si el producto es "Pollito Frito con Salsas", incluir las salsas gratis seleccionadas
                   const salsasSeleccionadas =
-                    nombre === "Pollito Frito con Salsas"
+                    nombre === "POLLITO FRITO CON SALSAS"
                       ? freeSauces[_id] || []
                       : [];
 
