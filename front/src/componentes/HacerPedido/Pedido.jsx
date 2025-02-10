@@ -9,8 +9,12 @@ export default function Pedido() {
   const [tipoHamburguesa, setTipoHamburguesa] = useState({});
   const [precioFinal, setPrecioFinal] = useState({});
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Hamburguesa");
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;  // Revisa si ya contiene un slash final
+  // Estado para guardar las salsas gratuitas para "Pollito Frito con Salsas"
+  // Se usará un objeto donde la clave es el _id del producto y el valor es un array de 2 posiciones
+  const [freeSauces, setFreeSauces] = useState({});
+  const backendUrl = import.meta.env.VITE_BACKEND_URL; // Revisa si ya contiene un slash final
 
+  // Función para cambiar el tipo de hamburguesa y asignar precio extra
   const handleTipoHamburguesaChange = (productoId, tipo) => {
     setTipoHamburguesa((prev) => ({
       ...prev,
@@ -28,6 +32,20 @@ export default function Pedido() {
       ...prev,
       [productoId]: precioAdicional,
     }));
+  };
+
+  // Función para manejar la selección de las salsas gratuitas para "Pollito Frito con Salsas"
+  // index: 1 para el primer select, 2 para el segundo.
+  const handleFreeSauceChange = (productId, index, sauceName) => {
+    setFreeSauces(prev => {
+      // Si ya existen selecciones para este producto, clonamos el array; de lo contrario, iniciamos un array de 2 elementos vacíos
+      const current = prev[productId] ? [...prev[productId]] : ["", ""];
+      current[index - 1] = sauceName;
+      return {
+        ...prev,
+        [productId]: current,
+      };
+    });
   };
 
   useEffect(() => {
@@ -55,12 +73,15 @@ export default function Pedido() {
       item.categoria === categoriaSeleccionada && item.categoria !== "Bebida"
   );
 
+  // Suponemos que ya tienes un array de salsas en tus productos filtrados para salsas
+  const salsas = productos.filter(item => item.categoria === "Salsas");
+
   return (
     <div className="relative mt-16 flex flex-col bg-white w-11/12 m-auto p-6 border-2 border-black rounded-xl md:w-4/5 lg:w-2/3">
       {/* Filtros */}
       <div className="flex justify-around mb-4">
         <button
-          className={`p-1 text-sm rounded ${categoriaSeleccionada === "Hamburguesa"  ? "bg-yellow-500 text-white" : "bg-gray-200"}`}
+          className={`p-1 text-sm rounded ${categoriaSeleccionada === "Hamburguesa" ? "bg-yellow-500 text-white" : "bg-gray-200"}`}
           onClick={() => setCategoriaSeleccionada("Hamburguesa")}
         >
           <FontAwesomeIcon icon={faBurger} className="mr-2" />
@@ -74,7 +95,7 @@ export default function Pedido() {
           Pollo
         </button>
         <button
-          className={`p-1 text-smrounded ${categoriaSeleccionada === "Salsas" ? "bg-red-500 text-white" : "bg-gray-200"}`}
+          className={`p-1 text-sm rounded ${categoriaSeleccionada === "Salsas" ? "bg-red-500 text-white" : "bg-gray-200"}`}
           onClick={() => setCategoriaSeleccionada("Salsas")}
         >
           <FontAwesomeIcon icon={faPepperHot} className="mr-2" />
@@ -83,16 +104,17 @@ export default function Pedido() {
       </div>
 
       <div className="flex justify-center items-center text-xs">
-      <h3>
-  Todas las porciones incluyen papas fritas
-  <img src="/papas.png" alt="Papas" className="inline-block w-6 h-6 mx-auto" />
-</h3>
-</div>
+        <h3>
+          Todas las porciones incluyen papas fritas
+          <img src="/papas.png" alt="Papas" className="inline-block w-6 h-6 mx-auto" />
+        </h3>
+      </div>
 
       {/* Productos */}
       {productosFiltrados.map((item) => {
         const { nombre, precio, imagen, descripcion, _id, categoria } = item;
         const precioTotal = precio + (precioFinal[_id] || 0);
+        const tipo = tipoHamburguesa[_id] || "simple";
 
         return (
           <div
@@ -103,7 +125,10 @@ export default function Pedido() {
               <img src={imagen} className="w-full h-32 object-cover rounded-lg" alt={nombre} />
             </div>
             <div className="flex flex-col w-full sm:w-2/3">
-              <h1 className="text-black text-xl font-bold">{nombre}</h1>
+              {/* Modificar el nombre para hamburguesas: si no es simple, añade la variación en mayúsculas */}
+              <h1 className="text-black text-xl font-bold">
+                {tipo !== "simple" ? `${nombre} (${tipo.toUpperCase()})` : nombre}
+              </h1>
               <p className="text-lg text-green-600 font-bold">${precioTotal}</p>
               <p className="text-black font-semibold text-sm sm:text-base">{descripcion}</p>
 
@@ -133,17 +158,59 @@ export default function Pedido() {
                   </div>
                 </div>
               )}
+
+              {/* Si el producto es "Pollito Frito con Salsas", mostrar dos selects para elegir 2 salsas gratis */}
+              {nombre === "Pollito Frito con Salsas" && (
+                <div className="mb-4">
+                  <p className="text-gray-700">Selecciona 2 salsas gratis:</p>
+                  <div className="flex flex-col gap-2">
+                    {/* Primer select */}
+                    <select
+                      className="p-2 border rounded"
+                      value={freeSauces[_id] ? freeSauces[_id][0] : ""}
+                      onChange={(e) => handleFreeSauceChange(_id, 1, e.target.value)}
+                    >
+                      <option value="">Selecciona la primera salsa</option>
+                      {salsas.map((salsa) => (
+                        <option key={salsa._id} value={salsa.nombre}>
+                          {salsa.nombre}
+                        </option>
+                      ))}
+                    </select>
+                    {/* Segundo select */}
+                    <select
+                      className="p-2 border rounded"
+                      value={freeSauces[_id] ? freeSauces[_id][1] : ""}
+                      onChange={(e) => handleFreeSauceChange(_id, 2, e.target.value)}
+                    >
+                      <option value="">Selecciona la segunda salsa</option>
+                      {salsas.map((salsa) => (
+                        <option key={salsa._id} value={salsa.nombre}>
+                          {salsa.nombre}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              )}
             </div>
             <div className="flex items-center justify-center w-full sm:w-1/4 mt-4 sm:mt-0">
               <button
                 className="flex max-h-16 items-center justify-center p-4 text-white bg-green-500 border-1 rounded border-black hover:bg-green-600 w-full sm:w-auto"
                 onClick={() => {
-                  // Obtén el tipo de hamburguesa seleccionado (por defecto "simple")
-                  const tipo = tipoHamburguesa[_id] || "simple";
-                  // Modifica el nombre solo si el tipo es "doble" o "triple"
-                  const nombreModificado = tipo !== "simple" ? `${nombre} (${tipo.toUpperCase()})` : nombre;
-            
-                  // Llama a addToCart con el nombre modificado
+                  // Obtén el tipo seleccionado (por defecto "simple")
+                  const tipoSeleccionado = tipoHamburguesa[_id] || "simple";
+                  // Modifica el nombre para incluir la variación (en mayúsculas) si es diferente a "simple"
+                  const nombreModificado =
+                    tipoSeleccionado !== "simple"
+                      ? `${nombre} (${tipoSeleccionado.toUpperCase()})`
+                      : nombre;
+                  // Si el producto es "Pollito Frito con Salsas", incluir las salsas gratis seleccionadas
+                  const salsasSeleccionadas =
+                    nombre === "Pollito Frito con Salsas"
+                      ? freeSauces[_id] || []
+                      : [];
+
                   addToCart({
                     id: _id,
                     nombre: nombreModificado,
@@ -151,7 +218,8 @@ export default function Pedido() {
                     imagen,
                     descripcion,
                     categoria,
-                    tipoHamburguesa: tipo,
+                    tipoHamburguesa: tipoSeleccionado,
+                    salsasSeleccionadas,
                   });
                 }}
               >
