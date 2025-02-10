@@ -11,19 +11,35 @@ export const CartProvider = ({ children }) => {
   // Función para agregar un producto al carrito
   const addToCart = (product) => {
     setCartItems((prev) => {
-      const existingItem = prev.find(
-        (item) => item.id === product.id && item.tipoHamburguesa === product.tipoHamburguesa
-      );
-
+      const existingItem = prev.find((item) => {
+        // Si el producto es "POLLITO FRITO CON SALSAS", comparar también las salsas seleccionadas
+        if (product.categoria === "POLLITO FRITO CON SALSAS") {
+          return (
+            item.id === product.id &&
+            item.tipoHamburguesa === product.tipoHamburguesa &&
+            JSON.stringify(item.salsasSeleccionadas) === JSON.stringify(product.salsasSeleccionadas)
+          );
+        } else {
+          // Para los demás productos, comparar solo id y tipo
+          return item.id === product.id && item.tipoHamburguesa === product.tipoHamburguesa;
+        }
+      });
+  
       if (existingItem) {
-        // Si el producto ya existe con el mismo tipo, aumenta la cantidad
+        // Si ya existe el producto (con las mismas características), aumentamos la cantidad
         return prev.map((item) =>
-          item.id === product.id && item.tipoHamburguesa === product.tipoHamburguesa
+          product.categoria === "POLLITO FRITO CON SALSAS"
+            ? item.id === product.id &&
+              item.tipoHamburguesa === product.tipoHamburguesa &&
+              JSON.stringify(item.salsasSeleccionadas) === JSON.stringify(product.salsasSeleccionadas)
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+            : item.id === product.id && item.tipoHamburguesa === product.tipoHamburguesa
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
       } else {
-        // Si es un nuevo producto o tiene un tipo diferente, agrégalo
+        // Si es un nuevo producto o tiene diferencias (por ejemplo, salsas distintas), lo agregamos
         return [
           ...prev,
           { ...product, quantity: 1 }, // Inicializa con cantidad 1
