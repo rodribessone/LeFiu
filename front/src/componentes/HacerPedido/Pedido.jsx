@@ -218,13 +218,13 @@ export default function Pedido() {
                   const salsasSeleccionadas = nombre === "POLLITO FRITO CON SALSAS" ? freeSauces[_id] || [] : [];
 
                   addToCart({
-                    id: _id,
+                    // Genera un id único basado en el producto y las salsas seleccionadas
+                    id: `${_id}-${salsasSeleccionadas.join('-')}`,
                     nombre: nombreModificado,
                     precio: precioTotal,
                     imagen,
                     descripcion,
                     categoria,
-                    // Para "POLLITO FRITO CON SALSAS", dejamos el tipo como "simple"
                     tipoHamburguesa: nombre === "POLLITO FRITO CON SALSAS" ? "simple" : tipoSeleccionado,
                     salsasSeleccionadas,
                   });
