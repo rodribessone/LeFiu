@@ -51,53 +51,60 @@ export default function Cart() {
         <div
           ref={menuRef}
           className="absolute p-6 -right-16 mt-6 w-80 text-black bg-white border rounded shadow-lg z-50"
+          style={{ 
+            maxHeight: '70vh',
+            overflowY: 'auto'
+          }}
         >
           <h2 className="text-xl font-bold mb-4">Tu Carrito</h2>
 
           {cartItems.length === 0 ? (
             <p className="text-gray-600">Tu carrito está vacío.</p>
           ) : (
-            <div>
-              {cartItems.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex items-center justify-between mb-4"
-                >
-                  <div>
-                    <h3 className="font-bold">{item.nombre}</h3>
-                    <p className="text-sm text-gray-600">Cantidad: {item.quantity}</p>
-                    <p className="text-sm text-gray-600">Precio unitario: ${item.precio}</p>
-                    <p className="text-sm text-gray-600">Subtotal: ${item.precio * item.quantity}</p>
-                  </div>
-                  <button
-                    onClick={() => removeFromCart(item.id)}
-                    className="text-red-600 hover:text-red-800"
+            <div className="space-y-4">
+              <div className="pr-2" style={{ maxHeight: '60vh', overflowY: 'auto' }}>
+                {cartItems.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex items-center justify-between pb-4 border-b"
                   >
-                    Eliminar
-                  </button>
-                </div>
-              ))}
-
-              <div className="text-lg font-bold mt-4">
-                Total: ${total.toFixed(2)}
+                    <div>
+                      <h3 className="font-bold">{item.nombre}</h3>
+                      <p className="text-sm text-gray-600">Cantidad: {item.quantity}</p>
+                      <p className="text-sm text-gray-600">Precio unitario: ${item.precio}</p>
+                      <p className="text-sm text-gray-600">Subtotal: ${item.precio * item.quantity}</p>
+                    </div>
+                    <button
+                      onClick={() => removeFromCart(item.id)}
+                      className="text-red-600 hover:text-red-800"
+                    >
+                      Eliminar
+                    </button>
+                  </div>
+                ))}
               </div>
 
-              <Link to="/confirmarCompra">
-                <button
-                  onClick={handleConfirmarCompra}
-                  className="w-full bg-green-500 text-white py-2 rounded mt-4 hover:bg-green-600"
-                  >
-                  Confirmar Compra
-                </button>
-              </Link>
-    
+              <div className="sticky bottom-0 bg-white pt-4">
+                <div className="text-lg font-bold border-t pt-4">
+                  Total: ${total.toFixed(2)}
+                </div>
 
-              <button
-                onClick={clearCart}
-                className="w-full bg-red-500 text-white py-2 rounded mt-4 hover:bg-red-600"
-              >
-                Vaciar Carrito
-              </button>
+                <Link to="/confirmarCompra">
+                  <button
+                    onClick={handleConfirmarCompra}
+                    className="w-full bg-green-500 text-white py-2 rounded mt-4 hover:bg-green-600"
+                  >
+                    Confirmar Compra
+                  </button>
+                </Link>
+
+                <button
+                  onClick={clearCart}
+                  className="w-full bg-red-500 text-white py-2 rounded mt-4 hover:bg-red-600"
+                >
+                  Vaciar Carrito
+                </button>
+              </div>
             </div>
           )}
         </div>
