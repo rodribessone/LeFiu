@@ -1,6 +1,8 @@
 import { createContext, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 
+//saque el import react ya que no se usa
+
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {

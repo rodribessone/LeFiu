@@ -8,7 +8,7 @@ export default function Cart() {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
 
-  const toggleMenu = () => setIsOpen((prev) => !prev);
+  const toggleMenu = () => setIsOpen((prev) => !prev);   //
 
   useEffect(() => {
     const handleClickOutside = (event) => {
