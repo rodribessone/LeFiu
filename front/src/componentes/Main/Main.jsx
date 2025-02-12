@@ -47,7 +47,7 @@ export default function Main() {
           </span>
         </div>
 
-        {/* Horarios */}
+        {/* Horario */}
         <p className='text-center text-sm mb-4'>⏰ Miércoles a Domingo<br/>20:30 - 23:30</p>
 
         {/* Redes Sociales */}
