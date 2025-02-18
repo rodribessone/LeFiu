@@ -62,16 +62,14 @@ const handleFreeSauceChange = (productId, index, sauceName) => {
   // Fetch de los precios extra para hamburguesa (doble y triple)
   useEffect(() => {
     fetch(`${backendUrl}/tiposHamburguesa`)
-      .then((res) => res.json())
-      .then((data) => {
-        // Suponiendo que el endpoint devuelve un array con dos objetos, uno para doble y otro para triple:
-        // [ { nombre: "doble", precio: 800 }, { nombre: "triple", precio: 1600 } ]
-        const precios = {};
-        data.forEach(item => {
-          precios[item.nombre.toLowerCase()] = item.precio;
-        });
-        setExtraPrices(precios);
-      })
+  .then((res) => res.json())
+  .then((data) => {
+    const precios = {};
+    data.forEach(item => {
+      precios[item.nombre.toLowerCase()] = item.precio;
+    });
+    setExtraPrices(precios);
+  })
       .catch((error) => console.error("Error fetching extra prices:", error));
   }, [backendUrl]);
 
