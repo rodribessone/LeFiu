@@ -61,7 +61,7 @@ const handleFreeSauceChange = (productId, index, sauceName) => {
 
   // Fetch de los precios extra para hamburguesa (doble y triple)
   useEffect(() => {
-    fetch(`${backendUrl}/hamburguesa`)
+    fetch(`${backendUrl}/tiposHamburguesa`)
       .then((res) => res.json())
       .then((data) => {
         // Suponiendo que el endpoint devuelve un array con dos objetos, uno para doble y otro para triple:
