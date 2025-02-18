@@ -1,56 +1,28 @@
-const { connectToMongoDB } = require('../configuracion/indexconfig');
-const mongoose = require('mongoose');
+const HamburguesaModel = require('../modelo/esquemaHamburguesas');
 
-class HamburguesasModel {
-  static async getHamburguesasPrice() {
-    try {
-      const clientMongoDB = await connectToMongoDB();
-      if (!clientMongoDB) {
-        throw new Error('Error al conectar con MongoDB');
-      }
-
-      // Buscar el documento en la colección 'hamburguesa'
-      const resultado = await clientMongoDB.db('LeFiu').collection('hamburguesa').findOne();
-
-      if (!resultado || !resultado.price) {
-        return { data: null, error: true, message: 'Precio no encontrado' };
-      }
-
-      return { data: resultado, error: false };
-    } catch (error) {
-      console.error(error);
-      return { data: null, error: true, message: error.message };
+class HamburguesasController {
+  static async getHamburguesasPrice(req, res) {
+    const result = await HamburguesaModel.getHamburguesasPrice();
+    if (result.error || !result.data) {
+      return res.status(500).json({ message: result.message || 'Error al obtener el precio de tipos de hamburguesa' });
     }
+    res.status(200).json({ price: result.data.price });
   }
 
-  static async updateHamburguesasPrice(price) {
-    try {
-      const clientMongoDB = await connectToMongoDB();
-      if (!clientMongoDB) {
-        throw new Error('Error al conectar con MongoDB');
-      }
-
-      if (typeof price !== 'number' || price <= 0) {
-        return { data: null, error: true, message: 'El precio debe ser un número positivo' };
-      }
-
-      // Actualizar (o crear) el documento en la colección 'hamburguesa'
-      const resultado = await clientMongoDB.db('LeFiu').collection('hamburguesa').findOneAndUpdate(
-        {},
-        { $set: { price } },
-        { upsert: true, returnDocument: 'after' }
-      );
-
-      if (!resultado.value || !resultado.value.price) {
-        return { data: null, error: true, message: 'No se pudo actualizar el precio correctamente' };
-      }
-
-      return { data: resultado.value, error: false };
-    } catch (error) {
-      console.error(error);
-      return { data: null, error: true, message: error.message };
+  static async updateHamburguesasPrice(req, res) {
+    const { price } = req.body;
+    if (typeof price !== 'number' || price <= 0) {
+      return res.status(400).json({ message: 'El precio debe ser un número positivo' });
     }
+    const result = await HamburguesaModel.updateHamburguesasPrice(price);
+    if (result.error || !result.data) {
+      return res.status(400).json({ message: result.message || 'Error al actualizar el precio de tipos de hamburguesa' });
+    }
+    res.status(200).json({
+      message: 'Precio de tipos de hamburguesa actualizado correctamente.',
+      price: result.data.price,
+    });
   }
 }
 
-module.exports = HamburguesasModel;
+module.exports = HamburguesasController;

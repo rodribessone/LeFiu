@@ -17,7 +17,6 @@ connectToMongoDB();
 
 app.use(express.json());
 
-// Configuración del middleware de CORS
 app.use(
   cors({
     origin: 'https://le-fiu.vercel.app/', // Dominio del frontend permitido
@@ -37,7 +36,6 @@ app.use("/", rutasHamburguesas);
 
 // Sirve los archivos estáticos del build del frontend
 app.use(express.static(path.join(__dirname, 'build')));
-
 // Ruta catch-all para el frontend
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
