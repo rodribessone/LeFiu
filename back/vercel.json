@@ -11,7 +11,7 @@
     ],
     "routes": [
       {
-        "handle": "files"
+      "handle": "rewrite"
       },
       {
         "src": "/assets/(.)",
