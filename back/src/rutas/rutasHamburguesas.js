@@ -4,12 +4,7 @@ const { getHamburguesasPrice, updateHamburguesasPrice } = require('../controlado
 const { authenticate, authorize } = require('../middleware/auth');
 
 // Ruta para obtener el precio extra para tipos de hamburguesa
-console.log("Cargando rutas de hamburguesas...");
-router.get('/hamburguesa', (req, res) => {
-  console.log("Solicitud recibida en /hamburguesa");
-  getHamburguesasPrice(req, res);
-});
-console.log("Rutas de hamburguesas cargadas correctamente.");
+router.get('/hamburguesa', getHamburguesasPrice);
 
 // Ruta para actualizar el precio extra para tipos de hamburguesa
 router.put('/hamburguesa', authenticate, authorize(['admin']), updateHamburguesasPrice);

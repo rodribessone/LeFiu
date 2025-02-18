@@ -36,10 +36,10 @@ app.use("/", configRutas);
 app.use("/", rutasHamburguesas);
 
 // **Ahora define la ruta catch-all para archivos estáticos**
-app.use(express.static(path.join(__dirname, 'build')));
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+// app.use(express.static(path.join(__dirname, 'build')));
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// });
 
 // Iniciar el servidor
 app.listen(process.env.PORT, () => {
