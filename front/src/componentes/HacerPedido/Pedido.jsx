@@ -59,16 +59,17 @@ const handleFreeSauceChange = (productId, index, sauceName) => {
           .catch((error) => console.error("Error fetching productos:", error));
       }, [backendUrl]);
 
-  // Fetch de los precios extra para hamburguesa (doble y triple)
+  // Fetch de los precios extra para hamburguesa (doble y striple)
   useEffect(() => {
-    fetch(`${backendUrl}/hamburguesa`)
+    fetch(`${backendUrl}/hamburguesa`,
+    )
   .then((res) => res.json())
   .then((data) => {
-    const precios = {};
+    const price = {};
     data.forEach(item => {
-      precios[item.nombre.toLowerCase()] = item.precio;
+      price[item.nombre.toLowerCase()] = item.price;
     });
-    setExtraPrices(precios);
+    setExtraPrices(price);
   })
       .catch((error) => console.error("Error fetching extra prices:", error));
   }, [backendUrl]);
