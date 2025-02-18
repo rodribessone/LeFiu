@@ -4,14 +4,16 @@ class HamburguesaModel {
   static async getHamburguesasPrice() {
     try {
       const client = await connectToMongoDB();
-      if (!client) throw new Error("Error al conectar con MongoDB");
       const resultado = await client.db('LeFiu').collection('hamburguesa').findOne();
-      if (!resultado || !resultado.price) {
-        return { data: null, error: true, message: 'Precio no encontrado' };
-      }
-      return { data: resultado, error: false };
+      // Debes retornar ambos precios
+      return { 
+        data: {
+          doble: resultado?.doble || 0,
+          triple: resultado?.triple || 0
+        }, 
+        error: false 
+      };
     } catch (error) {
-      console.error(error);
       return { data: null, error: true, message: error.message };
     }
   }

@@ -3,10 +3,14 @@ const HamburguesaModel = require('../modelo/esquemaHamburguesas');
 class HamburguesasController {
   static async getHamburguesasPrice(req, res) {
     const result = await HamburguesaModel.getHamburguesasPrice();
-    if (result.error || !result.data) {
-      return res.status(500).json({ message: result.message || 'Error al obtener el precio de tipos de hamburguesa' });
+    if (result.error) {
+      return res.status(500).json({ message: 'Error al obtener precios' });
     }
-    res.status(200).json({ price: result.data.price });
+    // Enviar como array de objetos
+    res.status(200).json([
+      { nombre: "doble", precio: result.data.doble },
+      { nombre: "triple", precio: result.data.triple }
+    ]);
   }
 
   static async updateHamburguesasPrice(req, res) {

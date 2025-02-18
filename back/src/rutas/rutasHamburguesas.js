@@ -4,9 +4,9 @@ const { getHamburguesasPrice, updateHamburguesasPrice } = require('../controlado
 const { authenticate, authorize } = require('../middleware/auth');
 
 // Ruta para obtener el precio extra para tipos de hamburguesa
-router.get('/tiposHamburguesa', getHamburguesasPrice);
+router.get('/hamburguesa', getHamburguesasPrice);
 
 // Ruta para actualizar el precio extra para tipos de hamburguesa
-router.put('/tiposHamburguesa', authenticate, authorize(['admin']), updateHamburguesasPrice);
+router.put('/hamburguesa', authenticate, authorize(['admin']), updateHamburguesasPrice);
 
 module.exports = router;
