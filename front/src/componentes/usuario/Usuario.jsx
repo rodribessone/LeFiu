@@ -12,6 +12,7 @@ export default function Usuario() {
     // Fragmento en usuarios.jsx
   const [precioDoble, setPrecioDoble] = useState("");
   const [precioTriple, setPrecioTriple] = useState("");
+  
 
   const handleEliminarClick = (id) => {
     setProductoAEliminar(id);

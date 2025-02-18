@@ -10,7 +10,7 @@ export default function Pedido() {
   const [precioFinal, setPrecioFinal] = useState({});
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Hamburguesa");
   const [freeSauces, setFreeSauces] = useState({});
-  const [extraPrices, setExtraPrices] = useState({ doble: 0, triple: 0 });
+  const [extraPrices, setExtraPrices] = useState({ doble: 800, triple: 1900 });
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const handleTipoHamburguesaChange = (productoId, tipo) => {
@@ -25,7 +25,6 @@ export default function Pedido() {
     } else if (tipo === "triple") {
       precioAdicional = extraPrices.triple || 0;
     }
-
     setPrecioFinal((prev) => ({
       ...prev,
       [productoId]: precioAdicional,
@@ -41,36 +40,37 @@ const handleFreeSauceChange = (productId, index, sauceName) => {
   });
 };
 
-  useEffect(() => {
-    fetch(`${backendUrl}/productos`)
-      .then((res) => res.json())
-      .then((data) => {
-        setProductos(data);
-        const defaultTipo = {};
-        const defaultPrecio = {};
-        data.forEach((producto) => {
-          if (producto.categoria === "Hamburguesa") {
-            defaultTipo[producto._id] = "simple";
-            defaultPrecio[producto._id] = 0;
-          }
-        });
-        setTipoHamburguesa(defaultTipo);
-        setPrecioFinal(defaultPrecio);
-      })
-      .catch((error) => console.error("Error fetching productos:", error));
-  }, [backendUrl]);
+      useEffect(() => {
+        fetch(`${backendUrl}/productos`)
+          .then((res) => res.json())
+          .then((data) => {
+            setProductos(data);
+            const defaultTipo = {};
+            const defaultPrecio = {};
+            data.forEach((producto) => {
+              if (producto.categoria === "Hamburguesa") {
+                defaultTipo[producto._id] = "simple";
+                defaultPrecio[producto._id] = 0;
+              }
+            });
+            setTipoHamburguesa(defaultTipo);
+            setPrecioFinal(defaultPrecio);
+          })
+          .catch((error) => console.error("Error fetching productos:", error));
+      }, [backendUrl]);
 
   // Fetch de los precios extra para hamburguesa (doble y triple)
   useEffect(() => {
     fetch(`${backendUrl}/hamburguesa`)
       .then((res) => res.json())
       .then((data) => {
-        // Se espera que data sea un array con objetos { nombre: "doble", precio: 800 }, etc.
-        const prices = {};
+        // Suponiendo que el endpoint devuelve un array con dos objetos, uno para doble y otro para triple:
+        // [ { nombre: "doble", precio: 800 }, { nombre: "triple", precio: 1600 } ]
+        const precios = {};
         data.forEach(item => {
-          prices[item.nombre.toLowerCase()] = item.precio;
+          precios[item.nombre.toLowerCase()] = item.precio;
         });
-        setExtraPrices(prices);
+        setExtraPrices(precios);
       })
       .catch((error) => console.error("Error fetching extra prices:", error));
   }, [backendUrl]);
