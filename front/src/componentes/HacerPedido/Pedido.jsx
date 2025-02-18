@@ -10,6 +10,7 @@ export default function Pedido() {
   const [precioFinal, setPrecioFinal] = useState({});
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Hamburguesa");
   const [freeSauces, setFreeSauces] = useState({});
+  const [extraPrices, setExtraPrices] = useState({ doble: 0, triple: 0 });
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const handleTipoHamburguesaChange = (productoId, tipo) => {
@@ -19,8 +20,11 @@ export default function Pedido() {
     }));
 
     let precioAdicional = 0;
-    if (tipo === "doble") precioAdicional = 800;
-    if (tipo === "triple") precioAdicional = 1900;
+    if (tipo === "doble") {
+      precioAdicional = extraPrices.doble || 0;
+    } else if (tipo === "triple") {
+      precioAdicional = extraPrices.triple || 0;
+    }
 
     setPrecioFinal((prev) => ({
       ...prev,
@@ -28,37 +32,54 @@ export default function Pedido() {
     }));
   };
 
-  const handleFreeSauceChange = (productId, index, sauceName) => {
-    setFreeSauces(prev => {
-      const current = prev[productId] ? [...prev[productId]] : ["", ""];
-      current[index - 1] = sauceName;
-      return { ...prev, [productId]: current };
-    });
-  };
+// Manejar selección de salsas gratis para "POLLITO FRITO CON SALSAS"
+const handleFreeSauceChange = (productId, index, sauceName) => {
+  setFreeSauces(prev => {
+    const current = prev[productId] ? [...prev[productId]] : ["", ""];
+    current[index - 1] = sauceName;
+    return { ...prev, [productId]: current };
+  });
+};
 
   useEffect(() => {
     fetch(`${backendUrl}/productos`)
       .then((res) => res.json())
       .then((data) => {
         setProductos(data);
-        const defaults = data.reduce((acc, producto) => {
+        const defaultTipo = {};
+        const defaultPrecio = {};
+        data.forEach((producto) => {
           if (producto.categoria === "Hamburguesa") {
-            acc.tipo[producto._id] = "simple";
-            acc.precio[producto._id] = 0;
+            defaultTipo[producto._id] = "simple";
+            defaultPrecio[producto._id] = 0;
           }
-          return acc;
-        }, { tipo: {}, precio: {} });
-        setTipoHamburguesa(defaults.tipo);
-        setPrecioFinal(defaults.precio);
+        });
+        setTipoHamburguesa(defaultTipo);
+        setPrecioFinal(defaultPrecio);
       })
       .catch((error) => console.error("Error fetching productos:", error));
+  }, [backendUrl]);
+
+  // Fetch de los precios extra para hamburguesa (doble y triple)
+  useEffect(() => {
+    fetch(`${backendUrl}/hamburguesa`)
+      .then((res) => res.json())
+      .then((data) => {
+        // Se espera que data sea un array con objetos { nombre: "doble", precio: 800 }, etc.
+        const prices = {};
+        data.forEach(item => {
+          prices[item.nombre.toLowerCase()] = item.precio;
+        });
+        setExtraPrices(prices);
+      })
+      .catch((error) => console.error("Error fetching extra prices:", error));
   }, [backendUrl]);
 
   const productosFiltrados = productos.filter(
     (item) => item.categoria === categoriaSeleccionada && item.categoria !== "Bebida"
   );
 
-  const salsas = productos.filter(item => item.categoria === "Salsas");
+   const salsas = productos.filter(item => item.categoria === "Salsas");
 
   return (
     <div className="relative mt-16 flex flex-col bg-white w-11/12 m-auto p-6 border-2 border-black rounded-xl md:w-4/5 lg:w-2/3">
@@ -67,18 +88,11 @@ export default function Pedido() {
         {["Hamburguesa", "Pollo", "Salsas"].map((categoria) => (
           <button
             key={categoria}
-            className={`p-1 text-sm rounded ${
-              categoriaSeleccionada === categoria 
-                ? categoria === "Salsas" ? "bg-red-500" : "bg-yellow-500"
-                : "bg-gray-200"
-            } text-white`}
+            className={`p-1 text-sm rounded ${categoriaSeleccionada === categoria ? (categoria === "Salsas" ? "bg-red-500" : "bg-yellow-500") : "bg-gray-200"} text-white`}
             onClick={() => setCategoriaSeleccionada(categoria)}
           >
             <FontAwesomeIcon 
-              icon={
-                categoria === "Hamburguesa" ? faBurger :
-                categoria === "Pollo" ? faDrumstickBite : faPepperHot
-              } 
+              icon={categoria === "Hamburguesa" ? faBurger : categoria === "Pollo" ? faDrumstickBite : faPepperHot} 
               className="mr-2"
             />
             {categoria}
@@ -98,7 +112,7 @@ export default function Pedido() {
         const { nombre, precio, imagen, descripcion, _id, categoria } = item;
         const precioTotal = precio + (precioFinal[_id] || 0);
         const tipo = tipoHamburguesa[_id] || "simple";
-        const esPollito = nombre === "POLLITO FRITO CON SALSAS";
+        const esPollito = nombre === "POLLITO FRITO CON SALSAS"; // Asegurate que coincide con la forma en que lo guardás
 
         return (
           <div
@@ -108,33 +122,27 @@ export default function Pedido() {
             <div className="m-4 sm:w-1/4">
               <img src={imagen} className="w-full h-32 object-cover rounded-lg" alt={nombre} />
             </div>
-            
             <div className="flex flex-col w-full sm:w-2/3">
               <h1 className="text-black text-xl font-bold">
                 {esPollito 
-                  ? nombre
-                  : `${nombre}${tipo !== "simple" ? ` (${tipo.toUpperCase()})` : ""}`
-                }
+                  ? nombre 
+                  : tipo !== "simple" ? `${nombre} (${tipo.toUpperCase()})` : nombre}
               </h1>
               <p className="text-lg text-green-600 font-bold">${precioTotal}</p>
               <p className="text-black font-semibold text-sm sm:text-base">{descripcion}</p>
 
-              {categoria === "Hamburguesa" && (
+              {categoria === "Hamburguesa" && !esPollito && (
                 <div className="mb-4">
                   <p className="text-gray-700">Tipo de Hamburguesa:</p>
                   <div className="flex gap-4">
                     {["simple", "doble", "triple"].map((tipoBtn) => (
                       <button
                         key={tipoBtn}
-                        className={`p-2 rounded mt-2 ${
-                          tipo === tipoBtn ? "bg-green-500 text-white" : "bg-gray-200"
-                        }`}
+                        className={`p-2 rounded mt-2 ${tipo === tipoBtn ? "bg-green-500 text-white" : "bg-gray-200"}`}
                         onClick={() => handleTipoHamburguesaChange(_id, tipoBtn)}
                       >
                         {tipoBtn.charAt(0).toUpperCase() + tipoBtn.slice(1)}
-                        {tipoBtn !== "simple" && ` (+$${
-                          tipoBtn === "doble" ? "800" : "1900"
-                        })`}
+                        {tipoBtn !== "simple" && ` (+$${tipoBtn === "doble" ? extraPrices.doble || 0 : extraPrices.triple || 0})`}
                       </button>
                     ))}
                   </div>
@@ -164,7 +172,6 @@ export default function Pedido() {
                 </div>
               )}
             </div>
-
             <div className="flex items-center justify-center w-full sm:w-1/4 mt-4 sm:mt-0">
               <button
                 className="flex max-h-16 items-center justify-center p-4 text-white bg-green-500 border-1 rounded border-black hover:bg-green-600 w-full sm:w-auto"
@@ -179,21 +186,19 @@ export default function Pedido() {
                     : tipoSeleccionado !== "simple"
                       ? `${nombre} (${tipoSeleccionado.toUpperCase()})`
                       : nombre;
-
+                  
                   addToCart({
-                    id: esPollito
-                      ? `${_id}-${salsasSeleccionadas.join('-')}`
-                      : `${_id}-${tipoSeleccionado}`,
-                    _id,
+                    // Para "POLLITO FRITO CON SALSAS", agregamos un identificador único que incluya las salsas seleccionadas
+                    id: esPollito ? `${_id}-${salsasSeleccionadas.join('-')}` : `${_id}-${tipoSeleccionado}`,
                     nombre: nombreModificado,
                     precio: precioTotal,
                     imagen,
                     descripcion,
                     categoria,
                     tipoHamburguesa: esPollito ? "simple" : tipoSeleccionado,
-                    salsasSeleccionadas: esPollito ? salsasSeleccionadas : [],
+                    salsasSeleccionadas,
                   });
-
+                  
                   if (esPollito) {
                     setFreeSauces(prev => ({ ...prev, [_id]: ["", ""] }));
                   }

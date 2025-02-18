@@ -9,6 +9,9 @@ export default function Usuario() {
   const [deliveryPrice, setDeliveryPrice] = useState(0); // Estado para el precio de delivery
   const [newDeliveryPrice, setNewDeliveryPrice] = useState(""); // Estado para el nuevo precio de delivery
   const backendUrl = import.meta.env.VITE_BACKEND_URL;  // Revisa si ya contiene un slash final
+    // Fragmento en usuarios.jsx
+  const [precioDoble, setPrecioDoble] = useState("");
+  const [precioTriple, setPrecioTriple] = useState("");
 
   const handleEliminarClick = (id) => {
     setProductoAEliminar(id);
@@ -31,6 +34,37 @@ export default function Usuario() {
       })
       .catch((error) => console.error('Error fetching delivery price:', error.message));
   }, []);
+
+  // Función para actualizar los precios
+const handleUpdateHamburguesaPrices = async () => {
+  const token = localStorage.getItem('token');
+  if (!precioDoble || !precioTriple || isNaN(precioDoble) || isNaN(precioTriple)) {
+    alert("Por favor, ingresa precios válidos para doble y triple.");
+    return;
+  }
+  
+  try {
+    const response = await fetch(`${backendUrl}/hamburguesa`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        doble: parseFloat(precioDoble),
+        triple: parseFloat(precioTriple)
+      })
+    });
+    if (response.ok) {
+      alert("Precios actualizados correctamente.");
+      // Opcional: refrescar datos o actualizar estados
+    } else {
+      alert("Error al actualizar precios.");
+    }
+  } catch (error) {
+    console.error("Error updating hamburguesa prices:", error);
+  }
+};
 
   const eliminarProducto = async () => {
     const token = localStorage.getItem('token');
@@ -114,6 +148,33 @@ export default function Usuario() {
       onClick={handleUpdateDeliveryPrice}
     >
       Actualizar
+    </button>
+  </div>
+</div>
+
+    {/* Sección para gestionar el precio de las hamburguesas */}
+<div className="w-full p-4 bg-gray-100 rounded-lg shadow-md my-6">
+  <h2 className="text-xl font-bold mb-4">Configurar Precio Extra para Hamburguesas</h2>
+  <div className="flex flex-col md:flex-row items-center gap-4">
+    <input
+      type="number"
+      className="p-2 border rounded-lg w-full md:w-1/2"
+      placeholder="Precio extra Doble"
+      value={precioDoble}
+      onChange={(e) => setPrecioDoble(e.target.value)}
+    />
+    <input
+      type="number"
+      className="p-2 border rounded-lg w-full md:w-1/2"
+      placeholder="Precio extra Triple"
+      value={precioTriple}
+      onChange={(e) => setPrecioTriple(e.target.value)}
+    />
+    <button
+      className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+      onClick={handleUpdateHamburguesaPrices}
+    >
+      Actualizar Precios
     </button>
   </div>
 </div>
