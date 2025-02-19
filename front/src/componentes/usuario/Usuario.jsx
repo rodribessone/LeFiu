@@ -119,22 +119,22 @@ export default function Usuario() {
         },
         body: JSON.stringify({ price: priceNum }),
       });
-      const responseData = await response.json();
-      console.log("Backend response:", responseData); 
+  
+      const responseData = await response.json(); // ✅ Leer solo una vez
+      console.log("Backend response:", responseData);
   
       if (response.ok) {
-        const data = await response.json();
-        setDeliveryPrice(data.deliveryPrice);
+        setDeliveryPrice(responseData.deliveryPrice);
         setNewDeliveryPrice("");
         alert('Precio de delivery actualizado correctamente');
       } else {
-        const errorData = await response.json();
-        alert(`Error al actualizar el delivery: ${errorData.message || "Desconocido"}`);
+        alert(`Error al actualizar el delivery: ${responseData.message || "Desconocido"}`);
       }
     } catch (error) {
       console.error('Error al actualizar el precio del delivery:', error);
     }
   };
+  
 
   return (
     <div className="relative bg-white w-full md:w-4/5 m-auto p-4">
