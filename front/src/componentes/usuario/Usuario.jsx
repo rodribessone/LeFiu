@@ -119,8 +119,7 @@ export default function Usuario() {
         },
         body: JSON.stringify({ price: priceNum }),
       });
-  
-      const responseData = await response.json(); // ✅ Leer solo una vez
+      const responseData = await response.json();
       console.log("Backend response:", responseData);
   
       if (response.ok) {
@@ -134,6 +133,7 @@ export default function Usuario() {
       console.error('Error al actualizar el precio del delivery:', error);
     }
   };
+  
   
 
   return (
