@@ -61,14 +61,7 @@ const handleFreeSauceChange = (productId, index, sauceName) => {
 
   // Fetch de los precios extra para hamburguesa (doble y striple)
   useEffect(() => {
-    fetch(`${backendUrl}/hamburguesa`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
+    fetch(`${backendUrl}/hamburguesa`)
   .then((res) => res.json())
   .then((data) => {
     const price = {};
