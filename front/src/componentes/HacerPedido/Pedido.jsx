@@ -18,13 +18,14 @@ export default function Pedido() {
       ...prev,
       [productoId]: tipo,
     }));
-
+  
     let precioAdicional = 0;
     if (tipo === "doble") {
       precioAdicional = extraPrices.doble || 0;
     } else if (tipo === "triple") {
       precioAdicional = extraPrices.triple || 0;
     }
+  
     setPrecioFinal((prev) => ({
       ...prev,
       [productoId]: precioAdicional,
@@ -62,16 +63,18 @@ const handleFreeSauceChange = (productId, index, sauceName) => {
   // Fetch de los precios extra para hamburguesa (doble y striple)
   useEffect(() => {
     fetch(`${backendUrl}/hamburguesa`)
-  .then((res) => res.json())
-  .then((data) => {
-    const price = {};
-    data.forEach(item => {
-      price[item.nombre.toLowerCase()] = item.price;
-    });
-    setExtraPrices(price);
-  })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Precios extra obtenidos del backend:", data);
+        const price = {};
+        data.forEach(item => {
+          price[item.nombre.toLowerCase()] = item.price;
+        });
+        setExtraPrices(price);
+      })
       .catch((error) => console.error("Error fetching extra prices:", error));
   }, [backendUrl]);
+  
 
   const productosFiltrados = productos.filter(
     (item) => item.categoria === categoriaSeleccionada && item.categoria !== "Bebida"
@@ -111,6 +114,8 @@ const handleFreeSauceChange = (productId, index, sauceName) => {
         const precioTotal = precio + (precioFinal[_id] || 0);
         const tipo = tipoHamburguesa[_id] || "simple";
         const esPollito = nombre === "POLLITO FRITO CON SALSAS"; // Asegurate que coincide con la forma en que lo guardás
+
+        console.log(`Producto: ${nombre}, Precio Base: ${precio}, Precio Adicional: ${precioFinal[_id] || 0}, Total: ${precioTotal}`);
 
         return (
           <div
