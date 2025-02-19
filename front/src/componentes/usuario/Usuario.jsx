@@ -119,6 +119,8 @@ export default function Usuario() {
         },
         body: JSON.stringify({ price: priceNum }),
       });
+      const responseData = await response.json();
+      console.log("Backend response:", responseData); 
   
       if (response.ok) {
         const data = await response.json();
