@@ -39,9 +39,10 @@ export default function Usuario() {
   // Función para actualizar los precios
   const handleUpdateHamburguesaPrices = async () => {
     const token = localStorage.getItem('token');
+    const precioDobleNum = parseFloat(precioDoble);
+    const precioTripleNum = parseFloat(precioTriple);
   
-    // Verificar que los precios sean números válidos
-    if (isNaN(precioDoble) || isNaN(precioTriple) || precioDoble <= 0 || precioTriple <= 0) {
+    if (isNaN(precioDobleNum) || isNaN(precioTripleNum)) {
       alert("Por favor, ingresa precios válidos para doble y triple.");
       return;
     }
@@ -54,21 +55,22 @@ export default function Usuario() {
           Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
-          doble: precioDoble,
-          triple: precioTriple
+          doble: precioDobleNum,
+          triple: precioTripleNum
         })
       });
   
       if (response.ok) {
         alert("Precios actualizados correctamente.");
-        // Opcional: refrescar datos o actualizar estados
       } else {
-        alert("Error al actualizar precios.");
+        const errorData = await response.json();
+        alert(`Error al actualizar precios: ${errorData.message || "Desconocido"}`);
       }
     } catch (error) {
       console.error("Error updating hamburguesa prices:", error);
     }
   };
+  
 
   const eliminarProducto = async () => {
     const token = localStorage.getItem('token');
@@ -101,12 +103,13 @@ export default function Usuario() {
 
   const handleUpdateDeliveryPrice = async () => {
     const token = localStorage.getItem('token');
-
-    if (!newDeliveryPrice || isNaN(newDeliveryPrice) || newDeliveryPrice <= 0) {
+    const priceNum = parseFloat(newDeliveryPrice);
+  
+    if (isNaN(priceNum) || priceNum <= 0) {
       alert('Por favor, introduce un precio válido.');
       return;
     }
-
+  
     try {
       const response = await fetch(`${backendUrl}/delivery`, {
         method: 'PUT',
@@ -114,16 +117,17 @@ export default function Usuario() {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ price: parseFloat(newDeliveryPrice) }),
+        body: JSON.stringify({ price: priceNum }),
       });
-
+  
       if (response.ok) {
         const data = await response.json();
         setDeliveryPrice(data.deliveryPrice);
         setNewDeliveryPrice("");
         alert('Precio de delivery actualizado correctamente');
       } else {
-        alert('Actualizado bb');
+        const errorData = await response.json();
+        alert(`Error al actualizar el delivery: ${errorData.message || "Desconocido"}`);
       }
     } catch (error) {
       console.error('Error al actualizar el precio del delivery:', error);
