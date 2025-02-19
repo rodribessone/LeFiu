@@ -14,17 +14,23 @@ class HamburguesasController {
   }
 
   static async updateHamburguesasPrice(req, res) {
-    const { price } = req.body;
-    if (typeof price !== 'number' || price <= 0) {
-      return res.status(400).json({ message: 'El precio debe ser un número positivo' });
+    const { doble, triple } = req.body;
+    // Validar que ambos sean números positivos
+    if (
+      typeof doble !== 'number' || doble <= 0 ||
+      typeof triple !== 'number' || triple <= 0
+    ) {
+      return res.status(400).json({ message: 'Los precios deben ser números positivos' });
     }
-    const result = await HamburguesaModel.updateHamburguesasPrice(price);
+    // Llamar al método del modelo, pasándole un objeto con ambos valores
+    const result = await HamburguesaModel.updateHamburguesaPrices({ doble, triple });
     if (result.error || !result.data) {
       return res.status(400).json({ message: result.message || 'Error al actualizar el precio de tipos de hamburguesa' });
     }
     res.status(200).json({
-      message: 'Precio de tipos de hamburguesa actualizado correctamente.',
-      price: result.data.price,
+      message: 'Precios de tipos de hamburguesa actualizados correctamente.',
+      doble: result.data.doble,
+      triple: result.data.triple
     });
   }
 }

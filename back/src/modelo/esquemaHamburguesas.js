@@ -18,19 +18,25 @@ class HamburguesaModel {
     }
   }
 
-  static async updateHamburguesasPrice(price) {
+  static async updateHamburguesaPrices(prices) {
     try {
       const client = await connectToMongoDB();
       if (!client) throw new Error("Error al conectar con MongoDB");
-      if (typeof price !== 'number' || price <= 0) {
-        return { data: null, error: true, message: 'El precio debe ser un número positivo' };
+  
+      const { doble, triple } = prices;
+      if (
+        typeof doble !== 'number' || doble <= 0 ||
+        typeof triple !== 'number' || triple <= 0
+      ) {
+        return { data: null, error: true, message: 'Los precios deben ser números positivos' };
       }
+  
       const resultado = await client.db('LeFiu').collection('hamburguesa').findOneAndUpdate(
         {},
-        { $set: { price } },
+        { $set: { doble, triple } },
         { upsert: true, returnDocument: 'after' }
       );
-      if (!resultado.value || !resultado.value.price) {
+      if (!resultado.value) {
         return { data: null, error: true, message: 'No se pudo actualizar el precio correctamente' };
       }
       return { data: resultado.value, error: false };
@@ -38,7 +44,7 @@ class HamburguesaModel {
       console.error(error);
       return { data: null, error: true, message: error.message };
     }
-  }
+  }  
 }
 
 module.exports = HamburguesaModel;
