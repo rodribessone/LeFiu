@@ -61,7 +61,6 @@ const handleFreeSauceChange = (productId, index, sauceName) => {
     fetch(`${backendUrl}/hamburguesa`)
       .then((res) => res.json())
       .then((data) => {
-        console.log("Precios extra obtenidos del backend:", data);
         const price = {};
         data.forEach(item => {
           price[item.nombre.toLowerCase()] = item.precio; // Aquí aseguramos que la clave sea el nombre en minúsculas
@@ -110,8 +109,6 @@ const handleFreeSauceChange = (productId, index, sauceName) => {
         const precioTotal = precio + (precioFinal[_id] || 0);
         const tipo = tipoHamburguesa[_id] || "simple";
         const esPollito = nombre === "POLLITO FRITO CON SALSAS"; // Asegurate que coincide con la forma en que lo guardás
-
-        console.log(`Producto: ${nombre}, Precio Base: ${precio}, Precio Adicional: ${precioFinal[_id] || 0}, Total: ${precioTotal}`);
 
         return (
           <div

@@ -40,19 +40,25 @@ export default function EditarProducto() {
     };
 
     const handleSubmit = async (e) => {
-
         const token = localStorage.getItem('token');
         e.preventDefault();
+        
+        // Convertir el precio a número (float o int, dependiendo de lo que necesites)
+        const updatedFormData = {
+            ...formData,
+            precio: parseFloat(formData.precio), // Aquí convierte el precio a float
+        };
+    
         try {
             const response = await fetch(`${backendUrl}/productos/${id}`, {
-                method: 'PUT', // Método HTTP para actualizar
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`, // Asegúrate de que el token se incluya aquí.
-                  },
-                body: JSON.stringify(formData),
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(updatedFormData), // Enviar los datos ya convertidos
             });
-
+    
             if (response.ok) {
                 setMessage('Producto actualizado correctamente.');
                 setIsError(false);
