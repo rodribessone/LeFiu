@@ -16,7 +16,7 @@ export default function Main() {
     const schedule = {
       1: { open: 9.5, close: 24 },  
       2: { open: 0, close: 24 },
-      3: { open: 20.5, close: 23.5 }, 
+      3: { open: 0, close: 23.5 }, 
       4: { open: 20.5, close: 23.5 },
       5: { open: 16.5, close: 23.5 }, 
       6: { open: 20.5, close: 23.5 },
