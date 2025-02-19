@@ -36,6 +36,7 @@ class HamburguesaModel {
         { $set: { doble, triple } },
         { upsert: true, returnDocument: 'after' }
       );
+  
       if (!resultado.value) {
         return { data: null, error: true, message: 'No se pudo actualizar el precio correctamente' };
       }
