@@ -41,7 +41,7 @@ class DeliveryModel {
       const resultado = await clientMongoDB.db('LeFiu').collection('delivery').findOneAndUpdate(
         {},
         { $set: { price } },
-        { upsert: true, returnDocument: 'after' } // Si no existe, se creará un nuevo documento
+        { upsert: true, returnOriginal: false } // en lugar de returnDocument: 'after'
       );
   
       // Solo verificamos que se obtuvo un documento actualizado
@@ -55,6 +55,7 @@ class DeliveryModel {
       return { data: null, error: true, message: error.message };
     }
   }
+  
   
 }
 
