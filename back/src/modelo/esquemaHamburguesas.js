@@ -34,11 +34,16 @@ class HamburguesaModel {
       const resultado = await client.db('LeFiu').collection('hamburguesa').findOneAndUpdate(
         {},
         { $set: { doble, triple } },
-        { upsert: true, returnDocument: 'after' }
+        { upsert: true, returnDocument: 'after' }  // O, alternativamente, { upsert: true, returnOriginal: false }
       );
   
+      // Fallback: si no se obtuvo un documento actualizado, hacemos una consulta adicional
       if (!resultado.value) {
-        return { data: null, error: true, message: 'No se pudo actualizar el precio correctamente' };
+        const doc = await client.db('LeFiu').collection('hamburguesa').findOne({});
+        if (!doc) {
+          return { data: null, error: true, message: 'No se pudo actualizar el precio correctamente' };
+        }
+        return { data: doc, error: false };
       }
       return { data: resultado.value, error: false };
     } catch (error) {
