@@ -160,19 +160,19 @@ export default function Usuario() {
 <div className="w-full p-4 bg-gray-100 rounded-lg shadow-md my-6">
   <h2 className="text-xl font-bold mb-4">Configurar Precio Extra para Hamburguesas</h2>
   <div className="flex flex-col md:flex-row items-center gap-4">
-    <input
+  <input
       type="number"
       className="p-2 border rounded-lg w-full md:w-1/2"
       placeholder="Precio extra Doble"
       value={precioDoble}
-      onChange={(e) => setPrecioDoble(e.target.value)}
+      onChange={(e) => setPrecioDoble(parseFloat(e.target.value) || 0)} // Parsear el valor a número
     />
     <input
       type="number"
       className="p-2 border rounded-lg w-full md:w-1/2"
       placeholder="Precio extra Triple"
       value={precioTriple}
-      onChange={(e) => setPrecioTriple(e.target.value)}
+      onChange={(e) => setPrecioTriple(parseFloat(e.target.value) || 0)} // Parsear el valor a número
     />
     <button
       className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
