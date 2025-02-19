@@ -10,7 +10,7 @@ export default function Pedido() {
   const [precioFinal, setPrecioFinal] = useState({});
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Hamburguesa");
   const [freeSauces, setFreeSauces] = useState({});
-  const [extraPrices, setExtraPrices] = useState({ doble: 800, triple: 1900 });
+  const [extraPrices, setExtraPrices] = useState({});
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const handleTipoHamburguesaChange = (productoId, tipo) => {
@@ -19,12 +19,8 @@ export default function Pedido() {
       [productoId]: tipo,
     }));
   
-    let precioAdicional = 0;
-    // Buscar el precio adicional en extraPrices usando el nombre
-    const tipoPrecio = extraPrices.find((item) => item.nombre === tipo);
-    if (tipoPrecio) {
-      precioAdicional = tipoPrecio.precio || 0;
-    }
+    // Obtener el precio adicional directamente de extraPrices
+    const precioAdicional = extraPrices[tipo.toLowerCase()] || 0;
   
     setPrecioFinal((prev) => ({
       ...prev,
@@ -68,9 +64,9 @@ const handleFreeSauceChange = (productId, index, sauceName) => {
         console.log("Precios extra obtenidos del backend:", data);
         const price = {};
         data.forEach(item => {
-          price[item.nombre.toLowerCase()] = item.price;
+          price[item.nombre.toLowerCase()] = item.precio; // Aquí aseguramos que la clave sea el nombre en minúsculas
         });
-        setExtraPrices(price);
+        setExtraPrices(price); // Actualizamos el estado con los precios obtenidos
       })
       .catch((error) => console.error("Error fetching extra prices:", error));
   }, [backendUrl]);
