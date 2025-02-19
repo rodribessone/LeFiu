@@ -3,9 +3,15 @@ import { faCopy } from "@fortawesome/free-regular-svg-icons";
 
 const CopiarAlias = () => {
   const alias = "Lefiu.feu";
+  const [mensajeExito, setMensajeExito] = useState(""); // Estado para el mensaje de éxito
 
-  const copiarAlPortapapeles = () => {
+  const copiarAlPortapapeles = (e) => {
+    e.stopPropagation(); // Evitar que se propague el evento
     navigator.clipboard.writeText(alias).then(() => {
+      setMensajeExito("Alias copiado con éxito!"); // Cambiar el mensaje de éxito
+      setTimeout(() => setMensajeExito(""), 3000); // Borrar el mensaje después de 3 segundos
+    }).catch(() => {
+      setMensajeExito("Hubo un error al copiar el alias.");
     });
   };
 
@@ -30,6 +36,13 @@ const CopiarAlias = () => {
       >
         Copiar alias
       </div>
+
+      {/* Mensaje de éxito */}
+      {mensajeExito && (
+        <div className="absolute top-0 left-0 mt-2 px-2 py-1 bg-green-500 text-white rounded text-sm">
+          {mensajeExito}
+        </div>
+      )}
     </div>
   );
 };
