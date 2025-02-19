@@ -32,23 +32,25 @@ class DeliveryModel {
       if (!clientMongoDB) {
         throw new Error('Error al conectar con MongoDB');
       }
-      // Verificar que el precio sea válido
       if (typeof price !== 'number' || price <= 0) {
         return { data: null, error: true, message: 'El precio debe ser un número positivo' };
       }
   
-      // Actualizar el precio en la colección 'delivery'
       const resultado = await clientMongoDB.db('LeFiu').collection('delivery').findOneAndUpdate(
         {},
         { $set: { price } },
-        { upsert: true, returnOriginal: false } // en lugar de returnDocument: 'after'
+        { upsert: true, returnDocument: 'after' } // Intentamos primero con esta opción
       );
   
-      // Solo verificamos que se obtuvo un documento actualizado
+      // Si no se obtiene el documento actualizado, se hace una consulta adicional
       if (!resultado.value) {
-        return { data: null, error: true, message: 'No se pudo actualizar el precio de delivery correctamente' };
+        const doc = await clientMongoDB.db('LeFiu').collection('delivery').findOne({});
+        if (!doc) {
+          return { data: null, error: true, message: 'No se pudo actualizar el precio de delivery correctamente' };
+        }
+        return { data: doc, error: false };
       }
-  
+      
       return { data: resultado.value, error: false };
     } catch (error) {
       console.error(error);
