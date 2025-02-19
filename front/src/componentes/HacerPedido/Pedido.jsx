@@ -20,10 +20,10 @@ export default function Pedido() {
     }));
   
     let precioAdicional = 0;
-    if (tipo === "doble") {
-      precioAdicional = extraPrices.doble || 0;
-    } else if (tipo === "triple") {
-      precioAdicional = extraPrices.triple || 0;
+    // Buscar el precio adicional en extraPrices usando el nombre
+    const tipoPrecio = extraPrices.find((item) => item.nombre === tipo);
+    if (tipoPrecio) {
+      precioAdicional = tipoPrecio.precio || 0;
     }
   
     setPrecioFinal((prev) => ({
