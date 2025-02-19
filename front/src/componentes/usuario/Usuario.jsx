@@ -10,8 +10,8 @@ export default function Usuario() {
   const [newDeliveryPrice, setNewDeliveryPrice] = useState(""); // Estado para el nuevo precio de delivery
   const backendUrl = import.meta.env.VITE_BACKEND_URL;  // Revisa si ya contiene un slash final
     // Fragmento en usuarios.jsx
-  const [precioDoble, setPrecioDoble] = useState("");
-  const [precioTriple, setPrecioTriple] = useState("");
+  const [precioDoble, setPrecioDoble] = useState(0);
+  const [precioTriple, setPrecioTriple] = useState(0);
   
 
   const handleEliminarClick = (id) => {
@@ -37,35 +37,38 @@ export default function Usuario() {
   }, []);
 
   // Función para actualizar los precios
-const handleUpdateHamburguesaPrices = async () => {
-  const token = localStorage.getItem('token');
-  if (!precioDoble || !precioTriple || isNaN(precioDoble) || isNaN(precioTriple)) {
-    alert("Por favor, ingresa precios válidos para doble y triple.");
-    return;
-  }
+  const handleUpdateHamburguesaPrices = async () => {
+    const token = localStorage.getItem('token');
   
-  try {
-    const response = await fetch(`${backendUrl}/hamburguesa`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        doble: parseFloat(precioDoble),
-        triple: parseFloat(precioTriple)
-      })
-    });
-    if (response.ok) {
-      alert("Precios actualizados correctamente.");
-      // Opcional: refrescar datos o actualizar estados
-    } else {
-      alert("Error al actualizar precios.");
+    // Verificar que los precios sean números válidos
+    if (isNaN(precioDoble) || isNaN(precioTriple) || precioDoble <= 0 || precioTriple <= 0) {
+      alert("Por favor, ingresa precios válidos para doble y triple.");
+      return;
     }
-  } catch (error) {
-    console.error("Error updating hamburguesa prices:", error);
-  }
-};
+  
+    try {
+      const response = await fetch(`${backendUrl}/hamburguesa`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          doble: precioDoble,
+          triple: precioTriple
+        })
+      });
+  
+      if (response.ok) {
+        alert("Precios actualizados correctamente.");
+        // Opcional: refrescar datos o actualizar estados
+      } else {
+        alert("Error al actualizar precios.");
+      }
+    } catch (error) {
+      console.error("Error updating hamburguesa prices:", error);
+    }
+  };
 
   const eliminarProducto = async () => {
     const token = localStorage.getItem('token');
