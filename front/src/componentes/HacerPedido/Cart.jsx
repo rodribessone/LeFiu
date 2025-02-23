@@ -8,7 +8,7 @@ export default function Cart() {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
 
-  const toggleMenu = () => setIsOpen((prev) => !prev);   //
+  const toggleMenu = () => setIsOpen((prev) => !prev);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -50,10 +50,10 @@ export default function Cart() {
       {isOpen && (
         <div
           ref={menuRef}
-          className="absolute p-6 -right-16 mt-6 w-80 text-black bg-white border rounded shadow-lg z-50"
+          className="absolute p-6 -right-16 mt-6 w-80 text-black bg-white border rounded shadow-lg z-50 flex flex-col"
           style={{ 
             maxHeight: '70vh',
-            overflowY: 'auto'
+            overflow: 'hidden'
           }}
         >
           <h2 className="text-xl font-bold mb-4">Tu Carrito</h2>
@@ -61,8 +61,11 @@ export default function Cart() {
           {cartItems.length === 0 ? (
             <p className="text-gray-600">Tu carrito está vacío.</p>
           ) : (
-            <div className="space-y-4">
-              <div className="pr-2" style={{ maxHeight: '60vh', overflowY: 'auto' }}>
+            <div className="flex flex-col flex-1 overflow-hidden">
+              <div 
+                className="pr-2 overflow-y-auto flex-1" 
+                style={{ maxHeight: 'calc(70vh - 180px)' }}
+              >
                 {cartItems.map((item) => (
                   <div
                     key={item.id}
@@ -70,9 +73,15 @@ export default function Cart() {
                   >
                     <div>
                       <h3 className="font-bold">{item.nombre}</h3>
-                      <p className="text-sm text-gray-600">Cantidad: {item.quantity}</p>
-                      <p className="text-sm text-gray-600">Precio unitario: ${item.precio}</p>
-                      <p className="text-sm text-gray-600">Subtotal: ${item.precio * item.quantity}</p>
+                      <p className="text-sm text-gray-600">
+                        Cantidad: {item.quantity}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        Precio unitario: ${item.precio}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        Subtotal: ${(item.precio * item.quantity).toFixed(2)}
+                      </p>
                     </div>
                     <button
                       onClick={() => removeFromCart(item.id)}
@@ -84,8 +93,8 @@ export default function Cart() {
                 ))}
               </div>
 
-              <div className="sticky bottom-0 bg-white pt-4">
-                <div className="text-lg font-bold border-t pt-4">
+              <div className="pt-4 bg-white border-t">
+                <div className="text-lg font-bold">
                   Total: ${total.toFixed(2)}
                 </div>
 
