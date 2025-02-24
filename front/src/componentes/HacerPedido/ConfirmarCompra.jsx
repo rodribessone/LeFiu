@@ -144,9 +144,18 @@ export default function ConfirmarCompra() {
               </div>
             )}
 
-            <p className="block mb-2">El monto es: <b>${total.toFixed(2)}</b></p>
-            <p className="block mb-2">+ delivery: <b>${delivery}</b></p>
-            <p className="block mb-2">Monto total: <b>${montoTotal.toFixed(2)}</b></p>
+            <div className="flex justify-between mb-2">
+              <span>El monto es:</span>
+              <b>${total.toFixed(2)}</b>
+            </div>
+            <div className="flex justify-between mb-2">
+              <span>+ delivery:</span>
+              <b>${delivery.toFixed(2)}</b>
+            </div>
+            <div className="flex justify-between mb-4 border-t pt-2">
+              <span>Monto total:</span>
+              <b>${montoTotal.toFixed(2)}</b>
+            </div>
 
             <button
               type="submit"
