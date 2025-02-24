@@ -81,7 +81,7 @@ export default function Usuario() {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`, // Asegúrate de que el token se incluya aquí.
+          Authorization: `Bearer ${token}`, // Asegúrate de que el token se incluya aqui.
         },
       });
 
@@ -120,7 +120,6 @@ export default function Usuario() {
         body: JSON.stringify({ price: priceNum }),
       });
       const responseData = await response.json();
-      console.log("Backend response:", responseData);
   
       if (response.ok) {
         setDeliveryPrice(responseData.deliveryPrice);
