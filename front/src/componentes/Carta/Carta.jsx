@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+
 export default function Carta() {
   const [productos, setProductos] = useState([]);
   const backendUrl = import.meta.env.VITE_BACKEND_URL;  // Revisa si ya contiene un slash final

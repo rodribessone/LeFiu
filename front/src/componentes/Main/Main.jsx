@@ -19,7 +19,7 @@ export default function Main() {
       3: { open: 0, close: 23.5 }, 
       4: { open: 20.5, close: 23.5 },
       5: { open: 16.5, close: 23.5 }, 
-      6: { open: 20.5, close: 23.5 },
+      6: { open: 0, close: 23.5 },
       0: { open: 20.5, close: 23.5 },
     };
 
