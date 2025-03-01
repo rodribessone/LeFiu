@@ -20,7 +20,7 @@ app.use(express.json());
 // Configuración de CORS
 app.use(
   cors({
-    origin: 'https://le-fiu.vercel.app',
+    origin: ['https://le-fiu.vercel.app', 'http://localhost:5173'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
