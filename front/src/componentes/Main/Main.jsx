@@ -14,13 +14,13 @@ export default function Main() {
     const currentTime = now.getHours() + now.getMinutes() / 60;
 
     const schedule = {
-      1: { open: 9.5, close: 24 },  
-      2: { open: 0, close: 24 },
-      3: { open: 0, close: 23.5 }, 
-      4: { open: 20.5, close: 23.5 },
-      5: { open: 16.5, close: 23.5 }, 
-      6: { open: 0, close: 23.5 },
-      0: { open: 20.5, close: 23.5 },
+      // 1: { open: 9.5, close: 24 },   //LUNES cambiar unicamente para desarrollo
+      // 2: { open: 0, close: 24 },     //MARTES
+      // 3: { open: 0, close: 23.5 },   //MIERCOLES
+      4: { open: 20.5, close: 23.5 },   //JUEVES
+      5: { open: 20.5, close: 23.5 },   //VIERNES
+      6: { open: 20.5, close: 23.5 },   //SABADUKI
+      0: { open: 20.5, close: 23.5 },   //DOMINGO
     };
 
     setIsOpen(schedule[currentDay]?.open <= currentTime && currentTime <= schedule[currentDay]?.close);
