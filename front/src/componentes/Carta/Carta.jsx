@@ -1,54 +1,66 @@
 import { useEffect, useState } from "react";
 
-
 export default function Carta() {
   const [productos, setProductos] = useState([]);
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;  // Revisa si ya contiene un slash final
+  const [extraPrices, setExtraPrices] = useState({});
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
-    console.log('Backend URL:', backendUrl);  // Verifica el valor
     fetch(`${backendUrl}/productos`)
       .then((res) => {
-        if (!res.ok) {
-          throw new Error(`Error HTTP: ${res.status}`);
-        }
+        if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
         return res.json();
       })
-      .then((data) => {
-        setProductos(data);
-      })
+      .then((data) => setProductos(data))
       .catch((error) => console.error("Error al obtener productos:", error));
-  }, );
+  }, [backendUrl]);
+
+  useEffect(() => {
+    fetch(`${backendUrl}/hamburguesa`)
+      .then((res) => res.json())
+      .then((data) => {
+        const prices = {};
+        data.forEach(item => {
+          prices[item.nombre.toLowerCase()] = item.precio;
+        });
+        setExtraPrices(prices);
+      })
+      .catch((error) => console.error("Error al obtener precios extra:", error));
+  }, [backendUrl]);
+
   return (
     <div className="relative z-10 mt-16 flex flex-col bg-white w-11/12 m-auto p-4 border-2 border-black rounded-xl md:w-4/5 lg:w-2/3">
       <h1 className="text-2xl font-bold text-center mb-6">Nuestra Carta</h1>
 
       {productos.length === 0 ? (
         <p className="text-center text-gray-600">
-          {productos.length === 0 ? "Cargando productos..." : "No hay productos disponibles"}
+          Cargando productos...
         </p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {productos.map(({ nombre, precio, imagen, descripcion, _id }) => {
+          {productos.map(({ nombre, precio, imagen, descripcion, _id, categoria }) => {
+            const esHamburguesa = categoria === "Hamburguesa";
             return (
               <div
                 key={_id}
                 className="p-4 border-2 border-gray-300 rounded-lg flex flex-col items-center text-center shadow-md"
-                style={{ border: "1px solid red" }} // Agregado para depurar el borde del contenedor
+                style={{ border: "1px solid red" }}
               >
-                {/* Imagen */}
                 <img
                   src={imagen || "https://via.placeholder.com/150"}
                   alt={nombre}
                   className="w-full h-32 object-cover rounded-md mb-4"
-                  style={{ background: "gray" }} // Fondo gris en caso de que no se cargue la imagen
+                  style={{ background: "gray" }}
                 />
-                {/* Nombre */}
                 <h2 className="font-bold text-lg">{nombre}</h2>
-                {/* Precio */}
                 <p className="text-green-600 font-bold">${precio}</p>
-                {/* Descripción */}
-                <p className="text-gray-600 text-sm">{descripcion}</p>
+                {esHamburguesa && (
+                  <div className="text-sm text-gray-700">
+                    <p>Doble: ${precio + (extraPrices.doble || 0)}</p>
+                    <p>Triple: ${precio + (extraPrices.triple || 0)}</p>
+                  </div>
+                )}
+                <p className="text-gray-600 text-sm mt-2">{descripcion}</p>
               </div>
             );
           })}
