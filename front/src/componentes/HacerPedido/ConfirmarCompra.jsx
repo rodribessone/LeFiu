@@ -51,7 +51,7 @@ export default function ConfirmarCompra() {
   const total = calculateTotal();
   const montoTotal = calculateMontoTotal();
 
-  const businessNumber = "542392486277";
+  const businessNumber = "542392548014";
 
   const handleSubmit = (event) => {
     event.preventDefault();
