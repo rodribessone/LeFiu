@@ -53,11 +53,11 @@ export default function Carta() {
                   style={{ background: "gray" }}
                 />
                 <h2 className="font-bold text-lg">{nombre}</h2>
-                <p className="text-green-600 font-bold">${precio}</p>
+                <p className="text-green-600 font-bold">Simple: ${precio}</p>
                 {esHamburguesa && (
                   <div className="text-sm text-gray-700">
-                    <p>Doble: ${precio + (extraPrices.doble || 0)}</p>
-                    <p>Triple: ${precio + (extraPrices.triple || 0)}</p>
+                    <p className="text-green-600 font-bold">Doble: ${precio + (extraPrices.doble || 0)}</p>
+                    <p className="text-green-600 font-bold">Triple: ${precio + (extraPrices.triple || 0)}</p>
                   </div>
                 )}
                 <p className="text-gray-600 text-sm mt-2">{descripcion}</p>
