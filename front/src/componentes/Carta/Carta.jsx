@@ -32,8 +32,8 @@ export default function Carta() {
     <div className="relative z-10 mt-16 flex flex-col bg-white w-11/12 m-auto p-4 border-2 border-black rounded-xl md:w-4/5 lg:w-2/3">
       <h1 className="text-2xl font-bold text-center mb-6">Nuestra Carta</h1>
 
-      <div className="flex justify-center items-center text-xs">
-        <h3>
+      <div className="flex justify-center items-center text-xs m-8">
+        <h3 className="text-l">
           Todas las porciones incluyen papas fritas
           <img src="/papas.png" alt="Papas" className="inline-block w-6 h-6 mx-auto" />
         </h3>
