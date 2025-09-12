@@ -81,7 +81,7 @@ const handleFreeSauceChange = (productId, index, sauceName) => {
     <div className="relative mt-16 flex flex-col bg-white w-11/12 m-auto p-6 border-2 border-black rounded-xl md:w-4/5 lg:w-2/3">
       {/* Filtros */}
       <div className="flex justify-around mb-4">
-        {["Hamburguesa", "Pollo", "Salsas"].map((categoria) => (
+        {["Hamburguesa", "Pollo", "Salsas", "Pizzas", "Empanadas"].map((categoria) => (
           <button
             key={categoria}
             className={`p-1 text-sm rounded ${categoriaSeleccionada === categoria ? (categoria === "Salsas" ? "bg-red-500" : "bg-yellow-500") : "bg-gray-200"} text-white`}

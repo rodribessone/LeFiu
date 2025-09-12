@@ -18,9 +18,9 @@ export default function Main() {
       // 2: { open: 0, close: 24 },     //MARTES
       // 3: { open: 0, close: 23.5 },   //MIERCOLES
       4: { open: 20.5, close: 23.5 },   //JUEVES
-      5: { open: 20.5, close: 23.5 },   //VIERNES
+      5: { open: 1.5, close: 23.5 },   //VIERNES
       6: { open: 20.5, close: 23.5 },   //SABADUKI
-      0: { open: 20.5, close: 23.5 },   //DOMINGO
+      0: { open: 0.5, close: 23.5 },   //DOMINGO
     };
 
     setIsOpen(schedule[currentDay]?.open <= currentTime && currentTime <= schedule[currentDay]?.close);
@@ -77,7 +77,7 @@ export default function Main() {
           </Link>
 
           <a
-            href="https://wa.me/542392486277?text=Hola,%20quisiera%20hacer%20una%20consulta%20sobre"
+            href="https://wa.me/542392548014?text=Hola,%20quisiera%20hacer%20una%20consulta%20sobre"
             className='bg-black text-white rounded-lg py-2 hover:bg-gray-800 transition-colors text-lg text-center h-12 flex items-center justify-center'
           >
             WhatsApp
