@@ -19,7 +19,7 @@ export default function Main() {
       // 3: { open: 0, close: 23.5 },   //MIERCOLES
       4: { open: 20.5, close: 23.5 },   //JUEVES
       5: { open: 1.5, close: 23.5 },   //VIERNES
-      6: { open: 20.5, close: 23.5 },   //SABADUKI
+      6: { open: 1.5, close: 23.5 },   //SABADUKI
       0: { open: 0.5, close: 23.5 },   //DOMINGO
     };
 

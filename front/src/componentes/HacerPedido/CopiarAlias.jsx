@@ -19,6 +19,7 @@ const CopiarAlias = () => {
   return (
     <div className="relative flex items-center justify-center">
       <button
+        type="button"
         onClick={copiarAlPortapapeles}
         className="px-4 py-2 bg-[#899388] text-white rounded flex items-center gap-2 hover:bg-[#abb7aa] focus:outline-none"
         onMouseEnter={(e) =>
