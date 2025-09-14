@@ -10,6 +10,7 @@ export default function ConfirmarCompra() {
   const [montoEfectivo, setMontoEfectivo] = useState(0);
   const [delivery, setDelivery] = useState(0);
   const [tipoEntrega, setTipoEntrega] = useState("Delivery"); // Nuevo estado
+  const [observaciones, setObservaciones] = useState("");
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const token = localStorage.getItem("token");
 
@@ -65,7 +66,7 @@ export default function ConfirmarCompra() {
       .join("\n");
 
     // Mensaje base
-    let mensaje = `- NUEVO ENCARGO -\n\n`;
+    let mensaje = `✨NUEVO ENCARGO ✨\n\n`;
 
     mensaje += `🙋 Cliente:\n`;
     mensaje += `   - Nombre: ${nombre}\n`;
@@ -74,6 +75,10 @@ export default function ConfirmarCompra() {
     mensaje += `   - Pago: ${medioPago}\n\n`;
 
     mensaje += `🥡 Pedido:\n${productos}\n\n`;
+
+    if (observaciones) {
+    mensaje += `📝 Observaciones:\n   - ${observaciones}\n\n`;
+    }
 
     if (tipoEntrega === "Delivery") {
       mensaje += `🚚 Delivery: $${delivery.toFixed(2)}\n`;
@@ -91,10 +96,10 @@ export default function ConfirmarCompra() {
 
     mensaje += `🙏 ¡Gracias por tu pedido! Te lo preparamos pronto 🍔`;
 
-    window.open(
-      `https://wa.me/${businessNumber}?text=${encodeURIComponent(mensaje)}`,
-      "_blank"
-    );
+    const encodedMessage = encodeURIComponent(mensaje);
+    const whatsappUrl = `https://wa.me/${businessNumber}?text=${encodedMessage}`;
+
+    window.open(whatsappUrl, "_blank");
   };
 
   const isFormValid =
@@ -127,6 +132,15 @@ export default function ConfirmarCompra() {
               value={direccion}
               onChange={(e) => setDireccion(e.target.value)}
               required
+            />
+
+            <label className="block mb-2 font-bold">Observaciones (opcional):</label>
+            <textarea
+              className="w-full p-2 mb-4 border rounded"
+              placeholder="Ej: Burger sin cebolla, papas sin sal, etc."
+              value={observaciones}
+              onChange={(e) => setObservaciones(e.target.value)}
+              rows="3"
             />
 
             <div className="mb-4">

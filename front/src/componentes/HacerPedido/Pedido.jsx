@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCirclePlus, faBurger, faDrumstickBite, faPepperHot } from '@fortawesome/free-solid-svg-icons';
+import { faCirclePlus, faBurger, faPizzaSlice, faUtensils, faDrumstickBite, faPepperHot } from '@fortawesome/free-solid-svg-icons';
 import { useCart } from "../HacerPedido/CartContext";
 
 export default function Pedido() {
@@ -12,6 +12,14 @@ export default function Pedido() {
   const [freeSauces, setFreeSauces] = useState({});
   const [extraPrices, setExtraPrices] = useState({});
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+  const iconosCategoria = {
+  Hamburguesa: faBurger,
+  Pollo: faDrumstickBite,
+  Salsas: faPepperHot,
+  Pizzas: faPizzaSlice,
+  Empanadas: faUtensils, // elegí el que quieras si no hay uno específico
+  };
 
   const handleTipoHamburguesaChange = (productoId, tipo) => {
     setTipoHamburguesa((prev) => ({
@@ -81,20 +89,23 @@ const handleFreeSauceChange = (productId, index, sauceName) => {
     <div className="relative mt-16 flex flex-col bg-white w-11/12 m-auto p-6 border-2 border-black rounded-xl md:w-4/5 lg:w-2/3">
       {/* Filtros */}
       <div className="flex justify-around mb-4">
-        {["Hamburguesa", "Pollo", "Salsas", "Pizzas", "Empanadas"].map((categoria) => (
-          <button
-            key={categoria}
-            className={`p-1 text-sm rounded ${categoriaSeleccionada === categoria ? (categoria === "Salsas" ? "bg-red-500" : "bg-yellow-500") : "bg-gray-200"} text-white`}
-            onClick={() => setCategoriaSeleccionada(categoria)}
-          >
-            <FontAwesomeIcon 
-              icon={categoria === "Hamburguesa" ? faBurger : categoria === "Pollo" ? faDrumstickBite : faPepperHot} 
-              className="mr-2"
-            />
-            {categoria}
-          </button>
-        ))}
-      </div>
+          {["Hamburguesa", "Pollo", "Salsas", "Pizzas", "Empanadas"].map((categoria) => (
+            <button
+              key={categoria}
+              className={`p-1 text-sm rounded ${
+                categoriaSeleccionada === categoria
+                  ? categoria === "Salsas"
+                    ? "bg-red-500"
+                    : "bg-yellow-500"
+                  : "bg-gray-200"
+              } text-white`}
+              onClick={() => setCategoriaSeleccionada(categoria)}
+            >
+              <FontAwesomeIcon icon={iconosCategoria[categoria]} className="mr-2" />
+              {categoria}
+            </button>
+          ))}
+        </div>
 
       <div className="flex justify-center items-center text-xs">
         <h3>

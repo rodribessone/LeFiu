@@ -12,6 +12,7 @@ export default function Usuario() {
     // Fragmento en usuarios.jsx
   const [precioDoble, setPrecioDoble] = useState(0);
   const [precioTriple, setPrecioTriple] = useState(0);
+  const [estadoManual, setEstadoManual] = useState(false);
   
 
   const handleEliminarClick = (id) => {
@@ -34,6 +35,10 @@ export default function Usuario() {
         setDeliveryPrice(data.deliveryPrice);
       })
       .catch((error) => console.error('Error fetching delivery price:', error.message));
+
+    fetch(`${backendUrl}/estado`)
+    .then((res) => res.json())
+    .then((data) => setEstadoManual(data.abierto));
   }, []);
 
   // Función para actualizar los precios
@@ -70,6 +75,21 @@ export default function Usuario() {
       console.error("Error updating hamburguesa prices:", error);
     }
   };
+
+  const toggleEstado = async () => {
+  const token = localStorage.getItem('token');
+  const response = await fetch(`${backendUrl}/estado`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ abierto: !estadoManual }),
+  });
+  if (response.ok) {
+    setEstadoManual(!estadoManual);
+  }
+};
   
 
   const eliminarProducto = async () => {
@@ -140,6 +160,21 @@ export default function Usuario() {
       <div className="text-center p-4 flex flex-col">
         <p className="m-2">Bienvenido <b>Joaco</b></p>
 
+      <div className="w-full md:w-3/4 lg:w-2/5 mx-auto bg-gray-100 p-4 rounded-lg shadow-md my-6">
+  <h2 className="text-xl font-bold mb-4 text-gray-800">Control de Apertura Manual</h2>
+  <p className="mb-4">
+    Estado actual: <span className={`font-bold ${estadoManual ? "text-green-600" : "text-red-600"}`}>
+      {estadoManual ? "ABIERTO" : "CERRADO"}
+    </span>
+  </p>
+  <button
+    className={`px-4 py-2 rounded-lg text-white ${estadoManual ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"}`}
+    onClick={toggleEstado}
+  >
+    {estadoManual ? "Cerrar Manualmente" : "Abrir Manualmente"}
+  </button>
+</div>
+
        {/* Sección para gestionar el precio del delivery */}
 <div className="w-full md:w-3/4 lg:w-2/5 mx-auto bg-gray-100 p-4 rounded-lg shadow-md my-6">
   <h2 className="text-xl font-bold mb-4 text-gray-800">Configurar Precio de Delivery</h2>
@@ -165,6 +200,7 @@ export default function Usuario() {
 <div className="w-full p-4 bg-gray-100 rounded-lg shadow-md my-6">
   <h2 className="text-xl font-bold mb-4">Configurar Precio Extra para Hamburguesas</h2>
   <div className="flex flex-col md:flex-row items-center gap-4">
+    <h2>Burger doble:</h2>
   <input
       type="number"
       className="p-2 border rounded-lg w-full md:w-1/2"
@@ -172,6 +208,7 @@ export default function Usuario() {
       value={precioDoble}
       onChange={(e) => setPrecioDoble(parseFloat(e.target.value) || 0)} // Parsear el valor a número
     />
+    <h2>Burger triple:</h2>
     <input
       type="number"
       className="p-2 border rounded-lg w-full md:w-1/2"

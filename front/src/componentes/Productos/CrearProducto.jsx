@@ -99,7 +99,8 @@ export default function CrearProducto() {
                                       <option value="">Selecciona una categoria</option>
                                       <option value="Hamburguesa">Hamburguesa</option>
                                       <option value="Pollo">Pollo</option>
-                                      <option value="Papas">Papas</option>
+                                      <option value="Pizzas">Pizzas</option>
+                                      <option value="Empanadas">Empanadas</option>
                                       <option value="Bebidas">Bebidas</option>
                                       <option value="Salsas">Salsas</option>
                                       </select>

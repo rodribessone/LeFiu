@@ -7,6 +7,7 @@ export default function Main() {
   const [isOpen, setIsOpen] = useState(false);
   const [mensajeCerrado, setMensajeCerrado] = useState(false);
   const navigate = useNavigate();
+  const [estadoManual, setEstadoManual] = useState(false);
 
   useEffect(() => {
     const now = new Date();
@@ -18,13 +19,24 @@ export default function Main() {
       // 2: { open: 0, close: 24 },     //MARTES
       // 3: { open: 0, close: 23.5 },   //MIERCOLES
       4: { open: 20.5, close: 23.5 },   //JUEVES
-      5: { open: 1.5, close: 23.5 },   //VIERNES
-      6: { open: 1.5, close: 23.5 },   //SABADUKI
-      0: { open: 0.5, close: 23.5 },   //DOMINGO
+      5: { open: 20.5, close: 23.5 },   //VIERNES
+      6: { open: 20.5, close: 23.5 },   //SABADUKI
+      0: { open: 20.5, close: 23.5 },   //DOMINGO
     };
+
+    const horarioActivo = schedule[currentDay]?.open <= currentTime &&
+                        currentTime <= schedule[currentDay]?.close;
+
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/estado`)
+    .then(res => res.json())
+    .then(data => {
+      setEstadoManual(data.abierto);
+      setIsOpen(horarioActivo || data.abierto);
+    });
 
     setIsOpen(schedule[currentDay]?.open <= currentTime && currentTime <= schedule[currentDay]?.close);
   }, []);
+
 
   const handleHacerPedidoClick = () => {
     isOpen ? navigate("/pedido") : setMensajeCerrado(true);
