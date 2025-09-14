@@ -5,6 +5,7 @@ const rutas = require('./src/rutas/indexrutas');
 const usuarioRutas = require('./src/rutas/usuarioRutas');
 const configRutas = require('./src/rutas/configRutas');
 const rutasHamburguesas = require('./src/rutas/rutasHamburguesas');
+const estadoRutas = require('./src/rutas/estadoRutas');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -34,6 +35,7 @@ app.use("/", rutas);
 app.use("/", usuarioRutas);
 app.use("/", configRutas);
 app.use("/", rutasHamburguesas);
+app.use("/", estadoRutas);
 
 // **Ahora define la ruta catch-all para archivos estáticos**
 // app.use(express.static(path.join(__dirname, 'build')));
