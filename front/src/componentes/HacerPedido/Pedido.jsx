@@ -149,7 +149,7 @@ const handleFreeSauceChange = (productId, index, sauceName) => {
                         onClick={() => handleTipoHamburguesaChange(_id, tipoBtn)}
                       >
                         {tipoBtn.charAt(0).toUpperCase() + tipoBtn.slice(1)}
-                        {tipoBtn !== "simple" && ` (+$${tipoBtn === "doble" ? extraPrices.doble || 0 : extraPrices.triple || 0})`}
+                        {/* {tipoBtn !== "simple" && ` (+$${tipoBtn === "doble" ? extraPrices.doble || 0 : extraPrices.triple || 0})`} ACA DICE EL PRECIO DE LAS BURGUERS ENTRE PARENTESIS*/} 
                       </button>
                     ))}
                   </div>
