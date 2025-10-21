@@ -1,11 +1,14 @@
 import { Routes, Route} from "react-router-dom";
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect  } from 'react';
 import Nav from './componentes/nav/Nav';
 import Main from './componentes/Main/Main';
 import Footer from './componentes/Footer/Footer';
 import NotFound from './componentes/NotFound/NotFound';
 import './index.css';
+import ReactGA from "react-ga4";
 
+
+ReactGA.initialize("G-D99C2BQD85");
 // Lazy load de componentes
 const Carta = lazy(() => import('./componentes/Carta/Carta'));
 const Pedido = lazy(() => import('./componentes/HacerPedido/Pedido'));
@@ -15,6 +18,11 @@ const CrearProducto = lazy(() => import('./componentes/Productos/CrearProducto')
 const ConfirmarCompra = lazy(() => import('./componentes/HacerPedido/ConfirmarCompra'));
 
 function App() {
+
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen relative">
       {/* Imagen optimizada con preload */}
