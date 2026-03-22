@@ -72,21 +72,37 @@ export default function Main() {
           </a>
         </div>
 
-        {/* Banner milanesas */}
+        {/* Banner milanesas con foto */}
         <div style={{
           width: "100%",
-          background: "#111",
           borderRadius: 10,
+          overflow: "hidden",
+          position: "relative",
           border: "2px solid #FACC15",
-          padding: "9px 14px",
-          display: "flex",
-          alignItems: "center",
-          gap: 10,
+          boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
         }}>
-          <span style={{ fontSize: 22, lineHeight: 1, flexShrink: 0 }}>🥩</span>
-          <div>
-            <p style={{ fontSize: 8, fontWeight: 900, color: "#FACC15", letterSpacing: "0.15em", textTransform: "uppercase", margin: 0 }}>¡Novedad!</p>
-            <p style={{ fontSize: 13, fontWeight: 700, color: "white", margin: 0, lineHeight: 1.2 }}>Ahora también hacemos milanesas</p>
+          <img
+            src="/milanesa.jpeg"
+            alt="Milanesas Le Fiu"
+            style={{ width: "100%", height: 90, objectFit: "cover", display: "block" }}
+          />
+          {/* Overlay oscuro de izquierda a derecha */}
+          <div style={{
+            position: "absolute",
+            inset: 0,
+            background: "linear-gradient(to right, rgba(0,0,0,0.82) 50%, rgba(0,0,0,0.15) 100%)",
+          }} />
+          {/* Texto sobre el overlay */}
+          <div style={{
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            padding: "0 14px",
+          }}>
+            <p style={{ margin: 0, fontSize: 8, fontWeight: 900, color: "#FACC15", letterSpacing: "0.15em", textTransform: "uppercase" }}>¡Novedad!</p>
+            <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: "white", lineHeight: 1.2 }}>Ahora también<br />hacemos milanesas</p>
           </div>
         </div>
 

@@ -64,75 +64,98 @@ function App() {
 
       <Footer className="mt-auto" />
 
-      {/* Cartel flotante de viandas — foto + animación */}
+      {/* Cartel flotante de viandas — responsivo */}
       <a
         href="https://wa.me/542392548014?text=Hola%2C%20estoy%20interesado%20en%20las%20viandas%20%F0%9F%8D%BD%EF%B8%8F"
         target="_blank"
         rel="noopener noreferrer"
-        style={{
-          position: "fixed",
-          bottom: 48,
-          left: 28,
-          width: 160,
-          height: 120,
-          zIndex: 40,
-          borderRadius: 14,
-          overflow: "hidden",
-          boxShadow: "0 6px 24px rgba(0,0,0,0.45)",
-          display: "block",
-          textDecoration: "none",
-          animation: "viandas-float 3s ease-in-out infinite",
-        }}
+        className="viandas-card"
       >
         <img
           src={VIANDAS_IMG}
           alt="Viandas Le Fiu"
-          style={{
-            width: "100%",
-            height: 110,
-            objectFit: "cover",
-            display: "block",
-          }}
+          className="viandas-img"
         />
-        {/* Overlay degradado oscuro */}
-        <div style={{
-          position: "absolute",
-          inset: 0,
-          background: "linear-gradient(to top, rgba(0,0,0,0.82) 25%, rgba(0,0,0,0.1) 100%)",
-        }} />
-        {/* Texto */}
-        <div style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          padding: "6px 8px",
-          textAlign: "center",
-        }}>
-          <p style={{ margin: 0, fontSize: 8, fontWeight: 900, color: "#FACC15", letterSpacing: "0.1em", textTransform: "uppercase" }}>Le Fiu</p>
-          <p style={{ margin: 0, fontSize: 11, fontWeight: 800, color: "white", lineHeight: 1.1 }}>Viandas 🥡</p>
+        <div className="viandas-overlay" />
+        <div className="viandas-text">
+          <p className="viandas-brand">Le Fiu</p>
+          <p className="viandas-label">Viandas 🥡</p>
         </div>
-        {/* Badge */}
-        <div style={{
-          position: "absolute",
-          top: 7,
-          right: 7,
-          background: "#DC2626",
-          color: "white",
-          fontSize: 8,
-          fontWeight: 900,
-          padding: "2px 6px",
-          borderRadius: 20,
-          letterSpacing: "0.05em",
-          textTransform: "uppercase",
-        }}>
-          ¡Consultá!
-        </div>
+        <div className="viandas-badge">¡Consultá!</div>
 
         <style>{`
+          .viandas-card {
+            position: fixed;
+            bottom: clamp(28px, 5vw, 40px);
+            left: clamp(8px, 2vw, 16px);
+            width: clamp(80px, 22vw, 120px);
+            z-index: 40;
+            border-radius: clamp(10px, 2vw, 14px);
+            overflow: hidden;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.45);
+            display: block;
+            text-decoration: none;
+            animation: viandas-float 3s ease-in-out infinite;
+          }
+          .viandas-img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            display: block;
+          }
+          .viandas-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.82) 40%, rgba(0,0,0,0.1) 100%);
+          }
+          .viandas-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: clamp(4px, 1vw, 8px) clamp(4px, 1.5vw, 10px);
+            text-align: center;
+          }
+          .viandas-brand {
+            margin: 0;
+            font-size: clamp(7px, 1.8vw, 9px);
+            font-weight: 900;
+            color: #FACC15;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+          }
+          .viandas-label {
+            margin: 0;
+            font-size: clamp(9px, 2.5vw, 13px);
+            font-weight: 800;
+            color: white;
+            line-height: 1.15;
+          }
+          .viandas-badge {
+            position: absolute;
+            top: clamp(4px, 1vw, 8px);
+            right: clamp(4px, 1vw, 8px);
+            background: #DC2626;
+            color: white;
+            font-size: clamp(6px, 1.5vw, 8px);
+            font-weight: 900;
+            padding: 2px clamp(4px, 1vw, 7px);
+            border-radius: 20px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            white-space: nowrap;
+          }
           @keyframes viandas-float {
             0%, 100% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-6px) scale(1.03); }
+            50% { transform: translateY(-5px) scale(1.03); }
+          }
+          /* En pantallas muy chicas (< 360px) lo achicamos un poco más */
+          @media (max-width: 360px) {
+            .viandas-card { width: 72px; }
+          }
+          /* En tablets y desktop lo fijamos para que no crezca demasiado */
+          @media (min-width: 640px) {
+            .viandas-card { width: 110px; bottom: 36px; left: 14px; }
           }
         `}</style>
       </a>
