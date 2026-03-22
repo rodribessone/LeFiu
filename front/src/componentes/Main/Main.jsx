@@ -25,18 +25,17 @@ export default function Main() {
     };
 
     const horarioActivo = schedule[currentDay]?.open <= currentTime &&
-                        currentTime <= schedule[currentDay]?.close;
+      currentTime <= schedule[currentDay]?.close;
 
     fetch(`${import.meta.env.VITE_BACKEND_URL}/estado`)
-    .then(res => res.json())
-    .then(data => {
-      setEstadoManual(data.abierto);
-      setIsOpen(horarioActivo || data.abierto);
-    });
+      .then(res => res.json())
+      .then(data => {
+        setEstadoManual(data.abierto);
+        setIsOpen(horarioActivo || data.abierto);
+      });
 
     setIsOpen(schedule[currentDay]?.open <= currentTime && currentTime <= schedule[currentDay]?.close);
   }, []);
-
 
   const handleHacerPedidoClick = () => {
     isOpen ? navigate("/pedido") : setMensajeCerrado(true);
@@ -44,11 +43,12 @@ export default function Main() {
 
   return (
     <div className="flex justify-center items-center min-h-[calc(100vh-6rem)] pt-12 pb-10 z-20 sm:pt-16 overflow-hidden">
+
       <div className="bg-white rounded-lg flex flex-col items-center p-6 w-full max-w-xs space-y-3 shadow-xl mx-4">
         {/* Encabezado */}
         <img src='Logo.jpg' className='rounded-full w-20 h-20 mb-3' alt="Logo Le Fiu" />
         <h1 className='text-2xl font-bold mb-2'>Le Fiu</h1>
-        
+
         {/* Estado */}
         <div className="mb-4">
           <span className="relative inline-flex overflow-hidden rounded-full p-[1px]">
@@ -60,29 +60,47 @@ export default function Main() {
         </div>
 
         {/* Horario */}
-        <p className='text-center text-sm mb-4'>⏰ Miércoles a Domingo<br/>20:30 - 23:30</p>
+        <p className='text-center text-sm mb-4'>⏰ Miércoles a Domingo<br />20:30 - 23:30</p>
 
         {/* Redes Sociales */}
         <div className="mb-6">
-          <a href="https://www.instagram.com/lefiu.burgers/" 
-             target="_blank" 
-             rel="noopener noreferrer"
-             className="hover:scale-110 transition-transform">
+          <a href="https://www.instagram.com/lefiu.burgers/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:scale-110 transition-transform">
             <FontAwesomeIcon className="text-2xl text-pink-600 hover:text-pink-700" icon={faInstagram} />
           </a>
         </div>
 
-        {/* Botones compactos */}
+        {/* Banner milanesas */}
+        <div style={{
+          width: "100%",
+          background: "#111",
+          borderRadius: 10,
+          border: "2px solid #FACC15",
+          padding: "9px 14px",
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+        }}>
+          <span style={{ fontSize: 22, lineHeight: 1, flexShrink: 0 }}>🥩</span>
+          <div>
+            <p style={{ fontSize: 8, fontWeight: 900, color: "#FACC15", letterSpacing: "0.15em", textTransform: "uppercase", margin: 0 }}>¡Novedad!</p>
+            <p style={{ fontSize: 13, fontWeight: 700, color: "white", margin: 0, lineHeight: 1.2 }}>Ahora también hacemos milanesas</p>
+          </div>
+        </div>
+
+        {/* Botones */}
         <div className="w-full grid grid-cols-1 gap-2">
-          <button 
+          <button
             className='bg-black text-white rounded-lg py-2 hover:bg-gray-800 transition-colors text-lg text-center h-12 flex items-center justify-center'
             onClick={handleHacerPedidoClick}
           >
             Hacer Pedido
           </button>
 
-          <Link 
-            to="/carta" 
+          <Link
+            to="/carta"
             className='bg-black text-white rounded-lg py-2 hover:bg-gray-800 transition-colors text-lg text-center h-12 flex items-center justify-center'
           >
             Ver Carta
