@@ -13,7 +13,6 @@ export default function ConfirmarCompra() {
   const [delivery, setDelivery] = useState(0);
   const [tipoEntrega, setTipoEntrega] = useState("Delivery");
   const [observaciones, setObservaciones] = useState("");
-  const [loadingPago, setLoadingPago] = useState(false);
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const token = localStorage.getItem("token");
 
@@ -49,7 +48,9 @@ export default function ConfirmarCompra() {
 
   const businessNumber = "542392548014";
 
-  const handleWhatsApp = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
     const productos = cartItems
       .map((item) => `   🔸 ${item.nombre} x${item.quantity} → $${(item.precio * item.quantity).toFixed(0)}`)
       .join("\n");
@@ -81,43 +82,6 @@ export default function ConfirmarCompra() {
     mensaje += `🙏 ¡Gracias por tu pedido! Te lo preparamos pronto 🍔`;
 
     window.open(`https://wa.me/${businessNumber}?text=${encodeURIComponent(mensaje)}`, "_blank");
-  };
-
-  const handlePagoTarjeta = async () => {
-    setLoadingPago(true);
-    try {
-      const response = await fetch(`${backendUrl}/crear-preferencia`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          items: cartItems,
-          nombre,
-          direccion,
-          tipoEntrega,
-          observaciones,
-          deliveryPrice: tipoEntrega === "Delivery" ? delivery : 0,
-        }),
-      });
-
-      if (!response.ok) throw new Error("Error al crear el pago");
-
-      const data = await response.json();
-      window.location.href = data.init_point;
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Hubo un error al procesar el pago. Intentá de nuevo.");
-    } finally {
-      setLoadingPago(false);
-    }
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (medioPago === "Tarjeta") {
-      handlePagoTarjeta();
-    } else {
-      handleWhatsApp();
-    }
   };
 
   const isFormValid =
@@ -178,9 +142,9 @@ export default function ConfirmarCompra() {
               </div>
             </div>
 
-            <div className="mb-3">
+            <div className="mb-4">
               <label className="block mb-2 font-bold">Medio de pago:</label>
-              <div className="flex gap-3 mb-3 flex-wrap">
+              <div className="flex gap-3 flex-wrap">
                 <button type="button"
                   className={`px-4 py-2 rounded border ${medioPago === "Efectivo" ? "bg-green-500 text-white" : "bg-gray-100"}`}
                   onClick={() => setMedioPago("Efectivo")}>
@@ -190,11 +154,6 @@ export default function ConfirmarCompra() {
                   className={`px-4 py-2 rounded border ${medioPago === "MercadoPago" ? "bg-green-500 text-white" : "bg-gray-100"}`}
                   onClick={() => setMedioPago("MercadoPago")}>
                   📲 MercadoPago
-                </button>
-                <button type="button"
-                  className={`px-4 py-2 rounded border ${medioPago === "Tarjeta" ? "bg-blue-500 text-white" : "bg-gray-100"}`}
-                  onClick={() => setMedioPago("Tarjeta")}>
-                  💳 Tarjeta
                 </button>
               </div>
             </div>
@@ -220,16 +179,6 @@ export default function ConfirmarCompra() {
               </div>
             )}
 
-            {medioPago === "Tarjeta" && (
-              <div className="flex items-start gap-3 bg-blue-50 border-2 border-blue-300 rounded-xl px-4 py-3 mb-4">
-                <span className="text-2xl">💳</span>
-                <div>
-                  <p className="font-bold text-blue-700 text-sm leading-tight">Pago seguro con Mercado Pago</p>
-                  <p className="text-blue-600 text-xs mt-0.5">Visa, Mastercard y más. Al confirmar te redirigimos al checkout.</p>
-                </div>
-              </div>
-            )}
-
             <div className="flex justify-between mb-2">
               <span>El monto es:</span>
               <b>${total}</b>
@@ -249,20 +198,11 @@ export default function ConfirmarCompra() {
 
             <button
               type="submit"
-              disabled={!isFormValid || loadingPago}
-              className={`w-full py-2 rounded text-white font-bold transition-colors ${
-                !isFormValid || loadingPago
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : medioPago === "Tarjeta"
-                    ? "bg-blue-500 hover:bg-blue-600"
-                    : "bg-green-500 hover:bg-green-600"
-              }`}
+              disabled={!isFormValid}
+              className={`w-full py-2 rounded text-white font-bold transition-colors ${!isFormValid ? "bg-gray-400 cursor-not-allowed" : "bg-green-500 hover:bg-green-600"
+                }`}
             >
-              {loadingPago
-                ? "Procesando..."
-                : medioPago === "Tarjeta"
-                  ? "💳 Ir al pago"
-                  : "Confirmar Pedido"}
+              Confirmar Pedido
             </button>
 
           </form>
